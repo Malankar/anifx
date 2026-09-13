@@ -1126,7 +1126,7 @@ header.scrolled .nav{height:52px}
   display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;
 }
 .success-bg.open{display:flex}
-.success{max-width:520px;width:100%;text-align:center}
+.success{max-width:560px;width:100%;text-align:center}
 .success .tick{
   width:64px;height:64px;margin:0 auto 22px;border:2px solid var(--accent);
   border-radius:50%;display:grid;place-items:center;color:var(--accent);font-size:30px;
@@ -1197,6 +1197,15 @@ header.scrolled .nav{height:52px}
 .field textarea{resize:vertical;min-height:78px;font-family:var(--f-data);font-size:13px;line-height:1.6}
 .field select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat}
 .field .hint{font-size:12.5px;color:var(--muted);margin-top:6px}
+/* Points at the exact field a validation error is about — set on the
+   .field (or .checkline) wrapper by flagField() in shared.js, cleared
+   the moment the user edits that field. */
+.field.field-invalid input,.field.field-invalid select,.field.field-invalid textarea{
+  border-color:var(--warn);box-shadow:0 0 0 1px var(--warn);
+}
+.field.field-invalid label{color:var(--warn)}
+.checkline.field-invalid{outline:1px solid var(--warn);outline-offset:6px;border-radius:var(--radius-sm)}
+input.field-invalid{border-color:var(--warn);box-shadow:0 0 0 1px var(--warn)}
 /* shown instead of the #fTrack select when Register is opened from an
    event's own page — the competition is already known from that page,
    so it's fixed, not a dropdown the visitor can second-guess. The
@@ -1270,9 +1279,6 @@ footer{border-top:1px solid var(--line);padding:52px 0 40px;margin-top:40px}
    Step 2 only exists for tracks/tiers with a fee — free entries submit
    straight from step 1. See shared.js goToPayStep()/syncTrack(). */
 .form-step[hidden]{display:none}
-/* Modal widens on step 2 so the QR renders near its original size
-   instead of being squeezed down to fit the normal 560px form width. */
-.modal:has(#formStep2:not([hidden])){max-width:640px}
 .pay-qr-big{text-align:center;margin-bottom:20px}
 .pay-qr-big img{width:100%;max-width:520px;border-radius:var(--radius-sm);margin:0 auto}
 .pay-qr-big p{margin-top:12px;font-size:13px;color:var(--muted)}

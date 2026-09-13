@@ -1049,16 +1049,22 @@ if($("#regModal")){
   function fieldProblem(){
     const t=currentTrack();
     const leadWord = t.isTeam ? (t.leadLabel||"lead").toLowerCase() : "your";
-    if(t.isTeam && !$("#fTeam").checkValidity()) return "Enter a "+$("#fTeamLabel").textContent.toLowerCase()+".";
-    if(!$("#fCaptain").checkValidity()) return "Enter "+leadWord+(t.isTeam?"'s":"")+" full name.";
-    if(!$("#fPhone").checkValidity()) return "Enter "+leadWord+(t.isTeam?"'s":"")+" WhatsApp number.";
-    if(!$("#fEmail").checkValidity()) return "Enter a valid email address.";
-    if(!$("#fCollege").checkValidity()) return "Enter your college or institution.";
-    if(!$("#fAge").checkValidity()) return "Enter your age.";
-    if(!$("#fClassYear").checkValidity()) return "Enter your class, year or graduation status.";
-    if(!$("#fAddress").checkValidity()) return "Enter your address.";
-    if($("#fRoster").required && !$("#fRoster").checkValidity()) return "Add your "+$("#fRosterLabel").textContent.toLowerCase()+".";
-    if(!$("#fAgree").checked) return "Please confirm you have read the rules.";
+    if(t.isTeam && !$("#fTeam").checkValidity()) return {el:$("#fTeam"), msg:"Enter a "+$("#fTeamLabel").textContent.toLowerCase()+"."};
+    if(!$("#fCaptain").checkValidity()) return {el:$("#fCaptain"), msg:"Enter "+leadWord+(t.isTeam?"'s":"")+" full name."};
+    if(!$("#fPhone").checkValidity()) return {el:$("#fPhone"), msg:"Enter "+leadWord+(t.isTeam?"'s":"")+" WhatsApp number."};
+    if(!$("#fEmail").checkValidity()) return {el:$("#fEmail"), msg:"Enter a valid email address."};
+    if(!$("#fCollege").checkValidity()) return {el:$("#fCollege"), msg:"Enter your college or institution."};
+    if(!$("#fAge").checkValidity()){
+      const ageEl=$("#fAge"), av=ageEl.validity;
+      const ageMsg = av.rangeUnderflow ? "Age must be at least "+ageEl.min+"."
+        : av.rangeOverflow ? "Age must be "+ageEl.max+" or under."
+        : "Enter your age.";
+      return {el:ageEl, msg:ageMsg};
+    }
+    if(!$("#fClassYear").checkValidity()) return {el:$("#fClassYear"), msg:"Enter your class, year or graduation status."};
+    if(!$("#fAddress").checkValidity()) return {el:$("#fAddress"), msg:"Enter your address."};
+    if($("#fRoster").required && !$("#fRoster").checkValidity()) return {el:$("#fRoster"), msg:"Add your "+$("#fRosterLabel").textContent.toLowerCase()+"."};
+    if(!$("#fAgree").checked) return {el:$("#fAgree"), msg:"Please confirm you have read the rules."};
     return null;
   }
 
@@ -1066,9 +1072,24 @@ if($("#regModal")){
   // needsPayStep) — transaction ID and a payment screenshot are both
   // required fields there.
   function payFieldProblem(){
-    if(!$("#fTxnId").checkValidity()) return "Enter your transaction ID / UTR.";
-    if(!$("#fPayScreenshot").checkValidity()) return "Attach a screenshot of your payment.";
+    if(!$("#fTxnId").checkValidity()) return {el:$("#fTxnId"), msg:"Enter your transaction ID / UTR."};
+    if(!$("#fPayScreenshot").checkValidity()) return {el:$("#fPayScreenshot"), msg:"Attach a screenshot of your payment."};
     return null;
+  }
+
+  // Highlights the offending field (red border on its wrapper), scrolls
+  // it into view within the modal, and focuses it so the next keystroke
+  // lands right there. Clears itself the moment the field becomes valid.
+  function flagField(el){
+    if(!el) return;
+    $$(".field-invalid").forEach(f=>f.classList.remove("field-invalid"));
+    const wrap=el.closest(".field")||el.closest(".checkline")||el;
+    wrap.classList.add("field-invalid");
+    el.scrollIntoView({block:"center", behavior:"smooth"});
+    el.focus({preventScroll:true});
+    const clear=()=>{ wrap.classList.remove("field-invalid"); el.removeEventListener("input",clear); el.removeEventListener("change",clear); };
+    el.addEventListener("input",clear);
+    el.addEventListener("change",clear);
   }
 
   // "Continue" / "Proceed to Pay" / "Submit entry" — step 1's action.
@@ -1078,10 +1099,10 @@ if($("#regModal")){
   nextBtn.addEventListener("click",()=>{
     const t=currentTrack(), st=trackState(t);
     const problem=fieldProblem();
-    if(problem){ say(problem,"err"); return; }
+    if(problem){ say(problem.msg,"err"); flagField(problem.el); return; }
     let phone=$("#fPhone").value.replace(/\D/g,"");
     if(phone.length===12 && phone.startsWith("91")) phone=phone.slice(2);
-    if(phone.length<10){ say("Enter a valid 10-digit WhatsApp number.","err"); return; }
+    if(phone.length<10){ say("Enter a valid 10-digit WhatsApp number.","err"); flagField($("#fPhone")); return; }
 
     if(needsPayStep(t,st)){
       step1.hidden=true; step2.hidden=false;
@@ -1103,7 +1124,7 @@ if($("#regModal")){
     e.preventDefault();
     const t=currentTrack(), st=trackState(t);
     const problem=payFieldProblem();
-    if(problem){ say(problem,"err"); return; }
+    if(problem){ say(problem.msg,"err"); flagField(problem.el); return; }
     doSubmit(t,st);
   });
 
