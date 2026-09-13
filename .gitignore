@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Node / package managers
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# frontend-v2 (Vite + Firebase)
+frontend-v2/node_modules/
+frontend-v2/dist/
+frontend-v2/functions/node_modules/
+frontend-v2/functions/lib/
+frontend-v2/.env.local
+frontend-v2/.firebase/
+frontend-v2/firebase-debug.log
+frontend-v2/firestore-debug.log
+.env
