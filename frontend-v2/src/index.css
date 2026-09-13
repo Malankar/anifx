@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* The site's actual visual design lives in /public/shared.css (linked
+   globally from index.html, unchanged from the old static site) — this
+   file only wires up Tailwind for shadcn/ui components added later via
+   `pnpm dlx shadcn add <component>`. */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.625rem;
+}
