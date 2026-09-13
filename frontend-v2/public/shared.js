@@ -93,7 +93,7 @@ const CONFIG = {
     {
       id:"valorant",
       name:"VALORANT",
-      page:"valorant.html",
+      page:"/valorant",
       format:"32 teams · Best of 3 · Online groups, offline final",
       blurb:"Open bracket to 32 teams. Group stage runs online through October, semi-finals online, and the grand final is played offline on campus in front of a crowd.",
       isTeam:true,
@@ -127,7 +127,7 @@ const CONFIG = {
     {
       id:"fc26",
       name:"FC26",
-      page:"fc26.html",
+      page:"/fc26",
       format:"Solo knockout · One day · On campus",
       blurb:"Single-elimination solo knockout played on PlayStation on campus, one player at a time — no teams.",
       isTeam:false,
@@ -168,7 +168,7 @@ const CONFIG = {
     {
       id:"gamejam",
       name:"Game jam",
-      page:"game-jam.html",
+      page:"/game-jam",
       format:"100 hours · Online · Side-scroller action",
       blurb:"Design, build and ship an original side-scrolling action game in 100 hours. 2D, 3D or anything between. Judged live on campus at the end.",
       isTeam:true,
@@ -198,7 +198,7 @@ const CONFIG = {
     {
       id:"film",
       name:"Film & animation",
-      page:"film-festival.html",
+      page:"/film-festival",
       format:"Submission based · 2D, 3D, stop motion, VFX, live action",
       blurb:"A showcase for student films and animation. Animated work and live action are judged separately by industry juries, screened on campus during the festival.",
       isTeam:true,
@@ -234,7 +234,7 @@ const CONFIG = {
     {
       id:"character",
       name:"Character design",
-      page:"character-design.html",
+      page:"/character-design",
       format:"Free entry · Solo · Held 23 October, on campus",
       blurb:"Design an original character live at the venue, on a theme announced at the start of the competition. In association with Katha Film Club.",
       isTeam:false,
