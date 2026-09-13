@@ -1215,6 +1215,7 @@ input.field-invalid{border-color:var(--warn);box-shadow:0 0 0 1px var(--warn)}
   padding:11px 13px;color:var(--bone);font-family:var(--f-body);font-size:14.5px;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
+.track-locked[hidden]{display:none}
 .track-locked::after{content:"Locked to this page";font-family:var(--f-data);font-size:10px;letter-spacing:.06em;color:var(--muted)}
 
 /* custom dropdown for the competition picker — a real listbox, not a
