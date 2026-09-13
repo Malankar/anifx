@@ -1,0 +1,1284 @@
+/* ============================================================
+   ANIFX 2026 — SHARED STYLES
+   Loaded by every page (index.html + each event page). Edit once,
+   applies everywhere. Page-specific styles live in a small <style>
+   block at the top of that page's own <head> if ever needed —
+   keep that to a minimum so pages don't drift apart.
+   ============================================================ */
+
+:root{
+  /* THEME — v3 dark pass. Same roles as the old light "Warm Poster" theme
+     (--ink page bg, --bone body text, --surface/--surface-2 raised panels,
+     --line/--line-soft borders) with the values inverted to dark. Plain
+     static hex per token (not CSS relative-color functions) — each
+     [data-track] block below repeats its own --surface/--line set so every
+     page's panels/borders stay correctly lightened against that page's own
+     --ink without leaning on rgb(from ...), which turned out to be a real
+     scroll-repaint cost on the sticky/backdrop-filter header once used this
+     widely (screenshots would hang mid-scroll — confirmed by testing scroll
+     0 vs any scroll>0 with everything else identical). */
+  --ink:#0B0A08;
+  --surface:#17140F;
+  --surface-2:#211D16;
+  --line:#3A3327;
+  --line-soft:#2A2519;
+  --bone:#F3EDDD;
+  --muted:#B9AD90;
+  --accent:#E2394A;
+  --accent-dim:#8F1F2A;
+  --brand-accent:#E2394A;  /* fixed brand red for the header (logo mark, Register
+                              button) — never overridden by [data-track], so the
+                              header looks identical on every page regardless of
+                              which event's accent color the rest of that page uses */
+  --accent-2:#F0C24C;     /* urgent-text tone (deadlines etc) — bright enough for dark bg */
+  --live:#3ED97A;         /* actual on-air/live indicators only — bright green, not text-safe */
+  --warn:#0FB8A6;         /* form errors + FAQ warning callouts — was accidentally sharing
+                              --live before; split out so "make live green" doesn't turn
+                              error messages green too. Same color as before, new name. */
+  --todo:#7B68EE;         /* placeholder marker — remove before launch */
+
+  /* FONT — v3 redesign pass. Archivo (variable wdth/wght, expanded+black for
+     display type) reads as a real poster/esports face rather than a generic
+     geometric sans, so it's used everywhere including the header — no more
+     per-page font swap for VALORANT, only its own accent color like the
+     other three tracks. Space Grotesk for body copy, JetBrains Mono for
+     eyebrows/labels/stat text (the small detail type that was reading as
+     generic before). */
+  --f-display:'Archivo',sans-serif;
+  --brand-font:'Archivo',sans-serif;
+  --f-body:'Space Grotesk',sans-serif;
+  --f-data:'Alegreya Sans',sans-serif;  /* secondary/small text only (labels, eyebrows,
+                              stats) — not the display or body font. Client compared
+                              IBM Plex Sans, then Fira Sans, then picked Alegreya Sans. */
+
+  --radius:10px;   /* card corners — event cards, board, bracket/roster cards, modal */
+  --radius-sm:6px;  /* buttons, inputs, small chips */
+  --gut:clamp(20px,4vw,64px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+/* scroll-behavior:smooth is deliberately NOT set globally: in Chrome/Firefox it
+   also eases native wheel/trackpad scrolling, which delays the raw scrollY our
+   scroll-driven effects read every frame and makes them feel out of sync with
+   the gesture. Anchor-link jumps get their smoothing from JS (see shared.js). */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+body{
+  background:var(--ink);color:var(--bone);
+  font-family:var(--f-body);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* sitewide film-grain — a hair above imperceptible, just enough that the
+   flat dark backgrounds don't read as a plain vector fill. Static (not
+   animated), pointer-events:none, one inline SVG turbulence filter so it
+   needs no image asset. */
+body::after{
+  content:"";position:fixed;inset:0;z-index:2147483647;pointer-events:none;
+  opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:140px 140px;
+}
+
+/* ---------- custom scrollbar (global) ---------- */
+:root{scrollbar-color:var(--accent-dim) var(--surface);scrollbar-width:thin;color-scheme:dark}
+*::-webkit-scrollbar{width:8px;height:8px}
+*::-webkit-scrollbar-track{background:var(--surface)}
+*::-webkit-scrollbar-thumb{background:var(--accent-dim);border-radius:2px}
+*::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ---------- type scale ---------- */
+.display{
+  font-family:var(--f-display);
+  font-weight:800;font-variation-settings:"wdth" 125,"wght" 800;
+  line-height:.86;letter-spacing:-.01em;
+  text-transform:uppercase;text-wrap:balance;
+}
+.h-xxl{font-size:clamp(56px,13vw,168px)}
+.h-xl{font-size:clamp(48px,10vw,128px)}
+.h-lg{font-size:clamp(32px,5.5vw,64px)}
+.h-md{font-size:clamp(26px,3.6vw,42px)}
+.h-sm{font-size:clamp(20px,2.4vw,28px)}
+.data{font-family:var(--f-data);font-size:12px;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.prose{max-width:62ch}
+
+.todo{
+  color:var(--todo);border-bottom:1px dashed var(--todo);
+  cursor:help;
+}
+
+/* ---------- shell ---------- */
+.wrap{max-width:1320px;margin:0 auto;padding:0 var(--gut)}
+section{position:relative}
+.rule{height:1px;background:var(--line-soft);border:0}
+
+/* ---------- scroll progress ---------- */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:2px;width:0%;
+  background:var(--accent);z-index:70;
+  transition:width .15s linear;
+  will-change:width;
+}
+@media(prefers-reduced-motion:reduce){.scroll-progress{display:none}}
+
+/* ---------- quick-contact rail (floating, every page) ---------- */
+.quick-contact{
+  position:fixed;right:16px;top:50%;z-index:50;
+  display:flex;flex-direction:column;gap:10px;
+  opacity:0;transform:translateY(-50%) translateX(70px);
+  transition:opacity .7s cubic-bezier(.19,.68,.24,.99),transform .7s cubic-bezier(.19,.68,.24,.99);
+}
+.quick-contact.in{opacity:1;transform:translateY(-50%) translateX(0)}
+.quick-contact a{
+  display:inline-flex;align-items:center;height:44px;padding:0 12px;
+  border-radius:22px;background:var(--surface);border:1px solid var(--line);
+  color:var(--muted);box-shadow:0 4px 14px -6px rgb(0 0 0 / .18);
+  transition:color .2s,border-color .2s,background .2s,box-shadow .2s;
+}
+.quick-contact a svg{width:20px;height:20px;flex-shrink:0}
+.quick-contact a span{
+  font-family:var(--f-data);font-size:11px;letter-spacing:.05em;white-space:nowrap;
+  max-width:0;opacity:0;overflow:hidden;margin-left:0;
+  transition:max-width .35s cubic-bezier(.16,.8,.3,1),opacity .25s,margin-left .35s cubic-bezier(.16,.8,.3,1);
+}
+.quick-contact a:hover,.quick-contact a:focus-visible{
+  color:var(--bone);border-color:var(--accent);background:var(--ink);
+  box-shadow:0 10px 26px -8px rgb(0 0 0 / .28);
+}
+.quick-contact a:hover span,.quick-contact a:focus-visible span{max-width:130px;opacity:1;margin-left:10px}
+.quick-contact a.todo:hover,.quick-contact a.todo:focus-visible{border-color:var(--todo)}
+@media(prefers-reduced-motion:reduce){.quick-contact{transition:none;opacity:1;transform:translateY(-50%)}}
+@media(max-width:640px){
+  .quick-contact{right:10px;gap:8px}
+  .quick-contact a{height:40px;padding:0 10px}
+  .quick-contact a svg{width:18px;height:18px}
+}
+
+/* ---------- nav ---------- */
+header{
+  position:sticky;top:0;z-index:60;
+  background:rgb(from var(--ink) r g b / .82);backdrop-filter:blur(14px);
+  /* a hard 1px line read as a sharp edge — a soft two-layer shadow fade
+     (hairline + a wider soft falloff) reads the same as a divider without
+     the crisp cut */
+  box-shadow:0 1px 0 rgb(from var(--bone) r g b / .07),0 14px 26px -18px rgb(from var(--ink) r g b / .9);
+}
+.nav{display:flex;align-items:center;gap:24px;height:66px;transition:height .2s ease}
+header.scrolled .nav{height:52px}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.brand-name{font-family:var(--brand-font);font-size:27px;font-weight:900;letter-spacing:.01em;text-transform:uppercase}
+.brand-name em{font-style:normal;color:var(--brand-accent)}
+.nav-links{display:flex;gap:22px;margin-left:auto;align-items:center}
+.nav-links a{font-size:13.5px;color:var(--muted);transition:color .2s cubic-bezier(.4,0,.2,1)}
+.nav-links a:hover{color:var(--bone)}
+.nav-links a.current{color:var(--bone);font-weight:600}
+@media(min-width:901px){
+  .nav-links a:not(.nav-cta){position:relative;padding-bottom:3px}
+  .nav-links a:not(.nav-cta)::after{
+    content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;
+    background:var(--accent);
+    transform:scaleX(0);transform-origin:right;
+    transition:transform .3s cubic-bezier(.16,.8,.3,1);
+  }
+  .nav-links a:not(.nav-cta):hover::after,
+  .nav-links a.current:not(.nav-cta)::after{transform:scaleX(1);transform-origin:left}
+}
+/* .nav-links .nav-cta (not just .nav-cta) — ".nav-links a" above has
+   higher specificity (class+tag beats one class), so a plain ".nav-cta"
+   rule was silently losing its color to the grey nav-link color instead
+   of the intended dark text on the red button. */
+.nav-links .nav-cta{
+  position:relative;background:var(--accent);color:#1A1207;
+  padding:9px 18px;border-radius:var(--radius-sm);
+  font-weight:700;font-size:13.5px;overflow:hidden;
+  transition:filter .15s,transform .15s;
+  display:inline-block;
+}
+.nav-links .nav-cta:hover{filter:brightness(1.12);transform:translateY(-2px);color:#1A1207;box-shadow:0 0 22px 4px rgb(from var(--accent) r g b / .55)}
+.burger{display:none;margin-left:auto;font-size:24px;line-height:1}
+@media(max-width:900px){
+  .nav-links{
+    display:none;position:absolute;top:66px;left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--ink);border-bottom:1px solid var(--line);
+    padding:8px var(--gut) 20px;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:13px 0;border-bottom:1px solid var(--line-soft);font-size:15px}
+  .nav-cta{text-align:center;margin-top:14px;border-bottom:0!important}
+  .burger{display:block}
+}
+
+/* ---------- landing-page-only: the intro title card. A genuinely separate
+   phase before the real page: a fixed full-viewport panel plus a tall
+   spacer that gives it its own dedicated scroll runway, so the real
+   header/hero only begin — completely fresh, at their own natural start —
+   once the intro is done. The panel fades out ONLY once real content has
+   already started entering the viewport from below (see the JS: the
+   fade-out window is computed from the spacer height minus one viewport,
+   never earlier), so the reveal is a genuine cross-fade with zero risk of
+   showing blank spacer space. Driven entirely by scroll position, same
+   continuous, reversible pattern as the brand-break wipe — never a timer
+   or autoplay. */
+.intro-fixed{
+  position:fixed;inset:0;z-index:200;background:#0E0B11;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  pointer-events:none;will-change:opacity;
+}
+.intro-spacer{height:170vh}
+/* Mobile screens are shorter AND each swipe covers less px, so a 170vh
+   runway means a lot more physical scrolling to clear the intro — shrink
+   it well below 640px so the reveal finishes in a couple of swipes. The
+   scroll-scrubbed JS in shared.js reads this element's real height, so
+   nothing else needs to change for this to take effect. */
+@media(max-width:640px){.intro-spacer{height:95vh}}
+.intro-word{
+  font-family:var(--f-display);font-weight:800;text-transform:uppercase;
+  color:#F2EDE4;font-size:clamp(40px,10vw,150px);line-height:.95;
+  letter-spacing:-.01em;text-align:center;margin:0;
+}
+.intro-word em{font-style:normal;color:var(--accent)}
+.intro-letter{display:inline-block;will-change:opacity,transform,filter}
+.intro-hint{
+  font-family:var(--f-data);font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+  color:#8A7F6C;margin:0;will-change:opacity;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.intro-arrows{position:relative;width:22px;height:34px}
+.intro-arrow{
+  position:absolute;left:0;top:0;width:22px;height:22px;color:var(--accent);
+  animation:introArrowFlow 1.5s cubic-bezier(.4,0,.2,1) infinite;
+}
+.intro-arrow-2{animation-delay:.32s}
+@keyframes introArrowFlow{
+  0%{transform:translateY(-3px);opacity:0;filter:drop-shadow(0 0 0px rgb(226 57 74/0))}
+  18%{opacity:1}
+  55%{filter:drop-shadow(0 0 9px rgb(226 57 74/.55))}
+  100%{transform:translateY(15px);opacity:0;filter:drop-shadow(0 0 0px rgb(226 57 74/0))}
+}
+@media(prefers-reduced-motion:reduce){.intro-arrow{animation:none;opacity:1;transform:none;top:6px}}
+.intro-skip{
+  position:absolute;right:clamp(18px,4vw,36px);bottom:clamp(18px,4vw,36px);
+  pointer-events:auto;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;padding:0;border-radius:50%;
+  border:1.5px solid var(--accent);background:transparent;color:var(--accent);
+  transition:background .2s,transform .15s,border-color .2s;
+}
+.intro-skip svg{width:14px;height:14px;flex-shrink:0}
+.intro-skip:hover,.intro-skip:focus-visible{background:rgb(226 57 74 / .14);transform:scale(1.08)}
+.intro-skip:active{transform:scale(.92)}
+.intro-skip:active{transform:scale(.94)}
+.intro-skip[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.intro-fixed,.intro-spacer{display:none}}
+
+/* ---------- hero (shared shape — landing hero and event heroes both use this) ---------- */
+.hero{padding:clamp(38px,6vw,74px) 0 clamp(30px,4vw,50px);position:relative;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 78px,var(--line-soft) 78px 79px);
+  opacity:.5;mask-image:linear-gradient(180deg,#000,transparent 85%);
+  pointer-events:none;
+}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;background:var(--ink);opacity:0}
+.hero.has-video .hero-video{opacity:1}
+.hero.has-video .gj-stage{display:none}
+/* VALORANT: scale up + reposition so the face reads clearly over more of the
+   hero's height — previously the pills row sat over the character's cape/
+   blade area, not the face. Desktop/mobile only; the tablet range below has
+   its own separate treatment and explicitly resets this. */
+[data-track="valorant"] .hero-video{object-position:70% 30%;transform:scale(1.4)}
+
+/* VALORANT only, tablet widths only: the full image's own baked-in "VALORANT"
+   wordmark lands right on top of the real heading at this crop window with
+   the default object-fit:cover. Desktop and mobile crop it elsewhere and were
+   already fine — contain here just shows the whole image small instead of a
+   cropped, colliding fragment of the wordmark. */
+@media(min-width:700px) and (max-width:1000px){
+  [data-track="valorant"] .hero-video{object-fit:contain;object-position:right center;transform:none}
+}
+.hero-video-overlay{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,rgb(from var(--ink) r g b / .5) 0%,rgb(from var(--ink) r g b / .38) 55%,rgb(from var(--ink) r g b / .88) 100%);
+}
+/* ---------- media credit caption ----------
+   Small, unobtrusive attribution for a hero image/video someone else
+   made — sits in the hero's bottom-right corner. Purely decorative
+   (no link), so aria-hidden isn't needed here — it's real visible
+   text, just quiet about it. */
+.media-credit{
+  position:absolute;z-index:1;bottom:14px;right:18px;
+  font-family:var(--f-data);font-size:10px;letter-spacing:.05em;
+  color:rgb(from var(--bone) r g b / .6);
+  background:rgb(from var(--ink) r g b / .4);
+  padding:4px 10px;border-radius:4px;pointer-events:none;
+}
+/* inside .hero-char-gallery (a 2x2 grid, not the full hero), so position
+   relative to the grid's own box, just under it, instead of the hero corner */
+.hcg-credit{position:static;grid-column:1/-1;justify-self:end;margin-top:2px;bottom:auto;right:auto}
+.hero.has-video .hero-video{filter:saturate(1.15) brightness(1.05)}
+.hero-inner{position:relative;z-index:1}
+/* Character Design hero decoration — the four student-sketch PNGs, staggered
+   2x2 on the right where the hero has empty space (this track has no video).
+   Each box vignette-fades at its own edges via mask so it blends into the
+   dark hero instead of reading as a hard-edged tile. */
+.hero-char-gallery{
+  position:absolute;top:50%;right:clamp(24px,6vw,110px);transform:translateY(-50%);
+  z-index:0;display:grid;grid-template-columns:repeat(2,clamp(150px,15vw,230px));
+  gap:clamp(22px,3vw,36px);pointer-events:none;
+}
+.hcg-box{
+  position:relative;aspect-ratio:1;border-radius:22px;overflow:hidden;
+  background:rgb(from var(--surface-2) r g b / .5);
+  will-change:transform;
+}
+.hcg-box:nth-child(1){margin-top:clamp(10px,1.5vw,18px)}
+.hcg-box:nth-child(2){margin-top:clamp(48px,6vw,86px)}
+.hcg-box:nth-child(3){margin-top:calc(-1 * clamp(28px,3.5vw,50px))}
+.hcg-box:nth-child(4){margin-top:clamp(16px,2vw,28px)}
+.hcg-box img{width:100%;height:100%;object-fit:contain;padding:10%;position:relative;z-index:0}
+.hcg-box::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 58%,var(--ink) 100%);
+}
+@media(max-width:1080px){.hero-char-gallery{right:clamp(16px,3vw,40px);grid-template-columns:repeat(2,clamp(120px,13vw,170px))}}
+@media(max-width:900px){.hero-char-gallery{display:none}}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.hero-meta,.hero-sub,.hero-actions,.countdown{
+  animation:rise .7s cubic-bezier(.16,.8,.3,1) both;
+}
+.hero-meta{animation-delay:.02s}
+.hero-sub{animation-delay:.18s}
+.hero-actions{animation-delay:.26s}
+.countdown{animation-delay:.34s}
+/* .hero-title's motion (load-in + scroll parallax) is JS-driven only, below —
+   it used to also carry this CSS animation and the two fought every scroll
+   frame, which is what made it feel jiggy. One system, one owner now. */
+@media (prefers-reduced-motion:reduce){
+  .hero-meta,.hero-sub,.hero-actions,.countdown{animation:none}
+}
+.reveal{opacity:0;transform:translateY(42px);transition:opacity 1.15s cubic-bezier(.19,.68,.24,.99),transform 1.15s cubic-bezier(.19,.68,.24,.99)}
+.reveal.in{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+  color:var(--muted);margin-bottom:18px;
+}
+.hero-meta strong{color:var(--bone);font-weight:600}
+.hero-title{margin:0 0 6px}
+.hero-title .yr{color:var(--accent)}
+.hero-sub{
+  font-family:var(--f-display);font-weight:600;
+  font-size:clamp(17px,2.2vw,24px);line-height:1.2;
+  text-transform:uppercase;color:var(--muted);
+  max-width:34ch;margin-bottom:30px;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{
+  position:relative;display:inline-block;padding:14px 26px;border-radius:var(--radius-sm);
+  font-weight:700;font-size:14.5px;letter-spacing:.01em;overflow:hidden;
+  transition:filter .15s,background .15s,border-color .15s,transform .15s,box-shadow .15s;
+}
+/* sheen sweep — a diagonal band of light that slides across on hover.
+   Shared by every primary/CTA button and the header's Register pill so
+   the whole site's clickable surfaces feel like one system. */
+.btn-primary::after,.nav-links .nav-cta::after{
+  content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
+  transition:left .55s ease;pointer-events:none;
+}
+.btn-primary:hover::after,.nav-links .nav-cta:hover::after{left:130%}
+.btn-primary{background:var(--accent);color:#1A1207;transition:filter .2s,transform .2s,box-shadow .2s}
+.btn-primary:hover{filter:brightness(1.15);transform:translateY(-2px);box-shadow:0 8px 20px rgb(from var(--accent) r g b / .35),0 0 26px 6px rgb(from var(--accent) r g b / .45)}
+.btn-primary:active{transform:translateY(0);box-shadow:none;filter:brightness(1)}
+.btn-ghost{border:1px solid var(--line);color:var(--bone);transition:border-color .2s,color .2s,transform .2s,box-shadow .2s}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);box-shadow:0 0 16px 2px rgb(from var(--accent) r g b / .25)}
+.btn-ghost:active{transform:translateY(0)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none;transform:none!important;box-shadow:none!important}
+
+/* event-hero variant: shorter title scale (page is about the event, not
+   competing with the festival wordmark), plus a scoped accent so the whole
+   page picks up that event's color the moment [data-track] is set on <html> */
+.hero.event-hero{padding-top:clamp(52px,9vw,110px);padding-bottom:clamp(48px,7vw,84px)}
+.event-hero .hero-title{margin-bottom:10px}
+.event-eyebrow{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  font-family:var(--f-data);font-size:12px;letter-spacing:.14em;color:var(--muted);
+}
+.event-eyebrow a{color:var(--muted);transition:color .2s cubic-bezier(.4,0,.2,1)}
+.event-eyebrow a:hover{color:var(--accent)}
+.event-eyebrow .sep{color:var(--line)}
+
+/* ================================================================
+   PER-EVENT HERO DECORATION — one small scoped visual per track, sitting
+   behind the hero text (z-index 0, same layer as .hero-video-overlay,
+   painted after it so it shows on top of that gradient). Purely
+   decorative (aria-hidden), never affects layout height of the hero.
+   ================================================================ */
+
+/* ---------- VALORANT: diagonal poster plate ---------- */
+/* Same bug as Film's projector and FC26's pitch, caught in the bug-bounty
+   pass this round: designed as a placeholder for when there was no hero
+   image, never guarded against one existing. Measurably muddier with it on
+   (redundant second darkening layer on top of hero-video-overlay). */
+.hero.has-video .v-plate{display:none}
+.v-plate{position:absolute;inset:0 0 0 42%;z-index:0;overflow:hidden;pointer-events:none;
+  clip-path:polygon(16% 0,100% 0,100% 100%,0 100%)}
+.v-plate-layer{position:absolute;inset:-20%;
+  background:radial-gradient(45% 45% at 30% 40%,rgb(from var(--accent) r g b / .5),transparent 70%),
+             radial-gradient(50% 50% at 72% 65%,rgb(from var(--accent-dim) r g b / .45),transparent 70%),
+             radial-gradient(40% 60% at 55% 20%,rgba(90,120,255,.22),transparent 70%);
+  filter:blur(30px);animation:vDrift 20s ease-in-out infinite alternate}
+.v-plate-scan{position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,.3) 0 2px,transparent 2px 4px);opacity:.4}
+.v-plate-veil{position:absolute;inset:0;background:linear-gradient(90deg,var(--ink) 0%,rgb(from var(--ink) r g b / .78) 24%,rgb(from var(--ink) r g b / .05) 68%)}
+.v-plate-frame{position:absolute;left:16%;top:12%;right:8%;bottom:16%;border:1px solid rgb(from var(--bone) r g b / .18)}
+.v-plate-frame::before,.v-plate-frame::after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--accent)}
+.v-plate-frame::before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+.v-plate-frame::after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+@keyframes vDrift{to{transform:translate3d(-6%,4%,0) scale(1.12)}}
+@media(prefers-reduced-motion:reduce){.v-plate-layer{animation:none}}
+@media(max-width:900px){.v-plate{inset:auto 0 0 0;height:34vh;clip-path:polygon(0 16%,100% 0,100% 100%,0 100%);opacity:.65}}
+
+/* ---------- FC26: a visible stadium pitch behind the hero, ball chased across ---------- */
+.fc-pitch{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+/* Client doesn't want this showing now that fc26.jpg is the real hero image —
+   same DOM-order issue as Film's projector placeholder: this sits after the
+   hero-video-overlay, so it was painting on top of the real photo. */
+.hero.has-video .fc-pitch{display:none}
+.fc-pitch-outline{position:absolute;inset:9% 4%;border:2px solid rgb(from var(--bone) r g b / .16)}
+.fc-pitch-circle{position:absolute;left:50%;top:50%;width:26vw;max-width:280px;aspect-ratio:1;
+  border:2px solid rgb(from var(--bone) r g b / .22);border-radius:50%;transform:translate(-50%,-50%)}
+.fc-pitch-line{position:absolute;left:4%;right:4%;top:50%;height:2px;background:rgb(from var(--bone) r g b / .22)}
+.fc-goal{position:absolute;top:34%;height:32%;width:64px;border:2px solid rgb(from var(--bone) r g b / .2)}
+.fc-goal-l{left:4%;border-left:0}
+.fc-goal-r{right:4%;border-right:0}
+.fc-floodlight{position:absolute;top:-14%;width:42%;height:65%;pointer-events:none;
+  background:radial-gradient(ellipse at top,rgb(from var(--accent) r g b / .14),transparent 72%)}
+.fc-fl-l{left:-8%}
+.fc-fl-r{right:-8%}
+/* Ball travels in the SAME left/top % coordinate space as .fc-goal-r (both
+   are children of .fc-pitch), measured directly against the goal's actual
+   rendered position (mouth at ~92% left, net back ~96%, mid-height 50%) —
+   not a viewport-relative transform, which is what made it miss the goal
+   entirely before. It runs up the pitch, then straight into the net. */
+/* Path is driven from JS now (see shared.js), not a CSS @keyframes loop —
+   client rejected the ball because a fixed keyframe repeats the exact
+   same trajectory every cycle and reads as an obvious loop. JS generates
+   a new randomized arc each time using the Web Animations API. */
+.fc-ball{position:absolute;z-index:1;width:14px;height:14px;border-radius:50%;background:var(--bone);
+  box-shadow:0 0 20px rgb(from var(--accent) r g b / .7);left:8%;top:62%;opacity:0}
+@media(prefers-reduced-motion:reduce){.fc-ball{opacity:.85!important;left:20%!important;top:60%!important}}
+/* two abstract "player" dots at the ends of each randomized ball path —
+   they pulse right as the ball reaches them, reading as the players
+   actually striking it, without needing photo assets. */
+.fc-players{position:absolute;inset:0;z-index:1;pointer-events:none}
+.fc-dot{position:absolute;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;
+  background:rgb(from var(--accent) r g b / .8);box-shadow:0 0 14px rgb(from var(--accent) r g b / .5);opacity:.85}
+@media(prefers-reduced-motion:reduce){.fc-players{display:none}}
+
+/* ---------- Game Jam: parallax platformer strip along the hero floor ---------- */
+.gj-stage{position:absolute;left:0;right:0;bottom:0;height:140px;z-index:0;overflow:hidden;pointer-events:none}
+.gj-hills{position:absolute;left:0;bottom:52px;width:200%;height:80px;opacity:.5;
+  background:repeating-linear-gradient(90deg,transparent 0 50px,rgb(from var(--accent) r g b / .3) 50px 52px);
+  animation:gjScroll 8s linear infinite}
+.gj-ground{position:absolute;left:0;bottom:0;width:200%;height:52px;
+  background:repeating-linear-gradient(90deg,var(--surface) 0 38px,var(--surface-2) 38px 76px);
+  border-top:3px solid var(--accent);animation:gjScroll 3.2s linear infinite}
+@keyframes gjScroll{to{transform:translateX(-50%)}}
+/* runner stays put horizontally; a spike obstacle scrolls into him and he
+   jumps clear of it right as it passes — timed against the same 2.6s loop
+   (obstacle crosses the runner's fixed 8% mark at ~88% of the cycle, so the
+   jump peaks right there) rather than an idle bounce with nothing to dodge */
+/* Squash-and-stretch — the classic cheap trick for a jump that feels
+   good rather than just "up and down": a quick anticipation crouch,
+   a stretched shape at the apex, and a squashed landing, all on the
+   same translateY the obstacle-dodge timing already relies on. */
+.gj-runner{position:absolute;bottom:52px;left:8%;width:44px;height:50px;z-index:1;
+  transform-origin:bottom center;animation:gjJump 2.6s ease-in-out infinite}
+@keyframes gjJump{
+  0%,66%{transform:translateY(0) scale(1,1)}
+  72%{transform:translateY(3px) scale(1.14,.82)}
+  84%{transform:translateY(-34px) scale(.9,1.12)}
+  91%{transform:translateY(0) scale(1.16,.8)}
+  96%{transform:translateY(0) scale(1,1)}
+  100%{transform:translateY(0) scale(1,1)}
+}
+.gj-dust{position:absolute;bottom:50px;left:calc(8% - 6px);width:30px;height:8px;z-index:1;
+  border-radius:50%;background:rgb(from var(--bone) r g b / .35);opacity:0;
+  animation:gjDust 2.6s ease-out infinite}
+@keyframes gjDust{
+  0%,89%{opacity:0;transform:scale(.4)}
+  91%{opacity:.7;transform:scale(.6)}
+  100%{opacity:0;transform:scale(1.6)}
+}
+.gj-obstacle{position:absolute;bottom:52px;left:110%;width:16px;height:22px;z-index:1;
+  background:var(--bone);clip-path:polygon(50% 0,100% 100%,0 100%);
+  animation:gjObstacle 2.6s linear infinite}
+@keyframes gjObstacle{to{left:-6%}}
+.gj-px{position:absolute;background:var(--accent);image-rendering:pixelated}
+.gj-body{left:11px;top:12px;width:20px;height:20px}
+.gj-head{left:14px;top:0;width:16px;height:14px;background:var(--bone)}
+.gj-eye{left:24px;top:5px;width:4px;height:4px;background:var(--ink)}
+/* Limbs run on the SAME 2.6s timeline as the jump (not an independent fast
+   loop) so they actually tuck up during the leap instead of scissoring
+   through mid-air like nothing happened — that mismatch was the "trash"
+   part. steps() instead of linear gives a snappy pixel-stride feel rather
+   than a smooth rubbery rotate. */
+/* Arms were dropped — at this size they rotated from their own center
+   rather than a shoulder joint, reading as loose flapping rectangles
+   rather than limbs. Legs alone, with a tighter rotation range, give a
+   cleaner, less "flailing" run cycle. */
+.gj-leg{bottom:0;width:7px;height:16px;background:var(--accent-dim);transform-origin:top center}
+.gj-l1{left:13px;animation:gjLegA 2.6s steps(2,end) infinite}
+.gj-l2{left:24px;animation:gjLegB 2.6s steps(2,end) infinite}
+@keyframes gjLegA{
+  0%,10%{transform:rotate(18deg)}
+  20%,30%{transform:rotate(-15deg)}
+  40%,50%{transform:rotate(18deg)}
+  60%,68%{transform:rotate(-15deg)}
+  72%,92%{transform:rotate(-48deg)}
+  100%{transform:rotate(18deg)}
+}
+@keyframes gjLegB{
+  0%,10%{transform:rotate(-15deg)}
+  20%,30%{transform:rotate(18deg)}
+  40%,50%{transform:rotate(-15deg)}
+  60%,68%{transform:rotate(18deg)}
+  72%,92%{transform:rotate(-48deg)}
+  100%{transform:rotate(-15deg)}
+}
+@media(prefers-reduced-motion:reduce){.gj-hills,.gj-ground,.gj-runner,.gj-runner *,.gj-dust{animation:none!important;opacity:0}
+  .gj-obstacle{animation:none!important;left:40%}}
+@media(max-width:640px){.gj-stage{height:100px}}
+
+/* ---------- Film & Animation: projector rays + a footage screen ----------
+   The camera icon itself is dropped for now (client's call — the CSS/div
+   build never read clearly as a camera at this size) — just the corner
+   light glow and the footage placeholder remain. */
+.fm-projector{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+/* the beam: a soft glow in the corner, with thin diagonal
+   streaks masked to the same glow shape so it reads as light rays, not
+   just a blurred blob */
+.fm-beam{position:absolute;top:0;right:0;width:min(46vw,460px);height:min(60vw,360px);
+  background:radial-gradient(ellipse 75% 100% at 100% 0%,rgb(from var(--accent) r g b / .16),transparent 68%);
+  animation:fmFlicker 5s ease-in-out infinite}
+.fm-beam::before{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(115deg,rgb(from var(--accent) r g b / .16) 0 2px,transparent 2px 24px);
+  -webkit-mask-image:radial-gradient(ellipse 75% 100% at 100% 0%,#000,transparent 68%);
+  mask-image:radial-gradient(ellipse 75% 100% at 100% 0%,#000,transparent 68%)}
+@keyframes fmFlicker{0%,100%{opacity:.75}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.fm-beam{animation:none}}
+/* the projected screen — same "placeholder until real footage exists"
+   language as .stream-frame/.hero-video elsewhere on the site: dark fill,
+   a border that fades out toward the corners (mask-image) rather than a
+   hard rectangle, and a small mono label so it reads as a placeholder,
+   not a broken empty box. */
+.fm-screen{position:absolute;top:74px;right:5%;width:min(32vw,380px);height:min(38vw,440px);
+  background:rgb(from var(--ink) r g b / .5);overflow:hidden}
+.fm-screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(3px) saturate(.85) brightness(.7);transform:scale(1.06)}
+.fm-screen::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgb(from var(--ink) r g b / .1) 0%,rgb(from var(--ink) r g b / .65) 100%)}
+/* The border itself fades out — solid-ish along the top, dissolving by
+   the bottom edge — so the frame reads as melting into the dark page
+   rather than a hard-edged cutout. The photo underneath stays fully
+   sharp; only the frame around it fades. */
+.fm-screen::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  border:1px solid rgb(from var(--bone) r g b / .4);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 35%,transparent 92%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 35%,transparent 92%)}
+@media(max-width:640px){.fm-projector{display:none}}
+/* Paritosh's video is now wired into film's video slot — the projector
+   beam + placeholder screen above were explicitly built as filler "until
+   real footage exists" (see comment above .fm-screen), and being later
+   in the DOM at the same z-index, they were painting over the real
+   video. Hide them once .has-video is set. */
+.hero.has-video .fm-projector{display:none}
+
+/* film category reel — named placeholders (real stills once entries come
+   in; see README for why these aren't real film posters). The strip is
+   TWO identical copies of one long run of cells, animated -50% and
+   snapping back to loop seamlessly — that trick only works if ONE copy
+   is already wider than the viewport; at the old size (5 small cells)
+   one copy was ~950px, narrower than most desktop screens, so the strip
+   visibly ran out before the loop point. Now one copy is 10 cells wide
+   (~2700px), comfortably wider than real screens. */
+.fm-strip{position:relative;z-index:1;margin-top:36px;overflow:hidden;
+  border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.fm-strip .run{display:flex;gap:16px;width:max-content;padding:16px 0;animation:fmSlide 60s linear infinite}
+.fm-cell{width:320px;height:180px;flex:none;position:relative;overflow:hidden;
+  background:linear-gradient(140deg,var(--surface-2),var(--ink) 130%)}
+.fm-cell img,.fm-cell video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.88}
+/* same fading-frame treatment as .fm-screen — border melts toward the
+   bottom instead of a hard rectangle, image content stays sharp */
+.fm-cell::after{content:"";position:absolute;inset:0;pointer-events:none;
+  border:1px solid rgb(from var(--bone) r g b / .3);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 35%,transparent 92%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 35%,transparent 92%)}
+.fm-cell span{position:absolute;left:10px;bottom:9px;font-family:var(--f-data);font-size:10px;
+  letter-spacing:.1em;color:var(--ink);background:rgb(from var(--bone) r g b / .85);padding:3px 7px}
+.fm-cell .fm-award{position:absolute;right:8px;top:8px;left:auto;bottom:auto;
+  font-family:var(--f-data);font-size:9.5px;letter-spacing:.05em;
+  color:#1A1207;background:var(--accent);padding:4px 8px;border-radius:3px;
+  box-shadow:0 2px 8px rgb(0 0 0 / .35);}
+@keyframes fmSlide{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.fm-strip .run{animation:none}}
+@media(max-width:640px){.fm-cell{width:240px;height:136px}}
+
+/* key-fact pills under an event hero — quick scan of fee/slots/closes
+   before the reader commits to scrolling into the tabbed detail */
+.pill-row{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 6px}
+.pill{
+  background:rgb(from var(--surface) r g b / .7);border:1px solid var(--line-soft);
+  padding:10px 16px;border-radius:var(--radius-sm);
+}
+.pill dt{font-family:var(--f-data);font-size:10px;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+.pill dd{font-weight:700;font-size:15px}
+
+/* ---------- countdown ---------- */
+.countdown{display:flex;gap:2px;margin-top:34px;flex-wrap:wrap}
+.cd-unit{
+  background:var(--surface);border:1px solid var(--line-soft);
+  padding:12px 20px;min-width:92px;
+}
+.cd-num{font-family:var(--f-data);font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.cd-num.tick{animation:cd-tick .3s cubic-bezier(.19,.68,.24,.99)}
+@keyframes cd-tick{0%{opacity:.45;transform:translateY(-4px)}100%{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.cd-num.tick{animation:none}}
+.cd-lab{font-family:var(--f-data);font-size:10px;color:var(--muted);letter-spacing:.14em;margin-top:6px}
+.cd-note{font-size:13px;color:var(--muted);margin-top:12px}
+
+/* ---------- live board ---------- */
+.board{
+  background:var(--surface);border:1px solid var(--line);
+  margin-top:44px;border-radius:var(--radius);overflow:hidden;
+}
+.board-head{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:14px 20px;border-bottom:1px solid var(--line);
+}
+.live-dot{
+  position:relative;
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+  background:radial-gradient(circle at 32% 28%,
+    color-mix(in srgb,var(--live) 55%,white),var(--live));
+  box-shadow:0 0 0 3px rgb(from var(--live) r g b / .16);
+}
+.live-dot::before,.live-dot::after{content:"";position:absolute;border-radius:50%}
+.live-dot::before{inset:-6px;border:1px solid rgb(from var(--live) r g b / .35)}
+.live-dot::after{inset:0;box-shadow:0 0 0 0 rgb(from var(--live) r g b / .55);animation:pulse 2.2s infinite}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgb(from var(--live) r g b / .55)}
+  70%{box-shadow:0 0 0 11px rgb(from var(--live) r g b / 0)}
+  100%{box-shadow:0 0 0 0 rgb(from var(--live) r g b / 0)}
+}
+.board-title{font-family:var(--f-display);font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.board-clock{margin-left:auto;font-family:var(--f-data);font-size:12px;color:var(--muted)}
+.fixtures{display:flex;flex-direction:column}
+.fx{
+  display:grid;
+  grid-template-columns:88px 118px 1fr auto;
+  gap:16px;align-items:center;
+  padding:15px 20px;border-bottom:1px solid var(--line-soft);
+  transition:background .15s;
+}
+.fx:last-child{border-bottom:0}
+.fx:hover{background:var(--surface-2)}
+.fx-state{
+  font-family:var(--f-data);font-size:10px;letter-spacing:.13em;
+  padding:4px 8px;border:1px solid var(--line);color:var(--muted);
+  text-align:center;
+}
+.fx-state.is-live{border-color:var(--live);color:var(--accent-2);background:rgb(from var(--live) r g b / .12)}
+.fx-state.is-next{border-color:var(--accent-dim);color:var(--accent)}
+.fx-track{font-family:var(--f-data);font-size:11.5px;color:var(--muted)}
+.fx-teams{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600;font-size:15px}
+.fx-teams .v{color:var(--muted);font-weight:400;font-family:var(--f-data);font-size:11px}
+.fx-score{font-family:var(--f-data);font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.fx-score .lead{color:var(--accent)}
+.fx-time{font-family:var(--f-data);font-size:12px;color:var(--muted)}
+.board-foot{
+  padding:13px 20px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  font-family:var(--f-data);font-size:11.5px;color:var(--muted);
+}
+.board-empty{padding:30px 20px;color:var(--muted);font-size:14.5px}
+@media(max-width:760px){
+  .fx{grid-template-columns:74px 1fr;gap:8px 12px;row-gap:8px}
+  .fx-track{grid-column:2}
+  .fx-teams{grid-column:1/-1;font-size:14px}
+  .fx-score,.fx-time{grid-column:1/-1;text-align:left}
+}
+
+/* ---------- prize strip ---------- */
+.strip{
+  border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+  padding:30px 0;margin-top:56px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:26px;
+}
+.strip-item{}
+.strip-num{font-family:var(--f-display);font-size:clamp(38px,5vw,58px);font-weight:800;line-height:.9;color:var(--accent)}
+.strip-lab{font-size:13.5px;color:var(--muted);margin-top:8px;max-width:26ch}
+
+/* ---------- section head ---------- */
+.sec{padding:clamp(56px,8vw,110px) 0}
+.sec-head{margin-bottom:38px;max-width:60ch}
+.sec-head p{color:var(--muted);margin-top:12px;font-size:16.5px}
+
+/* ---------- brand break ----------
+   A section-break beat between the hero and the event navigator. Used to
+   be a scroll-driven outline-to-fill wipe; pulled out for a redesign, so
+   for now it's just the filled heading, no scroll-linked effect. */
+.brand-break{
+  padding:clamp(30px,6vw,60px) 0;text-align:center;overflow:hidden;
+}
+.brand-break .outline-text{
+  font-family:var(--f-display);font-weight:800;text-transform:uppercase;
+  font-size:clamp(36px,13vw,168px);line-height:.86;letter-spacing:-.01em;
+  margin:0;text-wrap:balance;color:var(--accent);
+}
+.outline-fill{
+  position:relative;display:inline-block;color:rgb(from var(--bone) r g b / .3);
+  white-space:nowrap;  /* text-wrap:balance on the parent was splitting "One
+     Festival." into two lines at every width tested (320–1800px) even with
+     room to spare — force each phrase to stay on its own single line; the
+     <br> between spans still gives the intended 2-line layout. */
+}
+.outline-fill::after{
+  content:attr(data-fill-text);position:absolute;left:0;top:0;color:var(--accent);
+  clip-path:inset(0 calc(100% - var(--fill-pct,0%)) 0 0);pointer-events:none;
+}
+.brand-break .outline-sub{
+  font-family:var(--f-data);font-size:clamp(13px,2vw,18px);letter-spacing:.3em;
+  color:var(--muted);margin-top:14px;
+}
+
+/* ================================================================
+   EVENT NAVIGATOR — the landing page's main job: route into 4 events.
+   Reuses the per-track accent variables already scoped by [data-track].
+   ================================================================ */
+.event-nav{
+  overflow-x:hidden;
+  display:grid;grid-template-columns:1fr;gap:2px;
+  background:#2B2B2B;border:1px solid #2B2B2B;  /* neutral dark grey, deliberately
+     NOT var(--line-soft) — that shared variable is warm-toned (#2A2519) and used
+     in 24+ other places sitewide (dropdowns, modals, dividers); changing it here
+     only, so nothing else on the site shifts color. */
+  perspective:1400px;
+}
+.event-card{
+  position:relative;overflow:hidden;isolation:isolate;border-radius:var(--radius);
+  background:var(--ink);padding:clamp(28px,4vw,48px);
+  min-height:340px;display:flex;align-items:stretch;gap:clamp(16px,3vw,32px);
+  /* opacity + transform live together here, not split with the generic
+     .reveal rule — a separate shorter transition on this same property
+     from a later/more-specific rule would silently win and desync from
+     the slower reveal-in fade (the bug already fixed once on .match/.pair). */
+  transition:transform .6s cubic-bezier(.16,.8,.3,1), opacity 1.15s cubic-bezier(.19,.68,.24,.99), box-shadow .5s cubic-bezier(.16,.8,.3,1), border-color .7s cubic-bezier(.19,.68,.24,.99);
+  box-shadow:0 0 0 0 rgb(0 0 0 / 0);
+  border:1px solid transparent;
+  transform-origin:50% 100%;
+}
+.event-card:hover{transform:translateY(-6px);box-shadow:0 20px 44px -14px rgb(0 0 0 / .3)}
+.event-card.reveal{transform:translateX(-48px)}
+.event-card:nth-child(even).reveal{transform:translateX(48px)}
+/* slight neon border, each card's own per-track accent — same reversible
+   reveal.in toggle as the tilt above, so it's scroll-in-only, never a
+   permanent glow */
+.event-card.reveal.in{transform:translateX(0);border-color:rgb(from var(--accent) r g b / .4)}
+.event-card.reveal.in:hover{transform:translateY(-6px)}
+@media(prefers-reduced-motion:reduce){.event-card.reveal{transform:none}}
+.event-card::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:4px;
+  background:var(--accent);z-index:1;
+}
+.event-card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;filter:saturate(1.15) contrast(1.03);transform:scale(1.02)}
+.event-card.has-video .event-card-video{opacity:1}
+.event-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;opacity:0;filter:blur(1px) saturate(1.08);transform:scale(1.04)}
+/* VALORANT's fan-art asset has its focal point (the character's head) high
+   up in the frame — the card's wide/short box crops out ~38% of the image
+   height by default, and a centered crop was cutting the head off entirely. */
+.event-card[data-track="valorant"] .event-card-img,
+.event-card[data-track="fc26"] .event-card-img{
+  object-fit:contain;object-position:center;transform:none;
+}
+.event-card.has-img .event-card-img{opacity:.55}
+.event-card-tint{
+  position:absolute;inset:0;
+  background:linear-gradient(100deg,rgb(from var(--ink) r g b / .97) 0%,rgb(from var(--ink) r g b / .94) 42%,rgb(from var(--ink) r g b / .15) 52%,rgb(from var(--ink) r g b / 0) 62%);
+}
+/* Cursor-following glow — replaces the old flat hover lift. Position is
+   driven by --mx/--my (set in JS, in px relative to the card), falls
+   back to dead-center + zero opacity so it's a no-op until JS turns it
+   on; under prefers-reduced-motion JS never touches it, so it just
+   never shows and the plain :hover lift below is what's felt instead. */
+.event-card-glow{
+  position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;
+  transition:opacity .35s;
+  background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgb(from var(--accent) r g b / .22),transparent 70%);
+}
+.event-card.tilt-ready:hover .event-card-glow{opacity:1}
+.event-card-body{position:relative;z-index:1;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:flex-end}
+.event-card-num{
+  font-family:var(--f-data);font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:10px;
+}
+.event-card h3{
+  font-family:var(--f-display);font-size:clamp(32px,4vw,50px);font-weight:800;
+  text-transform:uppercase;line-height:.92;margin-bottom:10px;text-wrap:balance;
+}
+.event-card-fmt{
+  font-family:var(--f-data);font-size:11.5px;letter-spacing:.06em;color:var(--accent);
+  text-transform:uppercase;margin-bottom:14px;
+}
+.event-card p{color:var(--muted);font-size:14.5px;max-width:42ch;margin-bottom:22px}
+.event-card-facts{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:24px}
+.event-card-facts div{font-size:12.5px}
+.event-card-facts dt{font-family:var(--f-data);font-size:10px;letter-spacing:.08em;color:var(--muted);margin-bottom:3px}
+.event-card-facts dd{font-weight:700}
+.event-card-cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+/* Character lineup — same full-bleed background slot img/video cards use
+   (position:absolute;inset:0, same event-card-tint side-fade on top), so
+   it reads as one continuous scene instead of 4 separate boxed thumbnails.
+   Arranged side-by-side left-to-right; kept crisp/unblurred (no filter),
+   since these are illustrations meant to be seen clearly, not photo
+   texture sitting behind text. */
+.event-card-gallery{position:absolute;inset:0 0 0 48%;display:flex;opacity:0}
+.event-card.has-gallery .event-card-gallery{opacity:1}
+.event-card.has-gallery .event-card-gallery img{
+  flex:1 1 0;min-width:0;height:100%;object-fit:contain;object-position:bottom center;
+}
+@media(max-width:720px){
+  .event-card{flex-direction:column}
+  .event-card-tint{background:linear-gradient(180deg,rgb(from var(--ink) r g b / .55) 0%,rgb(from var(--ink) r g b / .93) 55%)}
+  .event-card-gallery{inset:0}
+}
+/* Each event page gets its own faint tint on the dark base — same idea as
+   the client's reference mockup (every track its own near-black, not one
+   flat gray) — while --surface/--line stay relative to --bone so they still
+   come out correctly lightened against whichever --ink is active. */
+[data-track="valorant"]{--accent:#E2394A;--accent-dim:#8A2530;--ink:#0A141E;--surface:#122232;--surface-2:#1A2E40;--line:#2E4155;--line-soft:#20313F}
+[data-track="fc26"]{--accent:#3ED97A;--accent-dim:#1F6B3D;--ink:#08150F;--surface:#102219;--surface-2:#183024;--line:#2C4436;--line-soft:#1E3226}
+[data-track="film"]{--accent:#D9A441;--accent-dim:#8A6B1E;--ink:#120E08;--surface:#1E170D;--surface-2:#2A2113;--line:#463623;--line-soft:#332818}
+[data-track="gamejam"]{--accent:#2FC4E0;--accent-dim:#1A7A8C;--ink:#0A1418;--surface:#0F1F26;--surface-2:#16303A;--line:#234855;--line-soft:#1A3038}
+[data-track="character"]{--accent:#F3EDDD;--accent-dim:#B8B2A2;--ink:#14120F;--surface:#201E1A;--surface-2:#2A2823;--line:#4A453C;--line-soft:#38332C}
+[data-track="gamejam"] .track-desc::after,
+[data-track="gamejam"] .event-card p::after{
+  content:"_";color:var(--accent-dim);animation:blink 1s step-end infinite;margin-left:2px;
+}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- event page content tabs ---------- */
+.content-tabs{
+  display:flex;gap:2px;flex-wrap:wrap;
+  margin-bottom:36px;
+}
+.ctab{
+  padding:13px 20px;
+  font-family:var(--f-data);font-size:12px;letter-spacing:.08em;
+  color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .15s,border-color .15s;
+}
+.ctab:hover{color:var(--bone)}
+.ctab[aria-selected="true"]{color:var(--accent);border-color:var(--accent);font-weight:600}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:tabIn .4s cubic-bezier(.19,.68,.24,.99)}
+@keyframes tabIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.tab-panel.active{animation:none}}
+
+/* generic empty-state card, reused for sponsors / not-yet-announced info */
+.empty-card{
+  padding:40px 24px;text-align:center;
+  background:var(--surface);border:1px dashed var(--line);
+  color:var(--muted);font-size:14.5px;
+}
+
+/* ---------- tracks (still used: event page's own overview facts table) ---------- */
+.tracks{display:flex;flex-direction:column;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.track{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  gap:clamp(20px,4vw,60px);
+  padding:34px 0;align-items:start;
+}
+.track h3{font-family:var(--f-display);font-size:clamp(28px,3.8vw,44px);font-weight:800;text-transform:uppercase;line-height:.9;margin-bottom:14px;text-wrap:balance}
+.track h3 .num{
+  display:inline-block;font-family:var(--f-data);font-size:.3em;font-weight:700;
+  color:var(--muted);letter-spacing:.1em;vertical-align:.62em;margin-right:12px;
+}
+.track h3 .fmt{display:block;font-size:.38em;font-weight:600;color:var(--accent-dim);letter-spacing:.02em;margin-top:10px}
+.track-desc{color:var(--muted);font-size:15.5px;max-width:48ch}
+
+/* ---------- track media box ---------- */
+.track-media{
+  position:relative;overflow:hidden;
+  min-height:280px;border:1px solid var(--line-soft);
+  background:var(--surface);
+  display:flex;align-items:center;padding:20px;
+}
+.track-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  filter:blur(3px) saturate(1.1);transform:scale(1.05);
+}
+.track-media.has-video .track-video{opacity:1}
+.track-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  filter:blur(1.5px) saturate(1.08);transform:scale(1.04);
+}
+.track-media.has-img .track-img{opacity:.85}
+.track-video-tint{
+  position:absolute;inset:0;
+  background:rgb(from var(--ink) r g b / .45);
+  opacity:0;
+}
+.track-media.has-video .track-video-tint,
+.track-media.has-img .track-video-tint{opacity:1}
+.track-facts{
+  position:relative;z-index:1;display:flex;flex-direction:column;gap:0;
+  width:100%;
+}
+.track-media.has-video .track-facts,
+.track-media.has-img .track-facts{color:#F2EDE4}
+.track-media.has-video .fact,
+.track-media.has-img .fact{border-bottom-color:rgb(255 255 255 / .15)}
+.track-media.has-video .fact dt,
+.track-media.has-img .fact dt{color:#C9C0B2}
+.track-media.has-video .fact dd,
+.track-media.has-img .fact dd{color:#F2EDE4}
+.fact{
+  display:flex;justify-content:space-between;gap:18px;
+  padding:11px 0;border-bottom:1px solid var(--line-soft);
+  font-size:14px;
+}
+.fact:last-child{border-bottom:0}
+.fact dt{color:var(--muted);font-family:var(--f-data);font-size:11.5px;letter-spacing:.05em;padding-top:2px}
+.fact dd{font-weight:600;text-align:right}
+.track-cta{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.closes{font-family:var(--f-data);font-size:11.5px;color:var(--muted)}
+.closes b{color:var(--accent-2)}
+@media(max-width:860px){
+  .track{grid-template-columns:1fr}
+  .track-media{min-height:auto;border:0;padding:0;display:block;background:none!important}
+  .track-video,.track-img,.track-video-tint{display:none}
+  .track-facts{max-width:none;background:none;box-shadow:none;border-top:1px solid var(--line-soft);padding:0}
+}
+@media(min-width:861px){
+  .track.reveal{transform:translateX(-56px) scale(.98)}
+  .track:nth-child(even).reveal{transform:translateX(56px) scale(.98)}
+  .track.reveal.in{transform:translateX(0) scale(1)}
+}
+.track{position:relative;isolation:isolate}
+
+/* ---------- bracket ---------- */
+.tabs{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:26px}
+.tab{
+  padding:10px 18px;border:1px solid var(--line);
+  font-family:var(--f-data);font-size:11.5px;letter-spacing:.09em;
+  color:var(--muted);transition:all .15s;
+}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#1A1207;font-weight:600}
+.tab:hover:not([aria-selected="true"]){border-color:var(--accent-dim);color:var(--bone)}
+
+.bracket-scroll{overflow-x:auto;padding-bottom:14px}
+.bracket{display:flex;gap:14px;min-width:min-content}
+.round{display:flex;flex-direction:column;justify-content:space-around;gap:9px;min-width:178px}
+.round-lab{
+  font-family:var(--f-data);font-size:10px;letter-spacing:.14em;color:var(--muted);
+  padding:5px 10px;margin-bottom:5px;display:inline-block;
+  background:rgb(from var(--accent) r g b / .1);border-radius:999px;
+}
+.match{
+  background:linear-gradient(155deg,var(--surface) 0%,var(--surface-2) 130%);
+  border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;
+  width:100%;text-align:left;
+  transition:border-color .15s,box-shadow .15s,transform .5s cubic-bezier(.19,.68,.24,.99),opacity .9s cubic-bezier(.19,.68,.24,.99);
+}
+.match:hover{border-color:var(--accent-dim);transform:translateY(-3px);box-shadow:0 14px 28px -14px rgb(from var(--accent) r g b / .35)}
+.match.is-live{border-color:var(--live);box-shadow:0 0 0 3px rgb(from var(--live) r g b / .16)}
+.match-row{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+  padding:9px 12px;font-size:13px;
+}
+.match-row+.match-row{border-top:1px solid var(--line-soft)}
+.match-row.won{color:var(--bone);font-weight:600}
+.match-row.won .m-score{color:var(--bone);background:var(--accent-dim)}
+.match-row.lost{color:var(--muted)}
+.m-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-name.tbd{font-family:var(--f-data);font-size:10.5px;letter-spacing:.07em;color:var(--muted)}
+.m-score{font-family:var(--f-data);font-size:11.5px;font-variant-numeric:tabular-nums;flex-shrink:0;
+  background:var(--surface-2);color:var(--muted);padding:2px 8px;border-radius:999px;min-width:20px;text-align:center}
+.match-meta{
+  padding:6px 12px;border-top:1px solid var(--line-soft);
+  font-family:var(--f-data);font-size:9px;letter-spacing:.08em;color:var(--muted);
+  display:flex;justify-content:space-between;gap:10px;
+}
+.match.is-live .match-meta{color:var(--live);font-weight:600}
+.bracket-note{margin-top:20px;font-size:13.5px;color:var(--muted);max-width:64ch}
+
+/* ---------- teams ---------- */
+.teams-bar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+.search{
+  flex:1;min-width:220px;
+  background:var(--surface);border:1px solid var(--line);
+  padding:11px 14px;color:var(--bone);font-family:var(--f-body);font-size:14.5px;
+  border-radius:var(--radius-sm);
+}
+.search::placeholder{color:var(--muted)}
+.slots{font-family:var(--f-data);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.slot-bar{width:140px;height:5px;background:var(--line-soft);position:relative;overflow:hidden}
+.slot-fill{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0;transition:width .5s ease}
+
+/* ---------- live roster ladder ---------- */
+.ladder{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:16px}
+.pair{
+  background:linear-gradient(155deg,var(--surface) 0%,var(--surface-2) 130%);
+  border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;
+  transition:border-color .18s,box-shadow .18s,transform .95s cubic-bezier(.19,.68,.24,.99),opacity .95s cubic-bezier(.19,.68,.24,.99);
+}
+.pair:hover{box-shadow:0 14px 28px -16px rgb(from var(--ink) r g b / .8)}
+.pair.is-full{border-color:var(--accent-dim)}
+.pair-head{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:8px 12px;border-bottom:1px solid var(--line-soft);
+  font-family:var(--f-data);font-size:9.5px;letter-spacing:.13em;color:var(--muted);
+}
+.pair.is-full .pair-head{color:var(--accent);background:rgb(from var(--accent) r g b / .08)}
+.slot{display:flex;align-items:center;gap:12px;padding:11px 12px;min-height:52px;transition:background .15s}
+.slot:hover{background:rgb(from var(--bone) r g b / .03)}
+.slot+.slot{border-top:1px solid var(--line-soft)}
+.slot-no{
+  font-family:var(--f-data);font-size:10px;color:var(--muted);width:22px;height:22px;flex-shrink:0;
+  border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;
+}
+.slot-body{min-width:0;flex:1}
+.slot-name{font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot-col{display:block;font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot.open .slot-name{font-family:var(--f-data);font-size:11px;letter-spacing:.13em;color:var(--muted);font-weight:400}
+.slot.open .slot-no{border-style:dashed;opacity:.6}
+.slot-tick{
+  color:var(--ink);background:var(--accent);font-size:11px;flex-shrink:0;
+  width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-weight:700;
+}
+.ladder-empty{grid-column:1/-1;padding:30px 18px;color:var(--muted);font-size:14.5px;
+  background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--radius)}
+.roster-note{margin-top:22px;font-size:13.5px;color:var(--muted);max-width:66ch;padding-left:14px;border-left:2px solid var(--line)}
+
+/* ---------- streams ---------- */
+.stream-main{
+  background:var(--surface);border:1px solid var(--line);overflow:hidden;border-radius:var(--radius);
+  transition:border-color .7s cubic-bezier(.19,.68,.24,.99),box-shadow .7s cubic-bezier(.19,.68,.24,.99);
+}
+/* landing page: .stream-main is already bidirectionally revealed
+   ({once:false}), so this border reaction is reversible for free —
+   settles to a soft accent glow entering view, eases back out leaving it. */
+.stream-main.reveal.in{
+  border-color:var(--accent-dim);
+  box-shadow:0 0 0 1px rgb(from var(--accent) r g b / .12),0 14px 32px -18px rgb(from var(--accent) r g b / .35);
+}
+.stream-frame{position:relative;padding-top:56.25%;background:#0E0B11}
+.stream-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.stream-holding{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:30px;text-align:center;
+  color:#F2EDE4;
+}
+.stream-holding .sh-title{
+  font-family:var(--f-display);font-size:clamp(26px,4vw,42px);font-weight:800;
+  text-transform:uppercase;line-height:.95;color:#F2EDE4;
+}
+.stream-holding p{color:#B8AFA0;font-size:14.5px;max-width:44ch}
+.stream-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-top:1px solid var(--line)}
+.stream-name{font-weight:600;font-size:15.5px}
+.stream-note{color:var(--muted);font-size:13.5px}
+.stream-badge{
+  font-family:var(--f-data);font-size:10px;letter-spacing:.13em;
+  padding:4px 9px;border:1px solid var(--line);color:var(--muted);margin-left:auto;
+}
+.stream-badge.on{border-color:var(--live);color:var(--accent-2);background:rgb(from var(--live) r g b / .12)}
+.stream-list{display:flex;gap:2px;flex-wrap:wrap;margin-top:16px}
+.stream-pick{padding:10px 15px;border:1px solid var(--line);font-size:13.5px;color:var(--muted);transition:all .15s}
+.stream-pick[aria-selected="true"]{border-color:var(--accent);color:var(--bone);background:var(--surface)}
+
+/* ---------- campus schedule ---------- */
+.sched{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(24px,4vw,52px)}
+.sched-day h3{
+  font-family:var(--f-display);font-size:clamp(26px,3.2vw,38px);font-weight:800;
+  text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:4px;
+}
+.slot-row{
+  display:grid;grid-template-columns:64px 1fr;gap:16px;
+  padding:14px 0;border-bottom:1px solid var(--line-soft);align-items:baseline;
+}
+.slot-row.feature .sr-title{color:var(--accent)}
+.sr-time{font-family:var(--f-data);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sr-title{font-weight:600;font-size:15px;line-height:1.35}
+.sr-where{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.sched-note{margin-top:22px;font-size:13.5px;color:var(--muted);padding-left:14px;border-left:2px solid var(--line);max-width:60ch}
+
+/* ---------- payment success ---------- */
+.success-bg{
+  position:fixed;inset:0;z-index:120;background:var(--ink);
+  display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto;
+}
+.success-bg.open{display:flex}
+.success{max-width:520px;width:100%;text-align:center}
+.success .tick{
+  width:64px;height:64px;margin:0 auto 22px;border:2px solid var(--accent);
+  border-radius:50%;display:grid;place-items:center;color:var(--accent);font-size:30px;
+}
+.success h2{font-family:var(--f-display);font-size:clamp(28px,4.4vw,44px);font-weight:800;text-transform:uppercase;line-height:.92;margin-bottom:14px}
+.success p{color:var(--muted);font-size:15.5px;margin-bottom:12px}
+.success .join{display:block;margin:26px 0 10px;padding:16px;background:var(--accent);color:#1A1207;font-weight:700;font-size:15.5px}
+.success .join.secondary{background:none;border:1px solid var(--line);color:var(--bone);font-weight:600}
+.success .fine{font-size:13px;color:var(--muted);margin-top:22px;line-height:1.6}
+.success .dismiss{margin-top:22px;font-size:13.5px;color:var(--muted);text-decoration:underline;display:inline-block}
+
+/* ---------- rules / faq accordion ---------- */
+.rules-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:0;border-top:1px solid var(--line)}
+.acc{border-bottom:1px solid var(--line)}
+.acc-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:19px 0;text-align:left}
+.acc-btn:hover .acc-q{color:var(--accent)}
+.acc-q{font-family:var(--f-display);font-size:clamp(20px,2.4vw,27px);font-weight:700;text-transform:uppercase;line-height:1.05;transition:color .2s cubic-bezier(.4,0,.2,1)}
+.acc-sign{font-family:var(--f-data);font-size:19px;color:var(--muted);flex-shrink:0;transition:transform .2s}
+.acc[open] .acc-sign,.acc.open .acc-sign{transform:rotate(45deg);color:var(--accent)}
+.acc-body{
+  overflow:hidden;max-height:0;padding:0 0 0;max-width:74ch;
+  transition:max-height .4s cubic-bezier(.16,.8,.3,1),padding .4s cubic-bezier(.16,.8,.3,1);
+}
+.acc.open .acc-body{max-height:2000px;padding:2px 0 26px}
+@media(prefers-reduced-motion:reduce){.acc-body{transition:none}}
+.acc-body ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.acc-body li{position:relative;padding-left:20px;font-size:15px;color:var(--muted);line-height:1.62}
+.acc-body li::before{content:"";position:absolute;left:0;top:10px;width:7px;height:1px;background:var(--accent)}
+.acc-body li b{color:var(--bone);font-weight:600}
+.acc-body .warn{
+  margin-top:16px;padding:13px 15px;
+  border-left:2px solid var(--warn);background:rgb(from var(--warn) r g b / .06);
+  font-size:14px;color:var(--bone);
+}
+
+/* legal modal body — same list treatment as .acc-body so Terms/Refund/
+   Privacy read consistently with the Rules tabs elsewhere on the site */
+.legal-body{max-width:66ch}
+.legal-body p{color:var(--muted);font-size:14.5px;line-height:1.6;margin-bottom:16px}
+.legal-body ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.legal-body li{position:relative;padding-left:20px;font-size:14.5px;color:var(--muted);line-height:1.62}
+.legal-body li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:1px;background:var(--accent)}
+.legal-body li b{color:var(--bone);font-weight:600}
+
+/* ---------- modal ---------- */
+.modal-bg{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(10,7,13,.8);backdrop-filter:blur(5px);
+  display:none;align-items:flex-start;justify-content:center;
+  padding:20px;overflow-y:auto;
+}
+.modal-bg.open{display:flex}
+.modal{background:var(--ink);border:1px solid var(--line);width:100%;max-width:560px;margin:auto;border-radius:var(--radius);overflow:hidden}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.modal-head h3{font-family:var(--f-display);font-size:26px;font-weight:800;text-transform:uppercase}
+.modal-x{font-size:24px;line-height:1;color:var(--muted)}
+.modal-x:hover{color:var(--bone)}
+.modal-body{padding:22px}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:var(--f-data);font-size:10.5px;letter-spacing:.11em;color:var(--muted);margin-bottom:7px}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--surface);border:1px solid var(--line);
+  padding:11px 13px;color:var(--bone);font-family:var(--f-body);font-size:14.5px;border-radius:var(--radius-sm);
+  transition:border-color .15s;
+}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--accent-dim)}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);opacity:1}
+.field textarea{resize:vertical;min-height:78px;font-family:var(--f-data);font-size:13px;line-height:1.6}
+.field select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.field .hint{font-size:12.5px;color:var(--muted);margin-top:6px}
+/* shown instead of the #fTrack select when Register is opened from an
+   event's own page — the competition is already known from that page,
+   so it's fixed, not a dropdown the visitor can second-guess. The
+   landing page has no PAGE_TRACK, so it always keeps the real select. */
+.track-locked{
+  width:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:11px 13px;color:var(--bone);font-family:var(--f-body);font-size:14.5px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.track-locked::after{content:"Locked to this page";font-family:var(--f-data);font-size:10px;letter-spacing:.06em;color:var(--muted)}
+
+/* custom dropdown for the competition picker — a real listbox, not a
+   re-skinned native <select> (which can't have styled options). The
+   underlying <select> stays in the DOM (hidden) purely as the form's
+   data source; this is the whole visible/interactive UI. */
+.cdrop{position:relative}
+.cdrop-btn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:11px 13px;color:var(--bone);font-family:var(--f-body);font-size:14.5px;text-align:left;
+  transition:border-color .15s;
+}
+.cdrop-btn:hover,.cdrop-btn:focus-visible{border-color:var(--accent-dim)}
+.cdrop-btn::after{content:"";width:8px;height:8px;flex-shrink:0;
+  border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);
+  transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.cdrop.open .cdrop-btn::after{transform:rotate(-135deg) translateY(1px)}
+.cdrop-list{
+  position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:5;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);
+  overflow:hidden;box-shadow:0 16px 32px -12px rgba(0,0,0,.6);
+  max-height:240px;overflow-y:auto;
+}
+.cdrop-opt{
+  padding:11px 13px;font-family:var(--f-body);font-size:14.5px;color:var(--bone);
+  cursor:pointer;transition:background .12s;
+}
+.cdrop-opt+.cdrop-opt{border-top:1px solid var(--line-soft)}
+.cdrop-opt:hover,.cdrop-opt.active{background:rgb(from var(--accent) r g b / .12);color:var(--accent)}
+.fee-line{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:14px 15px;background:var(--surface);border:1px solid var(--line);
+  margin-bottom:16px;font-size:14px;
+}
+.fee-line b{font-family:var(--f-data);font-size:19px;color:var(--accent);font-weight:700}
+.checkline{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);margin-bottom:18px}
+.checkline input{margin-top:4px;accent-color:var(--accent);flex-shrink:0}
+.modal .btn{width:100%;text-align:center}
+.form-msg{margin-top:14px;font-size:13.5px;padding:11px 13px;display:none}
+.form-msg.show{display:block}
+.form-msg.err{border-left:2px solid var(--warn);background:rgb(from var(--warn) r g b / .07);color:var(--bone)}
+.form-msg.ok{border-left:2px solid var(--accent);background:rgb(from var(--accent) r g b / .07);color:var(--bone)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:52px 0 40px;margin-top:40px}
+.foot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:34px}
+.foot-h{font-family:var(--f-data);font-size:10.5px;letter-spacing:.13em;color:var(--muted);margin-bottom:14px}
+.foot-grid a,.foot-grid p{display:block;font-size:14px;color:var(--muted);margin-bottom:8px;transition:color .2s cubic-bezier(.4,0,.2,1)}
+.foot-grid a:hover{color:var(--accent)}
+.foot-bottom{
+  margin-top:44px;padding-top:22px;border-top:1px solid var(--line-soft);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--f-data);font-size:11px;color:var(--muted);
+}
+.foot-disclaimer{
+  margin-top:10px;font-family:var(--f-data);font-size:10.5px;color:var(--muted);opacity:.75;
+}
+
+/* ---------- registration modal: two-part form ----------
+   Step 1 (details) -> Step 2 (payment: big QR + txn ID + screenshot).
+   Step 2 only exists for tracks/tiers with a fee — free entries submit
+   straight from step 1. See shared.js goToPayStep()/syncTrack(). */
+.form-step[hidden]{display:none}
+/* Modal widens on step 2 so the QR renders near its original size
+   instead of being squeezed down to fit the normal 560px form width. */
+.modal:has(#formStep2:not([hidden])){max-width:640px}
+.pay-qr-big{text-align:center;margin-bottom:20px}
+.pay-qr-big img{width:100%;max-width:520px;border-radius:var(--radius-sm);margin:0 auto}
+.pay-qr-big p{margin-top:12px;font-size:13px;color:var(--muted)}
+.step-back{background:none;border:none;color:var(--muted);font-size:13px;margin-bottom:14px;cursor:pointer}
+.step-back:hover{color:var(--bone)}
+.file-field input[type="file"]{
+  display:block;width:100%;padding:9px 10px;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--bone);font-size:13.5px;
+}
