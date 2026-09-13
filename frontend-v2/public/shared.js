@@ -39,7 +39,7 @@ const CONFIG = {
      account, then paste the Web App URL here. Data lands in your
      own Google Sheet. Leave empty and the form will tell people
      registration is not open yet instead of failing silently.     */
-  sheetEndpoint: "",
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbyRNEgSOtrapKOmgq3YvRermW-etaRyYAoyV5dutjeEvUJsduyILp-dEB-yRdYvm-Zu/exec",
 
   /* --- your details ---------------------------------------------- */
   contactEmail: "",              // e.g. "anifx@dypatil.edu"
@@ -268,37 +268,13 @@ const CONFIG = {
     { name:"XP-Pen — Character Design", logoUrl:"", url:"" }
   ],
 
-  /* --- confirmed teams (payment verified) ------------------------
-     Used for slot-capacity gating only (trackState()/entriesFor() —
-     decides "Full — waitlist only") since the public Live roster/
-     Bracket views were removed. Still PLACEHOLDER sample data —
-     delete every entry below before real registrations come in.     */
-  confirmedTeams: [
-    { name:"Team Alpha", college:"DY Patil SOCS", track:"valorant" },
-    { name:"Team Bravo", college:"KJ Somaiya", track:"valorant" },
-    { name:"Team Charlie", college:"VJTI Mumbai", track:"valorant" },
-    { name:"Team Delta", college:"Thadomal Shahani", track:"valorant" },
-    { name:"Team Echo", college:"MPSTME NMIMS", track:"valorant" },
-    { name:"Team Foxtrot", college:"Sardar Patel Engg", track:"valorant" },
-    { name:"Team Golf", college:"DJ Sanghvi", track:"valorant" },
-    { name:"Team Hotel", college:"Rizvi College", track:"valorant" },
-    { name:"Team India", college:"DY Patil SOCS", track:"valorant" },
-    { name:"Team Juliet", college:"KC College", track:"valorant" },
-    { name:"Aarav Mehta", college:"DY Patil SOCS", track:"fc26" },
-    { name:"Kabir Shah", college:"VJTI Mumbai", track:"fc26" },
-    { name:"Rohan Iyer", college:"KJ Somaiya", track:"fc26" },
-    { name:"Vivaan Rao", college:"Thadomal Shahani", track:"fc26" },
-    { name:"Aditya Nair", college:"MPSTME NMIMS", track:"fc26" },
-    { name:"Ishaan Desai", college:"DJ Sanghvi", track:"fc26" }
-  ],
-
   /* --- faq (general — shown on the landing page and on every event
      page's FAQ tab) ---------------------------------------------- */
   faq:[
     { q:"Can I register for more than one competition?",
       a:"Yes, you can enter as many of the five competitions as you like." },
     { q:"What happens if a registered team drops out before the event?",
-      a:"The slot goes to a waitlisted team." },
+      a:"That slot is not reassigned." },
     { q:"Is there an age requirement?",
       a:"Yes, all participants must be 18 or older." },
     { q:"What's the refund policy?",
@@ -778,35 +754,6 @@ if($("#eventSponsors") && PAGE_TRACK){
     : '<div class="empty-card">No sponsors confirmed yet for this edition. Check back closer to the event.</div>';
 }
 
-/* ---------- tracks (index only — legacy full list, kept for any page
-   that still includes #tracks instead of the newer #eventNav) ---------- */
-if($("#tracks")){
-  function entriesForLocal(trackId){ return (CONFIG.confirmedTeams||[]).filter(t=>t.track===trackId); }
-  $("#tracks").innerHTML = CONFIG.tracks.map((t,i)=>{
-    const facts=t.facts.map(([k,v])=>'<div class="fact"><dt>'+esc(k)+'</dt><dd>'+esc(v)+'</dd></div>').join("");
-    const filled=t.slots>0 ? entriesForLocal(t.id).length : null;
-    const slotLine = t.slots>0
-      ? '<span class="closes">'+filled+' / '+t.slots+' slots · closes <b>'+esc(t.closes)+'</b></span>'
-      : '<span class="closes">Closes <b>'+esc(t.closes)+'</b></span>';
-    return '<article class="track" id="track-'+t.id+'" data-track="'+t.id+'">'
-      + '<div>'
-      +   '<h3><span class="num">'+String(i+1).padStart(2,"0")+'</span>'+esc(t.name)+'<span class="fmt">'+esc(t.format)+'</span></h3>'
-      +   '<p class="track-desc">'+esc(t.blurb)+'</p>'
-      +   '<div class="track-cta">'
-      +     '<a class="btn btn-primary" href="'+esc(t.page)+'">Explore '+esc(t.name)+'</a>'
-      +     slotLine
-      +   '</div>'
-      + '</div>'
-      + '<div class="track-media">'
-      +   '<video class="track-video" data-track-video="'+t.id+'" muted loop playsinline aria-hidden="true"></video>'
-      +   '<div class="track-video-tint" aria-hidden="true"></div>'
-      +   '<dl class="track-facts">'+facts+'</dl>'
-      + '</div>'
-      + '</article>';
-  }).join("");
-  wireTrackVideos();
-  revealNodes($$(".track",$("#tracks")));
-}
 
 /* ---------- faq (index general FAQ + every event page's FAQ tab) ---------- */
 if($("#faqWrap")){
@@ -899,49 +846,26 @@ if($("#successScreen")){
   });
 }
 
-/* ---------- registration gate ---------- */
-function entriesFor(trackId){
-  return (CONFIG.confirmedTeams||[]).filter(t=>t.track===trackId);
-}
+/* ---------- registration gate ----------
+   No slot-capacity check — every track accepts entries until its
+   closesAt date passes or it's explicitly closed (open:false). No
+   /exec GET call needed for this, so none is made.                */
 function trackState(t){
   if(t.open===false)                      return {open:false, why:"closed",  label:"Opening soon"};
   if(t.closesAt && Date.now() > new Date(t.closesAt).getTime())
                                           return {open:false, why:"passed",  label:"Registration closed"};
-  if(t.slots>0 && entriesFor(t.id).length >= t.slots)
-                                          return {open:false, why:"full",    label:"Full — waitlist only"};
   return {open:true, why:"open", label:"Register"};
 }
-
-async function refreshEntries(){
-  if(!CONFIG.sheetEndpoint) return;
-  try{
-    const r=await fetch(CONFIG.sheetEndpoint,{method:"GET"});
-    const d=await r.json();
-    if(d && d.ok && Array.isArray(d.entries)){
-      CONFIG.confirmedTeams=d.entries;
-      if($("#tracks")) location.reload(); // simplest safe refresh for the legacy full list, rarely hit
-      if($("#regModal")) syncTrackSafe();
-      updateTitle();
-    }
-  }catch(err){ /* keep whatever is in CONFIG */ }
-}
-function updateTitle(){
-  const v=CONFIG.tracks.find(t=>t.id==="valorant");
-  if(!v||!v.slots) return;
-  const n=entriesFor("valorant").length;
-  document.title="("+n+"/"+v.slots+") "+document.title.replace(/^\(\d+\/\d+\)\s*/,"");
-}
-function syncTrackSafe(){ if(window.__syncTrack) window.__syncTrack(); }
 
 /* ---------- registration modal (every page that includes it) ---------- */
 if($("#regModal")){
   const modal=$("#regModal"), form=$("#regForm"), sel=$("#fTrack"), msg=$("#formMsg"), trackLocked=$("#trackLocked");
   const step1=$("#formStep1"), step2=$("#formStep2"), nextBtn=$("#regNext"), backBtn=$("#regBack");
 
-  // Whether this entry needs the payment step at all — only when it's
-  // actually open (not full/closed — those go straight through as a
-  // waitlist/notify entry, no payment yet) and has a real fee (free
-  // tracks/tiers skip straight to submitting).
+  // Whether this entry needs the payment step at all — only when the
+  // track is open (full/closed tracks can't submit at all — see the
+  // st.open guard in doSubmit) and has a real fee (free tracks/tiers
+  // skip straight to submitting).
   function needsPayStep(t,st){ return st.open && currentFee(t)>0; }
 
   // Live input filtering (not just on-submit pattern checks) — strips
@@ -1080,11 +1004,12 @@ if($("#regModal")){
     if(st.open){
       nextBtn.textContent = fee>0 ? "Proceed to Pay" : "Submit entry";
     }else{
-      nextBtn.textContent = (st.why==="full") ? "Join the waitlist" : "Notify me when it opens";
-      if(st.why==="full"){
-        say("All "+t.slots+" slots are taken. Join the waitlist — we'll contact you if a slot opens.","err");
-      }else if(st.why==="passed"){
-        say("Registration for "+t.name+" closed on "+t.closes+". Leave your details and we'll tell you about the next one.","err");
+      nextBtn.textContent = "Registration closed";
+      nextBtn.disabled=true; $("#regSubmit").disabled=true;
+      if(st.why==="passed"){
+        say("Registration for "+t.name+" closed on "+t.closes+".","err");
+      }else{
+        say("Registration for "+t.name+" hasn't opened yet.","err");
       }
     }
   }
@@ -1148,8 +1073,8 @@ if($("#regModal")){
 
   // "Continue" / "Proceed to Pay" / "Submit entry" — step 1's action.
   // Validates the details, then either moves to the payment step or, for
-  // a free entry (or a full/closed track going to the waitlist), submits
-  // straight away.
+  // a free entry, submits straight away. (Full/closed tracks never reach
+  // this — the button is disabled in syncTrack when st.open is false.)
   nextBtn.addEventListener("click",()=>{
     const t=currentTrack(), st=trackState(t);
     const problem=fieldProblem();
@@ -1191,9 +1116,33 @@ if($("#regModal")){
       say("We can't take entries yet. Follow @"+CONFIG.instagram+" — registration opens shortly.","err");
       return;
     }
+    if(!st.open){
+      say("Registration for "+t.name+" is closed.","err");
+      return;
+    }
 
     const paid = needsPayStep(t,st);
     const screenshotFile = paid ? $("#fPayScreenshot").files[0] : null;
+
+    btn.disabled=true; btn.textContent="Saving your entry…";
+
+    // Payment proof — read the screenshot as base64 so the Apps Script
+    // endpoint can save the actual image to Drive, not just its filename.
+    let screenshotBase64="";
+    if(screenshotFile){
+      try{
+        screenshotBase64 = await new Promise((resolve,reject)=>{
+          const reader=new FileReader();
+          reader.onload=()=>resolve(reader.result.split(",")[1]||"");
+          reader.onerror=reject;
+          reader.readAsDataURL(screenshotFile);
+        });
+      }catch(err){
+        say("Couldn't read that screenshot. Try a different file.","err");
+        btn.disabled=false; syncTrack();
+        return;
+      }
+    }
 
     const payload={
       track:t.name, trackId:t.id, fee:currentFee(t),
@@ -1208,18 +1157,17 @@ if($("#regModal")){
       board:$("#fBoard").value.trim(),
       address:$("#fAddress").value.trim(),
       roster:t.isTeam?$("#fRoster").value.trim():"",
-      waitlist:!st.open,
       // Payment proof — only present when this entry actually paid via
-      // the QR step. TODO: paymentScreenshotName is just the filename;
-      // uploading the actual image needs real file storage (e.g.
-      // Firebase Storage) wired up on the backend, not this Apps
-      // Script/sheet endpoint.
+      // the QR step. The Apps Script endpoint decodes
+      // paymentScreenshotBase64, saves it to a Drive folder, and puts
+      // the resulting link in the sheet.
       txnId: paid ? $("#fTxnId").value.trim() : "",
       paymentScreenshotName: screenshotFile ? screenshotFile.name : "",
+      paymentScreenshotType: screenshotFile ? screenshotFile.type : "",
+      paymentScreenshotBase64: screenshotBase64,
       submittedAt:new Date().toISOString()
     };
 
-    btn.disabled=true; btn.textContent="Saving your entry…";
     try{
       await fetch(CONFIG.sheetEndpoint,{
         method:"POST", mode:"no-cors",
@@ -1227,21 +1175,21 @@ if($("#regModal")){
         body:JSON.stringify(payload)
       });
 
-      if(!st.open){
-        say("You're on the waitlist. Confirmation is on its way to your email.","ok");
-        form.reset(); setTimeout(syncTrack,1200);
-        return;
-      }
+      // form.reset() is safe here (just clears field values), but syncTrack()
+      // must NOT run yet — it wipes this success message and snaps step2
+      // back to step1 instantly, which read as "the form just reloaded".
+      // Give the person a moment to actually see the message first.
+      form.reset();
       if(paid){
         say("Payment reference received. Your slot is confirmed once we verify it — usually under 48 hours.","ok");
-        form.reset(); syncTrack();
-        if(CONFIG.whatsappLink && window.__showSuccess){ setTimeout(()=>{ closeModal(); window.__showSuccess(t.id); },1100); }
       }else{
         say("Entry saved. Check your email — we've sent your entry ID.","ok");
-        form.reset(); syncTrack();
-        if(CONFIG.whatsappLink && window.__showSuccess){ setTimeout(()=>{ closeModal(); window.__showSuccess(t.id); },1100); }
       }
-      setTimeout(refreshEntries,2500);
+      setTimeout(()=>{
+        closeModal();
+        syncTrack();
+        if(window.__showSuccess) window.__showSuccess(t.id);
+      },1600);
     }catch(err){
       say("We couldn't save that. Check your connection and try again, or email us directly.","err");
       btn.disabled=false; syncTrack();
@@ -1388,11 +1336,6 @@ if($(".fc-ball") && !reduceMotion){
   }
   playKick();
 }
-
-/* first load: pull real counts, keep them fresh */
-refreshEntries();
-updateTitle();
-setInterval(refreshEntries, 60000);
 
 /* ---------- generic reveal for whatever's left on the page ---------- */
 revealNodes($$(".sec-head, .strip-item, .sched-day, [data-acc], .stream-main, footer, .pill-row"),{once:!!PAGE_TRACK});
