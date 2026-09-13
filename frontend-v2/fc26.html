@@ -1,31 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-track="fc26">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AniFX 2026 — School of Creative Studies, DY Patil Deemed to be University</title>
-<meta name="description" content="AniFX 2026. 23–24 October. VALORANT, FC26, a 100-hour game jam, a film and animation showcase, and character design at the School of Creative Studies, DY Patil Deemed to be University, Navi Mumbai.">
+<title>FC26 — AniFX 2026</title>
+<meta name="description" content="FC26 at AniFX 2026. Solo 1v1 knockout, ₹100 entry, on campus at the School of Creative Studies, DY Patil Deemed to be University, 23 October.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Space+Grotesk:wght@400;500;600;700&family=Alegreya+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css?v=71">
 </head>
 <body>
-
-<div class="intro-fixed" id="introFx">
-  <p class="intro-word">AniFX <em>2026</em></p>
-  <div class="intro-hint">
-    <span class="intro-arrows">
-      <svg class="intro-arrow intro-arrow-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <svg class="intro-arrow intro-arrow-2" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </span>
-    <span>Scroll</span>
-  </div>
-  <button class="intro-skip" id="introSkip" type="button" hidden aria-label="Skip intro" title="Skip intro">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 5l5 7-5 7"/><path d="M13 5l5 7-5 7"/></svg>
-  </button>
-</div>
-<div class="intro-spacer" id="introSpacer"></div>
 
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <header>
@@ -35,9 +20,9 @@
     </a>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
     <nav class="nav-links" id="navLinks">
-      <a href="/" class="current">Home</a>
+      <a href="/">Home</a>
       <a href="/valorant">VALORANT</a>
-      <a href="/fc26">FC26</a>
+      <a href="/fc26" class="current">FC26</a>
       <a href="/game-jam">Game Jam</a>
       <a href="/film-festival">Film Festival</a>
       <a href="/character-design">Character Design</a>
@@ -48,89 +33,70 @@
 
 <main id="top">
 
-<!-- ============ HERO ============ -->
-<section class="hero" style="min-height:min(88vh,860px);display:flex;align-items:center">
+<!-- ============ EVENT HERO ============ -->
+<section class="hero event-hero">
   <video class="hero-video" muted loop playsinline poster="" aria-hidden="true"></video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
+  <div class="fc-pitch" aria-hidden="true">
+    <div class="fc-floodlight fc-fl-l"></div>
+    <div class="fc-floodlight fc-fl-r"></div>
+    <div class="fc-pitch-outline"></div>
+    <div class="fc-pitch-circle"></div>
+    <div class="fc-pitch-line"></div>
+    <div class="fc-goal fc-goal-l"></div>
+    <div class="fc-goal fc-goal-r"></div>
+    <div class="fc-ball"></div>
+    <div class="fc-players" id="fcPlayers" aria-hidden="true"></div>
+  </div>
   <div class="wrap hero-inner">
-    <div class="hero-meta data">
-      <span><strong id="heroDates">23–24 October 2026</strong></span>
-      <span>School of Creative Studies, DY Patil Deemed to be University, Navi Mumbai</span>
+    <div class="event-eyebrow">
+      <a href="/">AniFX 2026</a><span class="sep">—</span><span>FC26</span>
     </div>
 
-    <h1 class="display h-xxl hero-title">AniFX <span class="yr">26</span></h1>
-    <p class="hero-sub">Five competitions. One weekend. One campus. Bring something that works.</p>
+    <h1 class="display h-xl hero-title">FC26</h1>
+    <p class="hero-sub">Solo 1v1 knockout · One day · Played on campus</p>
 
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#events">Explore the events</a>
-      <a class="btn btn-ghost" href="#" data-open-reg>Register your team</a>
+      <a class="btn btn-primary" href="#" data-open-reg>Register now</a>
+      <a class="btn btn-ghost" href="#panel-rules" data-panel-link="panel-rules">Read the rules</a>
     </div>
 
-    <div class="countdown" id="countdown" aria-label="Time until the festival"></div>
-    <p class="cd-note" id="cdNote"></p>
+    <dl class="pill-row">
+      <div class="pill"><dt>Entry fee</dt><dd>₹100 / player</dd></div>
+      <div class="pill"><dt>Format</dt><dd>Solo, 1v1</dd></div>
+      <div class="pill"><dt>Registration closes</dt><dd>20 October 2026</dd></div>
+      <div class="pill"><dt>Prize</dt><dd>1st ₹5,000 · 2nd ₹3,000</dd></div>
+    </dl>
   </div>
 </section>
 
-<!-- ============ BRAND BREAK ============ -->
-<div class="brand-break wrap" id="brandBreak">
-  <p class="display outline-text">
-    <span class="outline-fill" data-fill-text="Five Events.">Five Events.</span><br>
-    <span class="outline-fill" data-fill-text="One Festival.">One Festival.</span>
-  </p>
-  <p class="outline-sub">VALORANT — FC26 — GAME JAM — FILM &amp; ANIMATION — CHARACTER DESIGN</p>
-</div>
-
-<!-- ============ EVENT NAVIGATOR ============ -->
-<section class="sec" id="events">
+<!-- ============ CONTENT TABS ============ -->
+<section class="sec" style="padding-top:clamp(30px,5vw,56px)">
   <div class="wrap">
-    <div class="sec-head">
-      <h2 class="display h-lg">Pick your event</h2>
-      <p>Every rule, fee, deadline and tiebreak lives on that event's own page. Nothing gets decided on the day.</p>
+    <div class="content-tabs" role="tablist">
+      <button class="ctab" role="tab" aria-selected="true" data-panel="panel-overview">Overview</button>
+      <button class="ctab" role="tab" aria-selected="false" data-panel="panel-rules">Rules</button>
+      <button class="ctab" role="tab" aria-selected="false" data-panel="panel-schedule">Schedule</button>
+      <button class="ctab" role="tab" aria-selected="false" data-panel="panel-faq">FAQ</button>
     </div>
-    <div class="event-nav" id="eventNav"></div>
-  </div>
-</section>
 
-<!-- ============ STATS STRIP ============ -->
-<section class="sec" id="board" style="padding-top:0">
-  <div class="wrap">
-    <div class="strip">
-      <div class="strip-item">
-        <div class="strip-num">5</div>
-        <p class="strip-lab">Competitions: VALORANT, FC26, a 100-hour game jam, a film and animation showcase, and character design.</p>
-      </div>
-      <div class="strip-item">
-        <div class="strip-num">2</div>
-        <p class="strip-lab">Days on campus, Friday 23 and Saturday 24 October — competitions and prize distribution.</p>
-      </div>
-      <div class="strip-item">
-        <div class="strip-num">100</div>
-        <p class="strip-lab">Hours to design, build and ship an original side-scroller. Online, from anywhere.</p>
-      </div>
+    <div class="tab-panel active" id="panel-overview">
+      <div id="eventOverview"></div>
     </div>
-  </div>
-</section>
 
-<!-- ============ ON CAMPUS ============ -->
-<section class="sec" id="campus">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2 class="display h-lg">On campus</h2>
-      <p>Everything that happens in person across the festival weekend at the Centre of Excellence, DY Patil Deemed to be University, Navi Mumbai.</p>
+    <div class="tab-panel" id="panel-rules">
+      <div class="rules-wrap" id="rulesWrap"></div>
     </div>
-    <div class="sched" id="sched"></div>
-    <p class="sched-note" id="schedNote"></p>
-  </div>
-</section>
 
-<!-- ============ FAQ ============ -->
-<section class="sec" id="faq">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2 class="display h-lg">Frequently asked</h2>
-      <p>The short answers. For rules specific to your event, visit that event's own page.</p>
+    <div class="tab-panel" id="panel-schedule">
+      <div class="sched" id="sched"></div>
+      <p class="sched-note" id="schedNote"></p>
     </div>
-    <div class="rules-wrap" id="faqWrap"></div>
+
+
+    <div class="tab-panel" id="panel-faq">
+      <div class="rules-wrap" id="faqWrap"></div>
+    </div>
   </div>
 </section>
 
@@ -175,19 +141,6 @@
     <p class="foot-disclaimer">This website and event are not associated with Riot Games or any other company. VALORANT is a trademark of Riot Games, Inc.</p>
   </div>
 </footer>
-
-<!-- ============ PAYMENT SUCCESS ============ -->
-<div class="success-bg" id="successScreen" role="dialog" aria-modal="true" aria-labelledby="successTitle">
-  <div class="success">
-    <div class="tick" aria-hidden="true">✓</div>
-    <h2 id="successTitle">Payment received</h2>
-    <p id="successLine">Your entry is in. We verify every payment against our account and confirm it by email within 48 hours.</p>
-    <a class="join" id="joinWhatsapp" href="#" target="_blank" rel="noopener">Join the WhatsApp group</a>
-    <a class="join secondary" id="joinDiscord" href="#" target="_blank" rel="noopener">Join the Discord</a>
-    <p class="fine">Match schedules go out in the group first. Missing a match because you did not join is not grounds for a reschedule. Keep your payment reference — if you have not received confirmation in 48 hours, email us with it.</p>
-    <a class="dismiss" href="#" id="successDismiss">Back to the site</a>
-  </div>
-</div>
 
 <!-- ============ REGISTRATION MODAL ============ -->
 <div class="modal-bg" id="regModal" role="dialog" aria-modal="true" aria-labelledby="regTitle">
@@ -312,6 +265,7 @@
   </div>
 </div>
 
+<script>window.PAGE_TRACK = "fc26";</script>
 <script src="shared.js?v=59"></script>
 </body>
 </html>
