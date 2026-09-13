@@ -936,6 +936,13 @@ function syncTrackSafe(){ if(window.__syncTrack) window.__syncTrack(); }
 /* ---------- registration modal (every page that includes it) ---------- */
 if($("#regModal")){
   const modal=$("#regModal"), form=$("#regForm"), sel=$("#fTrack"), msg=$("#formMsg"), trackLocked=$("#trackLocked");
+  const step1=$("#formStep1"), step2=$("#formStep2"), nextBtn=$("#regNext"), backBtn=$("#regBack");
+
+  // Whether this entry needs the payment step at all — only when it's
+  // actually open (not full/closed — those go straight through as a
+  // waitlist/notify entry, no payment yet) and has a real fee (free
+  // tracks/tiers skip straight to submitting).
+  function needsPayStep(t,st){ return st.open && currentFee(t)>0; }
 
   // Live input filtering (not just on-submit pattern checks) — strips
   // disallowed characters as the person types, rather than letting them
@@ -1033,6 +1040,18 @@ if($("#regModal")){
     $("#feeLabel").textContent = t.feeTiers ? "Entry fee" : (t.feeNote||"Entry fee");
     $("#feeAmount").textContent=fee?("₹"+fee.toLocaleString("en-IN")):"Free";
 
+    // Payment QR — DY Patil / Axis Bank BharatQR poster, shown big on its
+    // own step (see needsPayStep()/formStep2 below) so it's actually
+    // scannable, not squeezed into a sidebar. Content is the same for
+    // every track, so it's only built once, ever.
+    const payQrBig=$("#payQrBig");
+    if(payQrBig && !payQrBig.dataset.built){
+      payQrBig.dataset.built="1";
+      payQrBig.innerHTML =
+        '<img src="payment-qr.png" alt="DY Patil University payment QR — scan with any UPI app to pay">' +
+        "<p>Scan to pay via UPI/BHIM, RuPay, Visa or Mastercard. Merchant: D Y Patil University Scho. Keep your reference — you'll need it below.</p>";
+    }
+
     // Team vs solo fields
     const fTeamField=$("#fTeam").closest(".field");
     if(fTeamField) fTeamField.style.display = isTeam ? "block" : "none";
@@ -1052,14 +1071,16 @@ if($("#regModal")){
     $("#fRoster").required=wantsRoster && !!t.rosterRequired;
     updateRosterCount();
 
-    const btn=$("#regSubmit");
-    btn.disabled=false;
+    // Changing the track/tier always resets back to step 1 — a half-paid
+    // step 2 for a track you just switched away from makes no sense.
+    step2.hidden=true; step1.hidden=false;
+    nextBtn.disabled=false; $("#regSubmit").disabled=false;
     msg.className="form-msg";
 
     if(st.open){
-      btn.textContent = t.payUrl ? "Continue to payment" : "Submit entry";
+      nextBtn.textContent = fee>0 ? "Proceed to Pay" : "Submit entry";
     }else{
-      btn.textContent = (st.why==="full") ? "Join the waitlist" : "Notify me when it opens";
+      nextBtn.textContent = (st.why==="full") ? "Join the waitlist" : "Notify me when it opens";
       if(st.why==="full"){
         say("All "+t.slots+" slots are taken. Join the waitlist — we'll contact you if a slot opens.","err");
       }else if(st.why==="passed"){
@@ -1116,20 +1137,63 @@ if($("#regModal")){
     return null;
   }
 
-  form.addEventListener("submit",async e=>{
-    e.preventDefault();
-    const t=currentTrack(), st=trackState(t), btn=$("#regSubmit");
+  // Step 2 only applies once payment is actually required (see
+  // needsPayStep) — transaction ID and a payment screenshot are both
+  // required fields there.
+  function payFieldProblem(){
+    if(!$("#fTxnId").checkValidity()) return "Enter your transaction ID / UTR.";
+    if(!$("#fPayScreenshot").checkValidity()) return "Attach a screenshot of your payment.";
+    return null;
+  }
 
+  // "Continue" / "Proceed to Pay" / "Submit entry" — step 1's action.
+  // Validates the details, then either moves to the payment step or, for
+  // a free entry (or a full/closed track going to the waitlist), submits
+  // straight away.
+  nextBtn.addEventListener("click",()=>{
+    const t=currentTrack(), st=trackState(t);
     const problem=fieldProblem();
     if(problem){ say(problem,"err"); return; }
     let phone=$("#fPhone").value.replace(/\D/g,"");
     if(phone.length===12 && phone.startsWith("91")) phone=phone.slice(2);
     if(phone.length<10){ say("Enter a valid 10-digit WhatsApp number.","err"); return; }
 
+    if(needsPayStep(t,st)){
+      step1.hidden=true; step2.hidden=false;
+      msg.className="form-msg";
+      setTimeout(()=>$("#fTxnId").focus(),60);
+    }else{
+      doSubmit(t,st);
+    }
+  });
+
+  backBtn.addEventListener("click",()=>{
+    step2.hidden=true; step1.hidden=false;
+    msg.className="form-msg";
+  });
+
+  form.addEventListener("submit",e=>{
+    // Step 2's Submit button is the only type="submit" control — this
+    // only fires once payment proof is required and being submitted.
+    e.preventDefault();
+    const t=currentTrack(), st=trackState(t);
+    const problem=payFieldProblem();
+    if(problem){ say(problem,"err"); return; }
+    doSubmit(t,st);
+  });
+
+  async function doSubmit(t,st){
+    const btn = needsPayStep(t,st) ? $("#regSubmit") : nextBtn;
+    let phone=$("#fPhone").value.replace(/\D/g,"");
+    if(phone.length===12 && phone.startsWith("91")) phone=phone.slice(2);
+
     if(!CONFIG.sheetEndpoint){
       say("We can't take entries yet. Follow @"+CONFIG.instagram+" — registration opens shortly.","err");
       return;
     }
+
+    const paid = needsPayStep(t,st);
+    const screenshotFile = paid ? $("#fPayScreenshot").files[0] : null;
 
     const payload={
       track:t.name, trackId:t.id, fee:currentFee(t),
@@ -1145,6 +1209,13 @@ if($("#regModal")){
       address:$("#fAddress").value.trim(),
       roster:t.isTeam?$("#fRoster").value.trim():"",
       waitlist:!st.open,
+      // Payment proof — only present when this entry actually paid via
+      // the QR step. TODO: paymentScreenshotName is just the filename;
+      // uploading the actual image needs real file storage (e.g.
+      // Firebase Storage) wired up on the backend, not this Apps
+      // Script/sheet endpoint.
+      txnId: paid ? $("#fTxnId").value.trim() : "",
+      paymentScreenshotName: screenshotFile ? screenshotFile.name : "",
       submittedAt:new Date().toISOString()
     };
 
@@ -1161,11 +1232,12 @@ if($("#regModal")){
         form.reset(); setTimeout(syncTrack,1200);
         return;
       }
-      if(t.payUrl){
-        say("Entry saved and a confirmation is on its way. Taking you to payment — your slot is confirmed once payment is verified.","ok");
-        setTimeout(()=>{ window.location.href=t.payUrl; },1600);
+      if(paid){
+        say("Payment reference received. Your slot is confirmed once we verify it — usually under 48 hours.","ok");
+        form.reset(); syncTrack();
+        if(CONFIG.whatsappLink && window.__showSuccess){ setTimeout(()=>{ closeModal(); window.__showSuccess(t.id); },1100); }
       }else{
-        say("Entry saved. Check your email — we've sent your entry ID and payment details.","ok");
+        say("Entry saved. Check your email — we've sent your entry ID.","ok");
         form.reset(); syncTrack();
         if(CONFIG.whatsappLink && window.__showSuccess){ setTimeout(()=>{ closeModal(); window.__showSuccess(t.id); },1100); }
       }
@@ -1174,7 +1246,7 @@ if($("#regModal")){
       say("We couldn't save that. Check your connection and try again, or email us directly.","err");
       btn.disabled=false; syncTrack();
     }
-  });
+  }
 }
 
 /* ---------- legal pages (Terms, Refund policy, Privacy) ----------

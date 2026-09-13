@@ -152,6 +152,7 @@
     </div>
     <div class="modal-body">
       <form id="regForm" novalidate>
+      <div class="form-step" id="formStep1">
         <div class="field">
           <label for="fTrack">Competition</label>
           <div class="cdrop" id="trackCdrop">
@@ -226,8 +227,27 @@
           <span>I have read the rules for this competition. All listed players are enrolled students and their details are correct. Incorrect details may result in forfeit.</span>
         </label>
 
-        <button type="submit" class="btn btn-primary" id="regSubmit">Continue to payment</button>
-        <div class="form-msg" id="formMsg"></div>
+        <button type="button" class="btn btn-primary" id="regNext">Continue</button>
+      </div>
+
+      <div class="form-step" id="formStep2" hidden>
+        <button type="button" class="step-back" id="regBack">&larr; Back</button>
+        <div class="pay-qr-big" id="payQrBig"></div>
+
+        <div class="field">
+          <label for="fTxnId">Transaction ID / UTR</label>
+          <input id="fTxnId" name="txnId" required placeholder="e.g. 402911223344" autocomplete="off">
+        </div>
+
+        <div class="field file-field">
+          <label for="fPayScreenshot">Payment screenshot</label>
+          <input id="fPayScreenshot" name="paymentScreenshot" type="file" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="regSubmit">Submit</button>
+      </div>
+
+      <div class="form-msg" id="formMsg"></div>
       </form>
     </div>
   </div>
