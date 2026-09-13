@@ -12,6 +12,14 @@
       {
         "source": "**/*.@(js|css)",
         "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      },
+      {
+        "source": "/",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      },
+      {
+        "source": "/@(valorant|fc26|game-jam|film-festival|character-design)",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
       }
     ]
   },
