@@ -63,25 +63,79 @@ function sendConfirmationEmail(data) {
   const lines = [
     "Hi " + (data.registrantName || "") + ",",
     "",
-    "Your registration for " + data.track + " has been recorded. We verify every payment against our account and confirm your slot by email within 48 hours.",
+    "Your registration for " + data.track + " has been recorded. We will verify your payment against our account and confirm your slot by email within 72 hours.",
     "",
     "Details on file:",
     "Team / entrant: " + (data.teamName || data.registrantName || ""),
     "College: " + (data.college || ""),
     data.txnId ? "Transaction ID: " + data.txnId : "",
     "",
-    "Keep your transaction ID handy — if you haven't heard back within 48 hours, reply to this email with it.",
+    "Keep your transaction ID handy — if you haven't heard back within 72 hours, reply to this email with it.",
     "",
     "— AniFX 2026",
   ].filter(line => line !== "");
 
   try {
-    MailApp.sendEmail(data.registrantEmail, subject, lines.join("\n"));
+    MailApp.sendEmail({
+      to: data.registrantEmail,
+      subject: subject,
+      body: lines.join("\n"),
+      htmlBody: buildConfirmationEmailHtml(data),
+    });
   } catch (err) {
     // Don't fail the whole submission just because the email didn't send —
     // the row is already saved; log it so it's visible in Executions.
     console.error("sendConfirmationEmail failed: " + err);
   }
+}
+
+function buildConfirmationEmailHtml(data) {
+  const name = escapeHtml(data.registrantName || "");
+  const track = escapeHtml(data.track || "");
+  const entrant = escapeHtml(data.teamName || data.registrantName || "");
+  const college = escapeHtml(data.college || "");
+  const txnRow = data.txnId
+    ? '<tr><td style="padding:4px 0;color:#a89e8c;font-size:14px;">Transaction ID</td>' +
+      '<td style="padding:4px 0;color:#f0e6d2;font-size:14px;text-align:right;">' + escapeHtml(data.txnId) + '</td></tr>'
+    : "";
+
+  return '' +
+    '<div style="background:#0d0d0d;padding:48px 24px;font-family:Arial,Helvetica,sans-serif;">' +
+      '<table role="presentation" width="100%" style="max-width:520px;margin:0 auto;border-collapse:collapse;">' +
+        '<tr><td style="text-align:center;padding-bottom:24px;">' +
+          '<div style="width:64px;height:64px;line-height:64px;border:2px solid #e8384f;border-radius:50%;margin:0 auto;color:#e8384f;font-size:28px;">&#10003;</div>' +
+        '</td></tr>' +
+        '<tr><td style="text-align:center;padding-bottom:16px;">' +
+          '<span style="color:#f0e6d2;font-size:28px;font-weight:bold;letter-spacing:1px;">ENTRY RECEIVED</span>' +
+        '</td></tr>' +
+        '<tr><td style="text-align:center;color:#c9bfa8;font-size:15px;line-height:1.6;padding-bottom:28px;">' +
+          'Hi ' + name + ', your registration for <b style="color:#f0e6d2;">' + track + '</b> has been recorded. ' +
+          'We will verify your payment against our account and confirm your slot by email within 72 hours.' +
+        '</td></tr>' +
+        '<tr><td style="border-top:1px solid #2a2a2a;padding-top:20px;">' +
+          '<table role="presentation" width="100%" style="border-collapse:collapse;">' +
+            '<tr><td style="padding:4px 0;color:#a89e8c;font-size:14px;">Team / entrant</td>' +
+              '<td style="padding:4px 0;color:#f0e6d2;font-size:14px;text-align:right;">' + entrant + '</td></tr>' +
+            '<tr><td style="padding:4px 0;color:#a89e8c;font-size:14px;">College</td>' +
+              '<td style="padding:4px 0;color:#f0e6d2;font-size:14px;text-align:right;">' + college + '</td></tr>' +
+            txnRow +
+          '</table>' +
+        '</td></tr>' +
+        '<tr><td style="text-align:center;color:#a89e8c;font-size:13px;line-height:1.6;padding:24px 0 8px;">' +
+          "Keep your transaction ID handy — if you haven't heard back within 72 hours, reply to this email with it." +
+        '</td></tr>' +
+        '<tr><td style="text-align:center;color:#6f6656;font-size:12px;padding-top:16px;">— AniFX 2026</td></tr>' +
+      '</table>' +
+    '</div>';
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function ensureHeaders(sheet) {
