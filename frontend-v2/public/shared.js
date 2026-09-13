@@ -39,7 +39,7 @@ const CONFIG = {
      account, then paste the Web App URL here. Data lands in your
      own Google Sheet. Leave empty and the form will tell people
      registration is not open yet instead of failing silently.     */
-  sheetEndpoint: "https://script.google.com/macros/s/AKfycbw42pOK2h_x0Xg8rULZjzk8Xj-llacpRfNhV161tCD9xjbLr0olF3snAfOwvljJBRw2/exec",
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbwDWiGSEVPeFJY_NEiFEBHRm_NuMrE9CBxaKqwumsAdBDv6oBlSneF--8cPTJoQMz9brA/exec",
 
   /* --- your details ---------------------------------------------- */
   contactEmail: "",              // e.g. "anifx@dypatil.edu"
