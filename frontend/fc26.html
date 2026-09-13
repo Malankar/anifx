@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-track="fc26">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC26 — AniFX 2026</title>
+<meta name="description" content="FC26 at AniFX 2026. Solo 1v1 knockout, ₹100 entry, on campus at the School of Creative Studies, DY Patil Deemed to be University, 23 October.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Space+Grotesk:wght@400;500;600;700&family=Alegreya+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css?v=71">
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Ani<em>FX</em></span>
+    </a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="valorant.html">VALORANT</a>
+      <a href="fc26.html" class="current">FC26</a>
+      <a href="game-jam.html">Game Jam</a>
+      <a href="film-festival.html">Film Festival</a>
+      <a href="character-design.html">Character Design</a>
+      <a href="index.html#campus">On campus</a>
+      <a class="nav-cta" href="#" data-open-reg>Register</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ EVENT HERO ============ -->
+<section class="hero event-hero">
+  <video class="hero-video" muted loop playsinline poster="" aria-hidden="true"></video>
+  <div class="hero-video-overlay" aria-hidden="true"></div>
+  <div class="fc-pitch" aria-hidden="true">
+    <div class="fc-floodlight fc-fl-l"></div>
+    <div class="fc-floodlight fc-fl-r"></div>
+    <div class="fc-pitch-outline"></div>
+    <div class="fc-pitch-circle"></div>
+    <div class="fc-pitch-line"></div>
+    <div class="fc-goal fc-goal-l"></div>
+    <div class="fc-goal fc-goal-r"></div>
+    <div class="fc-ball"></div>
+    <div class="fc-players" id="fcPlayers" aria-hidden="true"></div>
+  </div>
+  <div class="wrap hero-inner">
+    <div class="event-eyebrow">
+      <a href="index.html">AniFX 2026</a><span class="sep">—</span><span>FC26</span>
+    </div>
+
+    <h1 class="display h-xl hero-title">FC26</h1>
+    <p class="hero-sub">Solo 1v1 knockout · One day · Played on campus</p>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#" data-open-reg>Register now</a>
+      <a class="btn btn-ghost" href="#panel-rules" data-panel-link="panel-rules">Read the rules</a>
+    </div>
+
+    <dl class="pill-row">
+      <div class="pill"><dt>Entry fee</dt><dd>₹100 / player</dd></div>
+      <div class="pill"><dt>Format</dt><dd>Solo, 1v1</dd></div>
+      <div class="pill"><dt>Registration closes</dt><dd>20 October 2026</dd></div>
+      <div class="pill"><dt>Prize</dt><dd>1st ₹5,000 · 2nd ₹3,000</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ CONTENT TABS ============ -->
+<section class="sec" style="padding-top:clamp(30px,5vw,56px)">
+  <div class="wrap">
+    <div class="content-tabs" role="tablist">
+      <button class="ctab" role="tab" aria-selected="true" data-panel="panel-overview">Overview</button>
+      <button class="ctab" role="tab" aria-selected="false" data-panel="panel-rules">Rules</button>
+      <button class="ctab" role="tab" aria-selected="false" data-panel="panel-schedule">Schedule</button>
+      <button class="ctab" role="tab" aria-selected="false" data-panel="panel-faq">FAQ</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-overview">
+      <div id="eventOverview"></div>
+    </div>
+
+    <div class="tab-panel" id="panel-rules">
+      <div class="rules-wrap" id="rulesWrap"></div>
+    </div>
+
+    <div class="tab-panel" id="panel-schedule">
+      <div class="sched" id="sched"></div>
+      <p class="sched-note" id="schedNote"></p>
+    </div>
+
+
+    <div class="tab-panel" id="panel-faq">
+      <div class="rules-wrap" id="faqWrap"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-h">AniFX 2026</div>
+        <p>23–24 October 2026</p>
+        <p>School of Creative Studies</p>
+        <p>DY Patil Deemed to be University</p>
+        <p>Navi Mumbai, Maharashtra</p>
+      </div>
+      <div>
+        <div class="foot-h">Contact</div>
+        <a href="#" id="mailLink" class="todo" title="Set contactEmail in CONFIG">add contact email</a>
+        <a href="#" id="phoneLink" class="todo" title="Set contactPhone in CONFIG">add contact number</a>
+        <a href="https://instagram.com/dypu.socs" target="_blank" rel="noopener">@dypu.socs</a>
+      </div>
+      <div>
+        <div class="foot-h">Competitions</div>
+        <a href="valorant.html">VALORANT</a>
+        <a href="fc26.html">FC26</a>
+        <a href="game-jam.html">Game jam</a>
+        <a href="film-festival.html">Film and animation</a>
+        <a href="character-design.html">Character design</a>
+      </div>
+      <div>
+        <div class="foot-h">Legal</div>
+        <a href="#" data-open-legal="terms">Terms and conditions</a>
+        <a href="#" data-open-legal="refund">Refund and cancellation</a>
+        <a href="#" data-open-legal="privacy">Privacy policy</a>
+        <a href="#" class="todo" title="Required before payment onboarding">Contact us</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>AniFX 2026 — School of Creative Studies, DY Patil Deemed to be University</span>
+      <span>Anything not covered by these rules is decided by the Tournament Director</span>
+    </div>
+    <p class="foot-disclaimer">This website and event are not associated with Riot Games or any other company. VALORANT is a trademark of Riot Games, Inc.</p>
+  </div>
+</footer>
+
+<!-- ============ REGISTRATION MODAL ============ -->
+<div class="modal-bg" id="regModal" role="dialog" aria-modal="true" aria-labelledby="regTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="regTitle">Register</h3>
+      <button class="modal-x" id="regClose" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="regForm" novalidate>
+        <div class="field">
+          <label for="fTrack">Competition</label>
+          <div class="cdrop" id="trackCdrop">
+            <button type="button" class="cdrop-btn" id="trackCdropBtn" aria-haspopup="listbox" aria-expanded="false"></button>
+            <ul class="cdrop-list" id="trackCdropList" role="listbox" hidden></ul>
+          </div>
+          <select id="fTrack" name="track" required hidden></select>
+          <div class="track-locked" id="trackLocked" hidden></div>
+        </div>
+
+        <div class="field" id="feeTierField" style="display:none"></div>
+
+        <div class="fee-line">
+          <span id="feeLabel">Entry fee</span>
+          <b id="feeAmount">—</b>
+        </div>
+
+        <div class="field">
+          <label for="fTeam" id="fTeamLabel">Team name</label>
+          <input id="fTeam" name="teamName" maxlength="40" pattern="[A-Za-z0-9 ]+" title="Letters and numbers only" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="fCaptain">Student name — full name</label>
+          <input id="fCaptain" name="registrantName" required maxlength="60" pattern="[A-Za-z .'-]+" title="Letters only" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="fPhone">WhatsApp number</label>
+          <input id="fPhone" name="registrantPhone" type="tel" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 digits" title="10 digit phone number, numbers only" autocomplete="tel">
+        </div>
+
+        <div class="field">
+          <label for="fEmail">Email</label>
+          <input id="fEmail" name="registrantEmail" type="email" required maxlength="80" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="fAge">Age</label>
+          <input id="fAge" name="age" type="number" required min="10" max="99" inputmode="numeric" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="fClassYear">Class / year / graduation</label>
+          <input id="fClassYear" name="classYear" required maxlength="40" placeholder="e.g. 12th, or B.Des Year 2" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="fBoard">Board (e.g. CBSE) — if applicable</label>
+          <input id="fBoard" name="board" maxlength="40" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="fCollege">College / institution</label>
+          <input id="fCollege" name="college" required autocomplete="organization">
+        </div>
+
+        <div class="field">
+          <label for="fAddress">Address</label>
+          <textarea id="fAddress" name="address" required></textarea>
+        </div>
+
+        <div class="field" id="rosterField">
+          <label for="fRoster" id="fRosterLabel">Squad — one player per line</label>
+          <textarea id="fRoster" name="roster"></textarea>
+          <p class="hint" id="rosterHint"></p>
+          <p class="hint" id="rosterCount"></p>
+        </div>
+
+        <label class="checkline">
+          <input type="checkbox" id="fAgree" required>
+          <span>I have read the rules for this competition. All listed players are enrolled students and their details are correct. Incorrect details may result in forfeit.</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary" id="regSubmit">Continue to payment</button>
+        <div class="form-msg" id="formMsg"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LEGAL MODAL (Terms / Refund / Privacy) ============ -->
+<div class="modal-bg" id="legalModal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="legalTitle">Legal</h3>
+      <button class="modal-x" id="legalClose" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="legal-body" id="legalBody"></div>
+    </div>
+  </div>
+</div>
+
+<script>window.PAGE_TRACK = "fc26";</script>
+<script src="shared.js?v=59"></script>
+</body>
+</html>
