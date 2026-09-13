@@ -961,6 +961,26 @@ header.scrolled .nav{height:52px}
 .track-cta{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .closes{font-family:var(--f-data);font-size:11.5px;color:var(--muted)}
 .closes b{color:var(--accent-2)}
+
+/* ---------- prize breakdown table (Prizes tab) ---------- */
+.prize-wrap{border-top:1px solid var(--line);padding-top:24px}
+.prize-table{width:100%;border-collapse:collapse;font-size:15px}
+.prize-table th{
+  text-align:left;font-family:var(--f-data);font-size:11.5px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+  padding:12px 14px;border-bottom:1px solid var(--line);
+}
+.prize-table td{padding:16px 14px;border-bottom:1px solid var(--line-soft);vertical-align:top;line-height:1.4}
+.prize-table tr:last-child td{border-bottom:0}
+.prize-table td:first-child{font-weight:600;color:var(--bone)}
+.prize-table td:last-child{font-weight:600;white-space:nowrap;text-align:right}
+.prize-table th:last-child{text-align:right}
+@media(max-width:520px){
+  .prize-table{font-size:13.5px}
+  .prize-table th{font-size:10.5px;padding:10px 4px}
+  .prize-table td{padding:12px 4px}
+  .prize-table td:last-child{white-space:normal}
+}
 @media(max-width:860px){
   .track{grid-template-columns:1fr}
   .track-media{min-height:auto;border:0;padding:0;display:block;background:none!important}

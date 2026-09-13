@@ -206,12 +206,25 @@ const CONFIG = {
       facts:[
         ["Entry fee","Free — students & animation entrants · ₹499 — professionals"],
         ["Categories","Animation · Live action"],
-        ["Prize","Winner — ₹20,000"],
+        ["Prize","Prize pool ₹55,000+"],
         ["Formats","2D, 3D, stop motion, VFX"],
         ["Screening","24 October, 10:00, on campus"],
         ["Jury","Industry panel"]
       ],
       eligibility:"Free for students (DY Patil or any other college) and animation hobbyists. Entrants who work in film/animation professionally pay the professional entry fee. Individual or team submissions welcome.",
+      prizeBreakdown:[
+        ["Big Screen Award","Best Short Film","₹10,000"],
+        ["Magic Frame Award","Best Animation Short Film","₹10,000"],
+        ["Storyteller Award","Best Screenplay Writer","₹5,000"],
+        ["Vision Award","Best Direction","₹8,000"],
+        ["Aperture Award","Best Cinematography","₹5,000"],
+        ["Cut To Award","Best Editing","₹5,000"],
+        ["Sound Design Award","Sound & Music","₹5,000"],
+        ["Spotlight Award","Best Performance","₹3,000"],
+        ["Character Award","Best Character Design","₹3,000"],
+        ["Rising Star Award","Emerging Filmmaker","Filmmaking Gear / Voucher (Worth ₹5,000)"],
+        ["Wild Card Award","Most Unexpected / Experimental Film","₹3,000"]
+      ],
       fee:0,
       feeNote:"Free for students & animation entrants",
       feeTiers:[
@@ -348,7 +361,7 @@ const CONFIG = {
       q:"Film & animation", track:"film",
       items:[
         "<b>Entry.</b> Free for students (DY Patil or any other college) and animation hobbyists. ₹499 for entrants who work in film or animation professionally, paid in one transaction by the Team Lead or solo entrant.",
-        "<b>Prize.</b> Winner takes ₹20,000.",
+        "<b>Prize.</b> Prize pool ₹55,000+ across 11 award categories.",
         "<b>Categories.</b> Animation — 2D, 3D, stop motion and VFX — and live action, judged separately.",
         "<b>Jury.</b> Industry panels for each category.",
         "<b>Screening.</b> Screening 1 is 24 October at 10:00, on campus.",
@@ -743,6 +756,18 @@ if($("#eventOverview") && PAGE_TRACK){
     wireTrackVideos();
     wireTrackMedia();
     revealNodes($$(".track",$("#eventOverview")));
+  }
+}
+
+/* ---------- event page: prizes tab (only tracks with prizeBreakdown) ---------- */
+if($("#prizesWrap") && PAGE_TRACK){
+  const t=CONFIG.tracks.find(x=>x.id===PAGE_TRACK);
+  if(t && t.prizeBreakdown){
+    const prizeRows=t.prizeBreakdown.map(([award,cat,prize])=>
+      '<tr><td>'+esc(award)+'</td><td>'+esc(cat)+'</td><td>'+esc(prize)+'</td></tr>').join("");
+    $("#prizesWrap").innerHTML =
+      '<table class="prize-table"><thead><tr><th>Award</th><th>Category</th><th>Prize</th></tr></thead>'
+      + '<tbody>'+prizeRows+'</tbody></table>';
   }
 }
 
