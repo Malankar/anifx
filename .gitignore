@@ -30,3 +30,8 @@ frontend-v2/.firebase/
 frontend-v2/firebase-debug.log
 frontend-v2/firestore-debug.log
 .env
+
+# Firebase (root, after frontend-v2 -> root move)
+.firebase/
+firebase-debug.log
+firestore-debug.log
