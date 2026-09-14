@@ -1492,6 +1492,7 @@ if($("#introFx") && $("#introSpacer")){
     const skipBtn=$("#introSkip",overlay);
     let dist=Math.max(spacer.offsetHeight,1);
     let ticking6=false;
+    let introDone=false;
     if(skipBtn){
       // First-ever visit to this device: full intro, no escape hatch.
       // Every load after that (including an immediate refresh) unlocks
@@ -1531,6 +1532,10 @@ if($("#introFx") && $("#introSpacer")){
       return out;
     })();
     function applyIntro(){
+      // Once the intro has fully resolved, scrolling back up over its
+      // spacer must not replay it — it's a one-shot per page load, not a
+      // scroll-linked toggle. Latch it done and stop touching the overlay.
+      if(introDone){ ticking6=false; return; }
       const p=Math.min(Math.max(window.scrollY/dist,0),1);
       const textStart=0.06, textEnd=0.42;
       const textP=Math.min(Math.max((p-textStart)/(textEnd-textStart),0),1);
@@ -1552,6 +1557,18 @@ if($("#introFx") && $("#introSpacer")){
       hint.style.opacity=String(Math.max(1-p/0.1,0));
       overlay.style.opacity=String(1-bgP);
       overlay.style.display=bgP>=1?"none":"flex";
+      if(bgP>=1){
+        introDone=true;
+        // Collapse the spacer's scroll runway too, not just the overlay —
+        // otherwise it just sits there as dead blank space you scroll
+        // through on the way back up. Compensate scrollY by the same
+        // amount so collapsing it doesn't jump the content underneath.
+        const collapsedBy=spacer.offsetHeight;
+        spacer.style.height="0px";
+        spacer.style.margin="0";
+        spacer.style.border="0";
+        window.scrollTo(window.scrollX, Math.max(window.scrollY-collapsedBy,0));
+      }
       // Explicit, not relied-on-inheritance: the skip button sits inside
       // the fading overlay, but its own opacity/interactivity is driven
       // directly here too, so it visibly fades and un-clicks in sync
