@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Space+Grotesk:wght@400;500;600;700&family=Alegreya+Sans:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css?v=76">
+<link rel="stylesheet" href="shared.css?v=80">
 </head>
 <body>
 
@@ -165,6 +165,32 @@
 
         <div class="field" id="feeTierField" style="display:none"></div>
 
+        <div class="field" id="entryTypeField" style="display:none">
+          <label>Entry type</label>
+          <div class="entry-type-opts">
+            <label class="entry-type-opt">
+              <input type="radio" name="entryType" value="solo">
+              <span class="et-title">Solo entry</span>
+              <span class="et-sub" id="etSoloSub"></span>
+            </label>
+            <label class="entry-type-opt">
+              <input type="radio" name="entryType" value="team" checked>
+              <span class="et-title">Team entry</span>
+              <span class="et-sub" id="etTeamSub"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field" id="categoryField" style="display:none">
+          <label for="fCategory">Category</label>
+          <select id="fCategory" name="category"></select>
+        </div>
+
+        <div class="field" id="categoryOtherField" style="display:none">
+          <label for="fCategoryOther">Please specify the category</label>
+          <input id="fCategoryOther" name="categoryOther" maxlength="60" placeholder="e.g. Documentary, Experimental, Mixed media" autocomplete="off">
+        </div>
+
         <div class="fee-line">
           <span id="feeLabel">Entry fee</span>
           <b id="feeAmount">—</b>
@@ -267,6 +293,6 @@
 </div>
 
 <script>window.PAGE_TRACK = "gamejam";</script>
-<script src="shared.js?v=61"></script>
+<script src="shared.js?v=64"></script>
 </body>
 </html>

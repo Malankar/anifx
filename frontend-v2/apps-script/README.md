@@ -10,8 +10,18 @@ Drive folder and linked from the sheet.
    (one cell per column, in this exact order):
 
    ```
-   Submitted At	Track ID	Track	Fee	Team Name	Lead Role	Registrant Name	Phone	Email	College	Age	Class/Year	Board	Address	Roster	Txn ID	Screenshot Link
+   Submitted At	Track	Entry Type	Team Name	Lead Role	Registrant Name	Phone	Email	Category	Roster	College	Class/Year	Board	Age	Address	Fee	Txn ID	Screenshot Link
    ```
+
+   You don't have to type this in — `ensureHeaders()` in the script writes
+   it automatically the first time the sheet is empty.
+
+   A few columns only apply to some tracks and are just blank elsewhere:
+   Entry Type/Team Name/Lead Role/Roster only fill in for team tracks
+   (VALORANT, game jam, film — blank on a game jam/film Solo entry too),
+   Category only for film (the picked category, or whatever the person
+   typed in "specify" when they chose Others), and Fee/Txn ID/Screenshot
+   Link are blank for the free character-design track.
 
 2. In the Sheet, open **Extensions → Apps Script**. Delete the
    default `Code.gs` contents and paste in `Code.gs` from this folder.

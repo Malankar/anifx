@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Film &amp; Animation — AniFX 2026</title>
-<meta name="description" content="AniFX 2026 Film & Animation showcase. Free for students and animation entrants, ₹499 professional. Prize pool ₹55,000+. Screening 1 on campus, 24 October, 10:00.">
+<meta name="description" content="AniFX 2026 Film & Animation showcase. Free entry for all. Prize pool ₹55,000+. Screening 1 on campus, 24 October, 10:00.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Space+Grotesk:wght@400;500;600;700&family=Alegreya+Sans:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css?v=76">
+<link rel="stylesheet" href="shared.css?v=80">
 </head>
 <body>
 
@@ -50,7 +50,7 @@
     </div>
 
     <h1 class="display h-xl hero-title">FILM &amp; ANIMATION</h1>
-    <p class="hero-sub">Free for students &amp; animation entrants · ₹499 professional · 2D, 3D, stop motion, VFX, live action</p>
+    <p class="hero-sub">Free entry for all · 2D, 3D, stop motion, VFX, live action</p>
 
     <div class="hero-actions">
       <a class="btn btn-primary" href="#" data-open-reg>Register</a>
@@ -58,8 +58,8 @@
     </div>
 
     <dl class="pill-row">
-      <div class="pill"><dt>Entry fee</dt><dd>Free / ₹499 professional</dd></div>
-      <div class="pill"><dt>Categories</dt><dd>Animation · Live action</dd></div>
+      <div class="pill"><dt>Entry fee</dt><dd>Free for all</dd></div>
+      <div class="pill"><dt>Categories</dt><dd>2D · 3D · Stop Motion · Live Action · Others</dd></div>
       <div class="pill"><dt>Prize</dt><dd>Prize pool ₹55,000+</dd></div>
       <div class="pill"><dt>Screening 1</dt><dd>24 October, 10:00, on campus</dd></div>
     </dl>
@@ -193,6 +193,32 @@
 
         <div class="field" id="feeTierField" style="display:none"></div>
 
+        <div class="field" id="entryTypeField" style="display:none">
+          <label>Entry type</label>
+          <div class="entry-type-opts">
+            <label class="entry-type-opt">
+              <input type="radio" name="entryType" value="solo">
+              <span class="et-title">Solo entry</span>
+              <span class="et-sub" id="etSoloSub"></span>
+            </label>
+            <label class="entry-type-opt">
+              <input type="radio" name="entryType" value="team" checked>
+              <span class="et-title">Team entry</span>
+              <span class="et-sub" id="etTeamSub"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field" id="categoryField" style="display:none">
+          <label for="fCategory">Category</label>
+          <select id="fCategory" name="category"></select>
+        </div>
+
+        <div class="field" id="categoryOtherField" style="display:none">
+          <label for="fCategoryOther">Please specify the category</label>
+          <input id="fCategoryOther" name="categoryOther" maxlength="60" placeholder="e.g. Documentary, Experimental, Mixed media" autocomplete="off">
+        </div>
+
         <div class="fee-line">
           <span id="feeLabel">Entry fee</span>
           <b id="feeAmount">—</b>
@@ -295,6 +321,6 @@
 </div>
 
 <script>window.PAGE_TRACK = "film";</script>
-<script src="shared.js?v=61"></script>
+<script src="shared.js?v=64"></script>
 </body>
 </html>
