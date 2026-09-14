@@ -1272,6 +1272,21 @@ input.field-invalid{border-color:var(--warn);box-shadow:0 0 0 1px var(--warn)}
   margin-bottom:16px;font-size:14px;
 }
 .fee-line b{font-family:var(--f-data);font-size:19px;color:var(--accent);font-weight:700}
+
+/* Solo entry / team entry cards (game jam, film festival) — two option
+   cards side by side, each a bold title over a one-line explanation.
+   Selection reads via border colour only, no separate radio dot. */
+.entry-type-opts{display:flex;gap:12px;margin-bottom:16px}
+.entry-type-opt{
+  position:relative;flex:1;display:flex;flex-direction:column;gap:9px;
+  padding:16px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-sm);cursor:pointer;transition:border-color .15s;
+}
+.entry-type-opt input{position:absolute;opacity:0;width:0;height:0}
+.entry-type-opt:has(input:checked){border-color:var(--accent)}
+.et-title{display:block;font-family:var(--f-body);font-size:15px;font-weight:600;color:var(--bone)}
+.et-sub{display:block;font-family:var(--f-body);font-size:12.5px;line-height:1.4;color:var(--muted);margin-top:4px}
+
 .checkline{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);margin-bottom:18px}
 .checkline input{margin-top:4px;accent-color:var(--accent);flex-shrink:0}
 .modal .btn{width:100%;text-align:center}

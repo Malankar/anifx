@@ -39,7 +39,7 @@ const CONFIG = {
      account, then paste the Web App URL here. Data lands in your
      own Google Sheet. Leave empty and the form will tell people
      registration is not open yet instead of failing silently.     */
-  sheetEndpoint: "https://script.google.com/macros/s/AKfycbwDWiGSEVPeFJY_NEiFEBHRm_NuMrE9CBxaKqwumsAdBDv6oBlSneF--8cPTJoQMz9brA/exec",
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxYMZZT8Z4zCgLxq_nPibBkQlBsVx36D2mqNIbXa8H7cJ3Zu1_OGBYgbu3LoaIGvfUMsg/exec",
 
   /* --- your details ---------------------------------------------- */
   contactEmail: "",              // e.g. "anifx@dypatil.edu"
@@ -172,6 +172,9 @@ const CONFIG = {
       format:"100 hours · Online · Side-scroller action",
       blurb:"Design, build and ship an original side-scrolling action game in 100 hours. 2D, 3D or anything between. Judged live on campus at the end.",
       isTeam:true,
+      soloTeamChoice:true,
+      entrySoloNote:"Just you. No team name or roster.",
+      entryTeamNote:"Up to 5 members, one lead.",
       leadLabel:"Team Lead",
       facts:[
         ["Entry fee","₹1,000 per team"],
@@ -181,7 +184,7 @@ const CONFIG = {
         ["Duration","100 hours, online"],
         ["Jury round","24 October, 14:00, on campus"]
       ],
-      eligibility:"Open to all currently enrolled college students, 18 or older. Teams of 1-5 — each person may register with only one team.",
+      eligibility:"Open to all currently enrolled college students, 18 or older. Teams of 1-5 — each person may register with only one team. Solo entries are welcome.",
       fee:1000,
       feeNote:"₹1,000 per team",
       slots:0,
@@ -202,16 +205,20 @@ const CONFIG = {
       format:"Submission based · 2D, 3D, stop motion, VFX, live action",
       blurb:"A showcase for student films and animation. Animated work and live action are judged separately by industry juries, screened on campus during the festival.",
       isTeam:true,
+      soloTeamChoice:true,
+      entrySoloNote:"One filmmaker, your details only.",
+      entryTeamNote:"Team name, lead and crew.",
       leadLabel:"Team Lead",
+      categories:["2D Animation","3D Animation","Stop Motion","Live Action","Others"],
       facts:[
-        ["Entry fee","Free — students & animation entrants · ₹499 — professionals"],
-        ["Categories","Animation · Live action"],
+        ["Entry fee","Free for all"],
+        ["Categories","2D Animation · 3D Animation · Stop Motion · Live Action · Others"],
         ["Prize","Prize pool ₹55,000+"],
         ["Formats","2D, 3D, stop motion, VFX"],
         ["Screening","24 October, 10:00, on campus"],
         ["Jury","Industry panel"]
       ],
-      eligibility:"Free for students (DY Patil or any other college) and animation hobbyists. Entrants who work in film/animation professionally pay the professional entry fee. Individual or team submissions welcome.",
+      eligibility:"Free for all entrants — students (DY Patil or any other college), animation hobbyists and professionals. Individual or team submissions welcome.",
       prizeBreakdown:[
         ["Big Screen Award","Best Short Film","₹10,000"],
         ["Magic Frame Award","Best Animation Short Film","₹10,000"],
@@ -226,11 +233,7 @@ const CONFIG = {
         ["Wild Card Award","Most Unexpected / Experimental Film","₹3,000"]
       ],
       fee:0,
-      feeNote:"Free for students & animation entrants",
-      feeTiers:[
-        {key:"student", label:"Student / animation entrant — Free", amount:0},
-        {key:"pro",     label:"Professional — ₹499",                amount:499}
-      ],
+      feeNote:"Entry fee",
       slots:0,
       closes:"To be announced",
       closesAt:"",
@@ -360,7 +363,7 @@ const CONFIG = {
     {
       q:"Film & animation", track:"film",
       items:[
-        "<b>Entry.</b> Free for students (DY Patil or any other college) and animation hobbyists. ₹499 for entrants who work in film or animation professionally, paid in one transaction by the Team Lead or solo entrant.",
+        "<b>Entry.</b> Free for all entrants — students (DY Patil or any other college), animation hobbyists and professionals.",
         "<b>Prize.</b> Prize pool ₹55,000+ across 11 award categories.",
         "<b>Categories.</b> Animation — 2D, 3D, stop motion and VFX — and live action, judged separately.",
         "<b>Jury.</b> Industry panels for each category.",
@@ -940,6 +943,15 @@ if($("#regModal")){
 
   function currentTrack(){ return CONFIG.tracks.find(t=>t.id===sel.value)||CONFIG.tracks[0]; }
 
+  // Effective solo/team state — most tracks are just their fixed t.isTeam,
+  // but a track with soloTeamChoice (game jam, film festival) lets the
+  // person pick via the Solo entry / Team entry cards, defaulting to team.
+  function isTeamEntry(t){
+    if(!t.soloTeamChoice) return !!t.isTeam;
+    const picked=$("input[name='entryType']:checked");
+    return !picked || picked.value==="team";
+  }
+
   function updateRosterCount(){
     const t=currentTrack(), out=$("#rosterCount");
     if(!out) return;
@@ -962,7 +974,7 @@ if($("#regModal")){
 
   function syncTrack(){
     const t=currentTrack(), st=trackState(t);
-    const isTeam=!!t.isTeam, lead=t.leadLabel||"";
+    const lead=t.leadLabel||"";
 
     const feeTierField=$("#feeTierField");
     if(feeTierField){
@@ -1001,16 +1013,77 @@ if($("#regModal")){
         "<p>Scan to pay via UPI/BHIM, RuPay, Visa or Mastercard. Merchant: D Y Patil University Scho. Keep your reference — you'll need it below.</p>";
     }
 
+    // Solo entry / team entry cards — only tracks that opt in (game jam,
+    // film festival) show this. Built once per track so re-running
+    // syncTrack as the radio's own change handler doesn't reset the pick.
+    const entryTypeField=$("#entryTypeField");
+    if(entryTypeField){
+      if(t.soloTeamChoice){
+        entryTypeField.style.display="block";
+        if(entryTypeField.dataset.builtFor!==t.id){
+          entryTypeField.dataset.builtFor=t.id;
+          $$("input[name='entryType']",entryTypeField).forEach(r=>{ r.checked = r.value==="team"; });
+        }
+        $$("input[name='entryType']",entryTypeField).forEach(r=>{ r.onchange=syncTrack; });
+        const soloSub=$("#etSoloSub"), teamSub=$("#etTeamSub");
+        if(soloSub) soloSub.textContent=t.entrySoloNote||"";
+        if(teamSub) teamSub.textContent=t.entryTeamNote||"";
+      }else{
+        entryTypeField.style.display="none";
+        delete entryTypeField.dataset.builtFor;
+      }
+    }
+
+    // Category (film festival) — a plain dropdown, same built-once-per-track
+    // pattern as the other dynamic fields above.
+    const categoryField=$("#categoryField"), fCategory=$("#fCategory");
+    if(categoryField && fCategory){
+      if(t.categories){
+        categoryField.style.display="block";
+        if(fCategory.dataset.builtFor!==t.id){
+          fCategory.dataset.builtFor=t.id;
+          fCategory.innerHTML=t.categories.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join("");
+          fCategory.onchange=syncTrack;
+        }
+      }else{
+        categoryField.style.display="none";
+        fCategory.innerHTML="";
+        delete fCategory.dataset.builtFor;
+      }
+    }
+    const categoryOtherField=$("#categoryOtherField");
+    if(categoryOtherField){
+      const showOther = !!(t.categories && fCategory.value==="Others");
+      categoryOtherField.style.display = showOther ? "block" : "none";
+      $("#fCategoryOther").required = showOther;
+      if(!showOther) $("#fCategoryOther").value="";
+    }
+
     // Team vs solo fields
+    const isTeam=isTeamEntry(t);
     const fTeamField=$("#fTeam").closest(".field");
     if(fTeamField) fTeamField.style.display = isTeam ? "block" : "none";
     $("#fTeam").required = isTeam;
     $("#fTeamLabel").textContent = "Team name";
 
+    // A soloTeamChoice track's Solo entry has no lead role to name — just
+    // "Full name" / "Email ID". A track that's solo-only by nature (no
+    // choice, e.g. character design) keeps its original wording.
+    const soloCaptainLabel = t.soloTeamChoice ? "Full name" : "Student name — full name";
+    const soloEmailLabel   = t.soloTeamChoice ? "Email ID" : "Email";
+
+    // Lead-prefixed labels for a team entry — a soloTeamChoice track always
+    // reads "Team lead — …" (matches the register-form mockup); any other
+    // team track keeps its own configured lead role (e.g. valorant's
+    // "Captain — full name").
+    const leadCaptainLabel = t.soloTeamChoice ? "Team lead — Full name" : (lead+" — full name");
+    const leadPhoneLabel   = t.soloTeamChoice ? "Team lead — WhatsApp number" : (lead+" WhatsApp number");
+    const leadEmailLabel   = t.soloTeamChoice ? "Team lead — Email ID" : (lead+" email");
+
     $("#fCaptain").required = true;
-    document.querySelector("label[for='fCaptain']").textContent = isTeam ? (lead+" — full name") : "Student name — full name";
-    document.querySelector("label[for='fPhone']").textContent = isTeam ? (lead+" WhatsApp number") : "WhatsApp number";
-    document.querySelector("label[for='fEmail']").textContent = isTeam ? (lead+" email") : "Email";
+    document.querySelector("label[for='fCaptain']").textContent = isTeam ? leadCaptainLabel : soloCaptainLabel;
+    document.querySelector("label[for='fPhone']").textContent = isTeam ? leadPhoneLabel : "WhatsApp number";
+    document.querySelector("label[for='fEmail']").textContent = isTeam ? leadEmailLabel : soloEmailLabel;
 
     const wantsRoster=!!t.rosterLabel && isTeam;
     $("#rosterField").style.display=wantsRoster?"block":"none";
@@ -1073,11 +1146,15 @@ if($("#regModal")){
 
   function fieldProblem(){
     const t=currentTrack();
-    const leadWord = t.isTeam ? (t.leadLabel||"lead").toLowerCase() : "your";
-    if(t.isTeam && !$("#fTeam").checkValidity()) return {el:$("#fTeam"), msg:"Enter a "+$("#fTeamLabel").textContent.toLowerCase()+"."};
-    if(!$("#fCaptain").checkValidity()) return {el:$("#fCaptain"), msg:"Enter "+leadWord+(t.isTeam?"'s":"")+" full name."};
-    if(!$("#fPhone").checkValidity()) return {el:$("#fPhone"), msg:"Enter "+leadWord+(t.isTeam?"'s":"")+" WhatsApp number."};
+    const isTeam=isTeamEntry(t);
+    const leadWord = isTeam ? (t.soloTeamChoice ? "team lead" : (t.leadLabel||"lead").toLowerCase()) : "your";
+    if(isTeam && !$("#fTeam").checkValidity()) return {el:$("#fTeam"), msg:"Enter a "+$("#fTeamLabel").textContent.toLowerCase()+"."};
+    if(!$("#fCaptain").checkValidity()) return {el:$("#fCaptain"), msg:"Enter "+leadWord+(isTeam?"'s":"")+" full name."};
+    if(!$("#fPhone").checkValidity()) return {el:$("#fPhone"), msg:"Enter "+leadWord+(isTeam?"'s":"")+" WhatsApp number."};
     if(!$("#fEmail").checkValidity()) return {el:$("#fEmail"), msg:"Enter a valid email address."};
+    if(t.categories && $("#fCategory").value==="Others" && !$("#fCategoryOther").checkValidity()){
+      return {el:$("#fCategoryOther"), msg:"Specify the category."};
+    }
     if(!$("#fCollege").checkValidity()) return {el:$("#fCollege"), msg:"Enter your college or institution."};
     if(!$("#fAge").checkValidity()){
       const ageEl=$("#fAge"), av=ageEl.validity;
@@ -1190,10 +1267,13 @@ if($("#regModal")){
       }
     }
 
+    const isTeam=isTeamEntry(t);
+    const catVal=t.categories ? $("#fCategory").value : "";
     const payload={
       track:t.name, trackId:t.id, fee:currentFee(t),
-      teamName:t.isTeam?$("#fTeam").value.trim():"",
-      leadRole:t.isTeam?(t.leadLabel||""):"Solo entrant",
+      entryType: t.soloTeamChoice ? (isTeam?"team":"solo") : "",
+      teamName:isTeam?$("#fTeam").value.trim():"",
+      leadRole:isTeam?(t.leadLabel||""):"Solo entrant",
       registrantName:$("#fCaptain").value.trim(),
       registrantPhone:phone,
       registrantEmail:$("#fEmail").value.trim(),
@@ -1202,7 +1282,9 @@ if($("#regModal")){
       classYear:$("#fClassYear").value.trim(),
       board:$("#fBoard").value.trim(),
       address:$("#fAddress").value.trim(),
-      roster:t.isTeam?$("#fRoster").value.trim():"",
+      roster:isTeam?$("#fRoster").value.trim():"",
+      category: catVal,
+      categoryOther: catVal==="Others" ? $("#fCategoryOther").value.trim() : "",
       // Payment proof — only present when this entry actually paid via
       // the QR step. The Apps Script endpoint decodes
       // paymentScreenshotBase64, saves it to a Drive folder, and puts

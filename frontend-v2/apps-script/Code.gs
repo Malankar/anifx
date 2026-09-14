@@ -7,10 +7,21 @@
 const SHEET_ID = "1h5P26etgB_F2vmJZr2auzuF5ma4v0kLOqBFoxZv8rec";
 const FOLDER_NAME = "AniFX Payment Screenshots";
 
+// Grouped for a person scanning the sheet, not for how the code builds
+// the row: who/entry-shape first, then contact, then academic, then
+// payment proof. A few columns don't apply to every track (e.g. Entry
+// Type only for game jam/film, Category only for film, Roster only for
+// team tracks, Fee/Txn/Screenshot blank for the free character-design
+// track) — those cells are just blank on rows where they don't apply.
 const HEADERS = [
-  "Submitted At", "Track ID", "Track", "Fee", "Team Name", "Lead Role",
-  "Registrant Name", "Phone", "Email", "College", "Age", "Class/Year",
-  "Board", "Address", "Roster", "Txn ID", "Screenshot Link",
+  "Submitted At", "Track",
+  "Entry Type",              // Solo / Team — game jam, film only
+  "Team Name", "Lead Role",  // team tracks only
+  "Registrant Name", "Phone", "Email",
+  "Category",                // film only
+  "Roster",                  // team tracks only
+  "College", "Class/Year", "Board", "Age", "Address",
+  "Fee", "Txn ID", "Screenshot Link",
 ];
 
 function doPost(e) {
@@ -30,20 +41,23 @@ function doPost(e) {
 
   sheet.appendRow([
     data.submittedAt || new Date().toISOString(),
-    data.trackId || "",
     data.track || "",
-    data.fee || "",
+    data.entryType ? (data.entryType === "solo" ? "Solo" : "Team") : "",
     data.teamName || "",
     data.leadRole || "",
     data.registrantName || "",
     data.registrantPhone || "",
     data.registrantEmail || "",
+    data.category === "Others" && data.categoryOther
+      ? "Others, " + data.categoryOther
+      : (data.category || ""),
+    data.roster || "",
     data.college || "",
-    data.age || "",
     data.classYear || "",
     data.board || "",
+    data.age || "",
     data.address || "",
-    data.roster || "",
+    data.fee || "",
     data.txnId || "",
     screenshotLink,
   ]);
