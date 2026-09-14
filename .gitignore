@@ -20,18 +20,9 @@ dist/
 dist-ssr/
 *.local
 
-# frontend-v2 (Vite + Firebase)
-frontend-v2/node_modules/
-frontend-v2/dist/
-frontend-v2/functions/node_modules/
-frontend-v2/functions/lib/
-frontend-v2/.env.local
-frontend-v2/.firebase/
-frontend-v2/firebase-debug.log
-frontend-v2/firestore-debug.log
-.env
-
 # Firebase (root, after frontend-v2 -> root move)
+.env
+.env.local
 .firebase/
 firebase-debug.log
 firestore-debug.log
