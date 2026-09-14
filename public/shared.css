@@ -370,6 +370,7 @@ header.scrolled .nav{height:52px}
 .hero-meta{
   display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
   color:var(--muted);margin-bottom:18px;
+  font-family:var(--f-body);font-size:15px;
 }
 .hero-meta strong{color:var(--bone);font-weight:600}
 .hero-title{margin:0 0 6px}
