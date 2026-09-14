@@ -252,7 +252,7 @@ const CONFIG = {
       name:"Character design",
       page:"/character-design",
       format:"Free entry · Solo · Held 23 October, on campus",
-      blurb:"Design an original character live at the venue, on a theme announced at the start of the competition. In association with Katha Film Club.",
+      blurb:"Design an original character live at the venue, on a theme announced at the start of the competition.",
       isTeam:false,
       leadLabel:"",
       facts:[
@@ -375,7 +375,7 @@ const CONFIG = {
     {
       q:"Character design", track:"character",
       items:[
-        "<b>Organised by</b> the School of Creative Studies, DY Patil Deemed to be University, in association with Katha Film Club.",
+        "<b>Organised by</b> the School of Creative Studies, DY Patil Deemed to be University.",
         "<b>Entry.</b> Free. Solo only — each participant registers and submits individually. One character design per participant.",
         "<b>Eligibility.</b> Open to students from colleges and educational institutes. A valid college/institute ID is required for verification at the venue.",
         "<b>Venue and time.</b> Media Lab, COE Building, DY Patil Deemed to be University, Nerul, Navi Mumbai — 23 October 2026, 10:00.",
