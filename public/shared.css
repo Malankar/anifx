@@ -757,7 +757,7 @@ header.scrolled .nav{height:52px}
   clip-path:inset(0 calc(100% - var(--fill-pct,0%)) 0 0);pointer-events:none;
 }
 .brand-break .outline-sub{
-  font-family:var(--f-data);font-size:clamp(13px,2vw,18px);letter-spacing:.3em;
+  font-family:'Bree Serif',serif;font-size:clamp(13px,2vw,18px);letter-spacing:.3em;
   color:var(--muted);margin-top:14px;
 }
 
