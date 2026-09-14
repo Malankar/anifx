@@ -18,6 +18,13 @@ Firebase is used only for Hosting.
 - pnpm (`corepack enable` or `npm i -g pnpm`)
 - Firebase CLI (`npm i -g firebase-tools`)
 - Access to the `anifx-2b1f0` Firebase project (or your own — see below)
+- Git
+
+### Windows
+
+No extra tooling beyond the above — this is a plain Vite/HTML/CSS/JS
+project, no native/compiled deps. Use PowerShell, cmd, or WSL; all
+scripts (`pnpm dev`, `pnpm run deploy`, etc.) run cross-platform as-is.
 
 ## Setup
 
