@@ -1,5 +1,13 @@
 {
   "projects": {
     "default": "anifx-2b1f0"
+  },
+  "targets": {
+    "anifx-2b1f0": {
+      "hosting": {
+        "main": ["anifx-2b1f0"],
+        "fest": ["anifx-fest"]
+      }
+    }
   }
 }
