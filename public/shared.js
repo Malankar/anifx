@@ -39,11 +39,10 @@ const CONFIG = {
      account, then paste the Web App URL here. Data lands in your
      own Google Sheet. Leave empty and the form will tell people
      registration is not open yet instead of failing silently.     */
-  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxYMZZT8Z4zCgLxq_nPibBkQlBsVx36D2mqNIbXa8H7cJ3Zu1_OGBYgbu3LoaIGvfUMsg/exec",
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxJWqLlMC4CJW8W5Q929BrirW4Y0LOgEl4xOdvFYrc6E0V72NBjpmZCTlpeuocur8vgeA/exec",
 
   /* --- your details ---------------------------------------------- */
-  contactEmail: "",              // e.g. "anifx@dypatil.edu"
-  contactPhone: "",              // e.g. "+91 70451 95922"
+  contactEmail: "anifx.fest@gmail.com",
   instagram:    "dypu.socs",
 
   /* --- background video --------------------------------------------
@@ -73,20 +72,63 @@ const CONFIG = {
       day:"Friday 23 October",
       items:[
         {time:"10:00", title:"Character design",                     where:"Media Lab"},
-        {time:"10:00", title:"VALORANT grand final",                 where:"Game Lab", feature:true},
+        {time:"10:00", title:"VALORANT Grand Finale",                where:"Game Lab", feature:true},
         {time:"11:00", title:"FC26",                                 where:"204, 205"}
       ]
     },
     {
       day:"Saturday 24 October",
       items:[
-        {time:"10:00", title:"Screening 1 — film and animation",     where:"Auditorium"},
+        {time:"10:00", title:"Screening of film and animation",      where:"Auditorium"},
         {time:"14:00", title:"Game jam screening",                   where:"Auditorium", feature:true},
-        {time:"16:00", title:"Prize distribution — all categories",  where:"Auditorium", feature:true}
+        {time:"16:00", title:"Prize distribution - all categories",  where:"Auditorium", feature:true}
       ]
     }
   ],
-  scheduleNote:"Times are fixed.",
+  scheduleNote:"Schedule is subject to change by the organisers.",
+
+  /* --- game jam timeline -------------------------------------------
+     Online-only, so it's kept separate from `schedule` above (that one
+     is specifically the in-person, on-campus weekend and also feeds
+     the homepage's On Campus section). Rendered only on the Game Jam
+     page's own Schedule tab, via #gjTimeline. */
+  gamejamTimeline:[
+    {time:"14 Oct, 23:59", title:"Game jam registration closes", where:"Online"},
+    {time:"15 Oct, 10:00", title:"Game jam Discord invite and brief", where:"Online"},
+    {time:"16 Oct, 12:00", title:"Game jam begins - 100-hour clock starts", where:"Online", feature:true},
+    {time:"16 Oct, 22:00", title:"Game jam milestone: GDD due (10h)", where:"Online"},
+    {time:"17 Oct, 08:00", title:"Game jam milestone: Artbook due (20h)", where:"Online"},
+    {time:"18 Oct, 04:00", title:"Game jam milestone: Alpha due (40h)", where:"Online"},
+    {time:"19 Oct, 20:00", title:"Game jam milestone: Beta due (80h)", where:"Online"},
+    {time:"20 Oct, 16:00", title:"Game jam ends - final submission due (100h)", where:"Online", feature:true}
+  ],
+
+  /* --- valorant online timeline -------------------------------------
+     Same reasoning as gamejamTimeline above: online-only, kept out of
+     `schedule` so it doesn't show on the homepage's On Campus section.
+     Rendered only on the VALORANT page's own Schedule tab, via
+     #vTimeline. */
+  valorantTimeline:[
+    {time:"10-16 Oct, 17:00", title:"Group stage matches (evenings)", where:"Online"},
+    {time:"18 Oct, 12:00", title:"Semi-finals", where:"Online", feature:true}
+  ],
+  valorantTimelineNote:"Exact timing and dates for online matches will be communicated through the Discord server.",
+
+  /* --- valorant on-campus schedule -----------------------------------
+     Formatted specifically for this page: heading is the event itself
+     (not a bare weekday/date), date+time sits in the time column,
+     venue in the title slot. Replaces the generic #sched on this page
+     so VALORANT's own Grand Finale/Prize distribution read cleanly
+     instead of sharing the plain day-by-day format every other page
+     uses. */
+  valorantCampus:[
+    { day:"Grand Finale", items:[
+        {time:"23 October, 10:00", title:"Game Lab", feature:true}
+    ]},
+    { day:"Prize distribution", items:[
+        {time:"24 October, 16:00", title:"Auditorium"}
+    ]}
+  ],
 
   /* --- competitions ---------------------------------------------- */
   tracks: [
@@ -94,22 +136,22 @@ const CONFIG = {
       id:"valorant",
       name:"VALORANT",
       page:"/valorant",
-      format:"32 teams · Best of 3 · Online groups, offline final",
-      blurb:"Open bracket to 32 teams. Group stage runs online through October, semi-finals online, and the grand final is played offline on campus in front of a crowd.",
+      format:"Group stage & semis online · Grand final offline on campus",
+      blurb:"Group stage runs online through October, evenings, best of three. It starts 10 October, with Discord access and match fixtures going out on 9 October. Semi-finals are online, best of five. The grand final is played offline on campus.",
       isTeam:true,
-      leadLabel:"Captain",
+      leadLabel:"Leader",
       facts:[
         ["Entry fee","₹1,000 per team"],
-        ["Team size","5 players + up to 2 named subs"],
-        ["Prize","Prize pool ₹17,500"],
         ["Registration closes","9 October 2026"],
+        ["Team size","5 players"],
+        ["Prize","Prize pool ₹17,500"],
         ["Group stage","October, evenings, online"],
         ["Grand final","23 October, 10:00, on campus"]
       ],
-      eligibility:"Open to all currently enrolled college students, 18 or older. One roster per player — you may not appear on two VALORANT teams.",
+      eligibility:"Open to all currently enrolled college students carrying a valid college ID. One roster per player - you may not appear on two VALORANT teams. There is no cap on the number of teams that may register.",
       fee:1000,
       feeNote:"₹1,000 per team",
-      slots:32,
+      slots:0,
       closes:"9 October 2026",
       closesAt:"2026-10-09T23:59:59+05:30",
       open:true,
@@ -119,8 +161,8 @@ const CONFIG = {
                                  // copyright per the client; used for both the index
                                  // card and (via the hero-wiring image fallback) this
                                  // track's own page hero, since there's no video yet.
-      rosterLabel:"Squad — one player per line",
-      rosterHint:"Name, Riot ID with tagline, phone, email. All 5 players plus any subs. Riot IDs are how we invite you to the lobby — a wrong ID means a forfeit.",
+      rosterLabel:"Squad - one player per line",
+      rosterHint:"Name, Riot ID with tagline, phone, email. All 5 players. Riot IDs are how we invite you to the lobby - a wrong ID means a forfeit.",
       rosterPlaceholder:"Name, Riot ID#TAG, phone, email",
       rosterRequired:true
     },
@@ -129,18 +171,18 @@ const CONFIG = {
       name:"FC26",
       page:"/fc26",
       format:"Solo knockout · One day · On campus",
-      blurb:"Single-elimination solo knockout played on PlayStation on campus, one player at a time — no teams.",
+      blurb:"A single-elimination solo knockout, played offline on campus on PlayStation.",
       isTeam:false,
       leadLabel:"",
       facts:[
         ["Entry fee","₹100 per player"],
-        ["Format","Solo, single elimination"],
-        ["Prize","1st — ₹5,000 · 2nd — ₹3,000"],
         ["Registration closes","20 October 2026"],
+        ["Format","Solo"],
+        ["Prize pool","₹8,000"],
         ["Played","23 October, on campus"],
         ["Match length","6-minute halves"]
       ],
-      eligibility:"Open to all currently enrolled college students, 18 or older. Solo entry only — there is no team registration for FC26.",
+      eligibility:"Open to all currently enrolled college students. Solo entry only - there is no team registration for FC26. There's no cap on the number of entrants.",
       fee:100,
       feeNote:"₹100 per player",
       slots:0,
@@ -169,31 +211,32 @@ const CONFIG = {
       id:"gamejam",
       name:"Game jam",
       page:"/game-jam",
-      format:"100 hours · Online · Side-scroller action",
-      blurb:"Design, build and ship an original side-scrolling action game in 100 hours. 2D, 3D or anything between. Judged live on campus at the end.",
+      format:"100 hours · Online · Solo/Team · Side-scroller action",
+      blurb:"Design, build and ship an original Side-Scroller Action game in 100 hours - 2D, 3D or a mix of both, with no mandatory theme. Teams of one to five move through five milestones, from concept to a finished, playable game.",
       isTeam:true,
       soloTeamChoice:true,
-      entrySoloNote:"Just you. No team name or roster.",
+      entrySoloNote:"All rounder",
       entryTeamNote:"Up to 5 members, one lead.",
       leadLabel:"Team Lead",
       facts:[
         ["Entry fee","₹1,000 per team"],
+        ["Registration closes","14 October 2026"],
         ["Team size","1 to 5"],
-        ["Prize","Winner — ₹10,000"],
+        ["Prize","Winner - ₹10,000"],
         ["Genre","Side-scroller action"],
         ["Duration","100 hours, online"],
-        ["Jury round","24 October, 14:00, on campus"]
+        ["Screening","24 October, 14:00, on campus"]
       ],
-      eligibility:"Open to all currently enrolled college students, 18 or older. Teams of 1-5 — each person may register with only one team. Solo entries are welcome.",
+      eligibility:"Open to all currently enrolled college students. Teams of 1 to 5 - each person may register with only one team. Solo entries are welcome. This year's theme is Side-Scroller Action. Discord access and further details are sent once you register.",
       fee:1000,
       feeNote:"₹1,000 per team",
       slots:0,
-      closes:"To be announced",
-      closesAt:"",
+      closes:"14 October 2026",
+      closesAt:"2026-10-14T23:59:59+05:30",
       open:true,
       payUrl:"",
       video:"gamejam-clip.mp4",   // gameplay capture — blended full-bleed via has-video (same treatment index card + own page both use)
-      rosterLabel:"Team — one member per line",
+      rosterLabel:"Team - one member per line",
       rosterHint:"Name, role, email. Up to 5 members. Solo entries are welcome.",
       rosterPlaceholder:"Name, role, email",
       rosterRequired:true
@@ -202,23 +245,23 @@ const CONFIG = {
       id:"film",
       name:"Film & animation",
       page:"/film-festival",
-      format:"Submission based · 2D, 3D, stop motion, VFX, live action",
-      blurb:"A showcase for student films and animation. Animated work and live action are judged separately by industry juries, screened on campus during the festival.",
+      format:"Submission based · Solo/Team · 2D, 3D, stop motion, VFX, live action",
+      blurb:"Step Into the Viewing Room of absolute visual defiance, moving straight from the editing bay to our public viewing room. It is an open invitation for true cinephiles to watch new wave directors rewrite the rules of visual language.",
       isTeam:true,
       soloTeamChoice:true,
-      entrySoloNote:"One filmmaker, your details only.",
+      entrySoloNote:"All rounder",
       entryTeamNote:"Team name, lead and crew.",
       leadLabel:"Team Lead",
       categories:["2D Animation","3D Animation","Stop Motion","Live Action","Others"],
       facts:[
         ["Entry fee","Free for all"],
-        ["Categories","2D Animation · 3D Animation · Stop Motion · Live Action · Others"],
+        ["Registration closes","19 October 2026"],
         ["Prize","Prize pool ₹55,000+"],
         ["Formats","2D, 3D, stop motion, VFX"],
         ["Screening","24 October, 10:00, on campus"],
         ["Jury","Industry panel"]
       ],
-      eligibility:"Free for all entrants — students (DY Patil or any other college), animation hobbyists and professionals. Individual or team submissions welcome.",
+      eligibility:"Open to all - students, hobbyists and professionals alike - whether you're entering individually or as a team. Register any time before the deadline, then come back and submit your finished film separately once it's ready.",
       prizeBreakdown:[
         ["Big Screen Award","Best Short Film","₹10,000"],
         ["Magic Frame Award","Best Animation Short Film","₹10,000"],
@@ -235,14 +278,14 @@ const CONFIG = {
       fee:0,
       feeNote:"Entry fee",
       slots:0,
-      closes:"To be announced",
-      closesAt:"",
+      closes:"19 October 2026",
+      closesAt:"2026-10-19T23:59:59+05:30",
       open:true,
       payUrl:"",
       video:"film-vfx-clip.mp4",  // restored — client wants it actually playing, not
                                   // the static image. Paritosh Khairwal | RRS's reel,
                                   // same credit caption as before.
-      rosterLabel:"Team — one member per line",
+      rosterLabel:"Team - one member per line",
       rosterHint:"Name, role, email. Solo submissions are welcome.",
       rosterPlaceholder:"Name, role, email",
       rosterRequired:false
@@ -251,24 +294,25 @@ const CONFIG = {
       id:"character",
       name:"Character design",
       page:"/character-design",
-      format:"Free entry · Solo · Held 23 October, on campus",
+      format:"Free entry · Solo · On campus",
       blurb:"Design an original character live at the venue, on a theme announced at the start of the competition.",
       isTeam:false,
       leadLabel:"",
       facts:[
         ["Entry fee","Free"],
-        ["Format","Solo — one character per participant"],
+        ["Registration closes","22 October 2026"],
+        ["Format","Solo"],
         ["Prize","XP-Pen tablet + winner certificate"],
         ["Venue","Media Lab, COE Building, Nerul"],
         ["Competition","23 October 2026, 10:00"],
         ["Prize distribution","24 October 2026"]
       ],
-      eligibility:"Open to students from colleges and educational institutes. Each participant must register and submit individually — one character design per participant. A valid college/institute ID is required at the venue.",
+      eligibility:"Open to students from colleges and educational institutes. Each participant must register and submit individually - one character design per participant. A valid college/institute ID is required at the venue.",
       fee:0,
       feeNote:"Free entry",
       slots:0,
-      closes:"To be announced",
-      closesAt:"",
+      closes:"22 October 2026",
+      closesAt:"2026-10-22T23:59:59+05:30",
       open:true,
       payUrl:"",
       video:"",
@@ -281,7 +325,7 @@ const CONFIG = {
 
   /* --- sponsors ---------------------------------------------------- */
   sponsors: [
-    { name:"XP-Pen — Character Design", logoUrl:"", url:"" }
+    { name:"XP-Pen - Character Design", logoUrl:"", url:"" }
   ],
 
   /* --- faq (general — shown on the landing page and on every event
@@ -292,15 +336,52 @@ const CONFIG = {
     { q:"What happens if a registered team drops out before the event?",
       a:"That slot is not reassigned." },
     { q:"Is there an age requirement?",
-      a:"Yes, all participants must be 18 or older." },
-    { q:"What's the refund policy?",
+      a:"Yes, all participants must be 18 or older, except for VALORANT, where players under 18 may compete with a signed guardian consent form submitted before the group stage." },
+    { q:"What's the refund policy?", tracks:["valorant","fc26","gamejam"],
       a:"No refunds at any cost." },
-    { q:"What do I need to bring for the offline final?",
+    { q:"What do I need to bring for the offline final?", tracks:["valorant","fc26"],
       a:"For VALORANT: your own keyboard, mouse, mousepad, and headphones/earphones. Not applicable for FC26." },
-    { q:"Is the game jam fully online?",
-      a:"Yes, apart from the final, which happens on campus." },
     { q:"How do I know my registration went through?",
-      a:"You'll get a confirmation email after payment." }
+      a:"You'll get a confirmation email after payment." },
+
+    { q:"Can I add a substitute to my VALORANT roster?", track:"valorant",
+      a:"No. Rosters are locked at five players at registration - there are no substitutes and no additions after the deadline." },
+    { q:"Do I need to join the AniFX Discord?", track:"valorant",
+      a:"Yes. All online matches are run through the official AniFX Discord - the invite goes to the Captain after payment is verified, and every rostered player must be in the server for their match." },
+    { q:"Is there a limit on how many VALORANT teams can register?", track:"valorant",
+      a:"No, there's no cap on the number of teams." },
+    { q:"What happens if my team only has four players for a match?", track:"valorant",
+      a:"You may start a map with four players at your own risk. You cannot start with three." },
+
+    { q:"Is FC26 solo or team?", track:"fc26",
+      a:"Solo only - there's no team registration for FC26." },
+    { q:"What happens if I'm late for my FC26 match?", track:"fc26",
+      a:"Five minutes from being called. After that, it's a forfeit." },
+
+    { q:"Is the game jam fully online?", track:"gamejam",
+      a:"Yes, apart from the final showing on campus - that's a public screening, not where judging happens." },
+    { q:"Can I use existing assets or AI tools in the game jam?", track:"gamejam",
+      a:"Legally licensed assets are fine if declared and credited. AI is permitted with mandatory disclosure. Undeclared use of either is grounds for disqualification." },
+    { q:"Do I need a specific game engine?", track:"gamejam",
+      a:"No - any engine is fine, none is given preferential treatment. You just need to submit a playable Windows build that runs without installing one." },
+    { q:"Can I enter the game jam solo?", track:"gamejam",
+      a:"Yes - teams of one to five, solo developers are welcome." },
+
+    { q:"Can I submit a film as a team?", track:"film",
+      a:"Yes - individual or team submissions are both welcome, with no cap on team size." },
+    { q:"Are animation and live action judged separately?", track:"film",
+      a:"Yes, by industry panels for each category." },
+    { q:"When do registration and submission close?", track:"film",
+      a:"Both close 19 October 2026, but they're separate steps - register any time before then, and submit your finished film separately, whenever it's ready, using the Submit your film form on this page." },
+    { q:"How do I submit my film?", track:"film",
+      a:"Register first if you haven't already. Then put your final film, trailer/teaser and both posters in one Google Drive folder, set sharing to \"Anyone with the link can view,\" and use the Submit your film form on this page - not the registration form - to send us that link." },
+
+    { q:"Can I use AI tools for character design?", track:"character",
+      a:"No. AI-generated artwork or generative tools aren't permitted - reference images may only be used for research and inspiration." },
+    { q:"Do I need to bring anything to character design?", track:"character",
+      a:"A valid college or institute ID, for verification at the venue." },
+    { q:"Can I enter character design as a team?", track:"character",
+      a:"No, solo only - one character design per participant." }
   ],
 
   /* --- rules ------------------------------------------------------
@@ -309,107 +390,126 @@ const CONFIG = {
      with no `track` are general and show on every event page.      */
   rules:[
     {
-      q:"VALORANT", track:"valorant",
+      q:"General Rules", track:"valorant",
       items:[
-        "<b>Entry.</b> ₹1,000 per team, paid in one transaction by the Captain. Registration closes 9 October 2026.",
-        "<b>Roster.</b> Five players plus up to two named substitutes, locked at registration. No additions after the deadline. Every player's Riot ID with tagline is required.",
-        "<b>Format.</b> Best of three throughout. Grand final best of five, played offline on campus.",
-        "<b>Lobbies.</b> Every match lobby is created by an admin on the Mumbai server. An admin observes each match.",
-        "<b>Waiting time.</b> Ten minutes from the scheduled start. After that the map is forfeit. Twenty minutes forfeits the series.",
-        "<b>Timeouts.</b> Two per team per map, two minutes each.",
+        "<b>Communication:</b> All online matches are hosted and coordinated through the official AniFX Discord. The invite link goes to the Captain after payment is verified. Every rostered player must be in the server. A team with players missing from Discord at match time is treated as not reporting.",
+        "<b>Entry:</b> ₹1,000 per team, paid in one transaction by the Captain. Registration closes 9 October 2026. There is no cap on the number of teams.",
+        "<b>Roster:</b> Five players, locked at registration. No substitutes and no additions after the deadline. Every player's Riot ID with tagline is required, and that is the account the player uses in match.",
+        "<b>Eligibility:</b> All players must be enrolled students carrying a valid college ID, checked at the offline final. Players under 18 must submit a guardian consent form before the group stage. One player, one team.",
+        "<b>Format:</b> Group stage best of three, online. Knockout rounds best of three, online. Semi-finals best of five, online, 18 October 2026. Grand final best of five, played offline on campus, 23 October 2026.",
+        "<b>Bracket:</b> Group allocation, seeding method, map veto order and the overtime rule are published in full with the bracket, on Discord, before the first match is played. Group tiebreakers are head-to-head, then round difference, then rounds won.",
+        "<b>Lobbies:</b> Every match lobby is created by an admin on the Mumbai server, in Standard mode with tournament settings. An admin observes each match.",
+        "<b>Waiting time:</b> Ten minutes from the scheduled start. After that the map is forfeit. Twenty minutes forfeits the series.",
+        "<b>Timeouts:</b> Two per team per map, two minutes each. Technical pauses only during a buy phase, only for a genuine fault, with the reason stated in the match channel.",
         "<b>Ghost mode is not permitted.</b>",
-        "<b>Connection.</b> Teams are responsible for their own internet. Disconnections caused by a player's own connection are not grounds for a rematch or rehost.",
-        "<b>Proof.</b> Both teams post the end-game scoreboard in the match channel immediately after each map.",
-        "<b>Peripherals, offline final.</b> Finalists bring their own keyboard, mouse, mousepad and headphones. These are not provided. PC, monitor, desk and chair are provided, and system specifications are published in advance.",
-        "<b>Wired peripherals only.</b> Wireless keyboards, mice and headsets are not permitted.",
-        "<b>Setup.</b> Players arrive 45 minutes before match time for setup and peripheral inspection.",
-        "<b>Macros.</b> Any device found running macros, scripts or bound automation results in immediate disqualification and forfeit of the match.",
-        "<b>Equipment failure.</b> Players whose own equipment fails may continue on organiser-provided backup equipment or forfeit. No rematch is granted.",
-        "<b>Disputes.</b> Raised within 15 minutes of a match ending, in the official Discord, with evidence. Later disputes are not considered."
-      ],
-      warn:"Map veto order, overtime rule and the seeding method are published in full with the bracket, before the first match is played."
+        "<b>Roster shortfall:</b> A team may start a map with four players at its own risk. It may not start with three.",
+        "<b>Connection:</b> Teams are responsible for their own internet. Disconnections caused by a player's own connection are not grounds for a rematch or rehost. One rehost is allowed if a player drops in round one before first blood.",
+        "<b>Proof:</b> Both teams post the end-game scoreboard in the match channel immediately after each map.",
+        "<b>Exploits:</b> Out-of-bounds positions, unintended boosts and abuse of map or agent bugs are banned. Vanguard must be running throughout.",
+        "<b>Streaming:</b> Teams may stream their own POV on a minimum two-minute delay. Broadcast and VOD rights for admin-observed matches rest with AniFX.",
+        "<b>Peripherals, offline final:</b> Finalists bring their own keyboard, mouse, mousepad and headphones. These are not provided. PC, monitor, desk and chair are provided, and system specifications are published in advance.",
+        "<b>Wired peripherals only:</b> Wireless keyboards, mice and headsets are not permitted.",
+        "<b>Setup:</b> Players arrive 45 minutes before match time for setup, peripheral inspection and warm-up. Crosshair and sensitivity setup is the player's own responsibility within that window.",
+        "<b>Macros:</b> Any device found running macros, scripts or bound automation results in immediate disqualification and forfeit of the match.",
+        "<b>Equipment failure:</b> Players whose own equipment fails may continue on organiser-provided backup equipment or forfeit. No rematch is granted.",
+        "<b>Stage rule:</b> Phones stay off the play desk once the map begins.",
+        "<b>Disputes:</b> Raised within 15 minutes of a match ending, in the official Discord, with evidence. Later disputes are not considered."
+      ]
     },
     {
       q:"FC26", track:"fc26",
       items:[
-        "<b>Entry.</b> ₹100 per player. Solo competition — there is no team registration for FC26. Registration closes 20 October 2026.",
-        "<b>Played.</b> 23 October, on campus, on organiser-provided PlayStation consoles.",
-        "<b>Match length.</b> Six-minute halves, twelve minutes per game, through the bracket.",
-        "<b>Final.</b> Eight-minute halves, single game.",
-        "<b>Waiting time.</b> Five minutes from being called. After that, forfeit.",
-        "<b>Format.</b> Single elimination. Bracket drawn and published before the first match.",
-        "<b>Disputes.</b> Raised with the on-floor admin immediately, before the next match starts on that station."
-      ],
-      warn:"Draw resolution, permitted team selection and the controller policy are confirmed before registration opens."
+        "<b>Entry:</b> ₹100 per player. Solo knockout - there is no team registration for FC26. Registration closes 20 October 2026.",
+        "<b>Played:</b> 23 October, on campus, on organiser-provided PlayStation consoles.",
+        "<b>Match length:</b> Six-minute halves, twelve minutes per game, through the bracket.",
+        "<b>Final:</b> Eight-minute halves, single game.",
+        "<b>Waiting time:</b> Five minutes from being called. After that, forfeit.",
+        "<b>Format:</b> Single elimination. Bracket drawn and published before the first match.",
+        "<b>Disputes:</b> Raised with the on-floor admin immediately, before the next match starts on that station."
+      ]
     },
     {
       q:"Game jam", track:"gamejam",
       items:[
-        "<b>Entry.</b> ₹1,000 per team, paid in one transaction by the Team Lead. Teams of one to five. Each person may register with only one team.",
-        "<b>Prize.</b> Winner takes ₹10,000.",
-        "<b>Duration.</b> 100 hours, continuous, fully online. Only the jury round happens on campus, 24 October at 14:00.",
-        "<b>Genre.</b> Side-scroller action. 2D, 3D or 2.5D — no format is given an advantage. There is no mandatory theme.",
-        "<b>Checkpoints.</b> Five submissions at 10, 20, 40, 80 and 100 hours: design document, artbook, alpha, beta, and the finished game.",
-        "<b>Build.</b> A playable Windows build that runs without installing a game engine. Test it before you submit it.",
-        "<b>Engine.</b> Any. No engine receives preferential treatment.",
-        "<b>Existing assets.</b> Legally licensed assets are permitted and must be declared with credits. Undeclared assets are grounds for disqualification.",
-        "<b>AI.</b> Permitted, with mandatory disclosure. Every significant use must be declared with the tool, the purpose and what the team changed. Undeclared or falsely described AI use is grounds for disqualification.",
-        "<b>Originality.</b> The game must be built during the 100 hours. Previously completed or re-skinned projects are not eligible. Organisers may request development history.",
-        "<b>Ownership.</b> Teams keep full ownership of their games. AniFX may use footage and screenshots for promotion.",
-        "<b>Scope.</b> A small, finished, polished game scores higher than a large unfinished one."
-      ],
-      warn:"Exact dates, the registration deadline and eligibility are confirmed before registration opens."
+        "<b>Entry:</b> ₹1,000 per team, paid in one transaction by the Team Lead. Teams of one to five, solo developers welcome. Each person may register with only one team.",
+        "<b>Prize:</b> Winner takes ₹10,000.",
+        "<b>Theme:</b> None. Teams choose their own story, setting, characters and mechanics - only the side-scroller action genre requirement applies.",
+        "<b>Genre:</b> Side-scrolling, action-oriented gameplay - platformers, beat-'em-ups, side-scrolling shooters, action RPGs, Metroidvania and similar are all eligible. 2D, 3D or 2.5D, with no advantage given to any format.",
+        "<b>Duration:</b> 100 hours, continuous, fully online. The clock starts at the announced time and ends exactly 100 hours later.",
+        "<b>Milestones:</b> Five submissions: a Game Design Document at 10 hours, an Artbook at 20 hours, a playable Alpha at 40 hours, a Beta with production assets at 80 hours, and the finished game at 100 hours.",
+        "<b>Pre-jam prep:</b> Installing engines, tools and setting up a pipeline in advance is fine. The game itself must be built entirely within the 100 hours - no pre-built or partially-built submissions.",
+        "<b>Engine:</b> Any. No engine receives preferential treatment.",
+        "<b>Existing assets:</b> Legally licensed assets - marketplace, stock, fonts, music, open-source - are permitted if declared with credit. Undeclared assets are grounds for disqualification.",
+        "<b>AI:</b> Permitted, with mandatory disclosure - the tool, the purpose, what was generated and what a human changed afterward. AI use is not automatically penalised; misrepresenting it is grounds for disqualification.",
+        "<b>Originality:</b> The submitted game must be a fresh project built during the 100 hours. Previously completed, re-skinned or another team's work is not eligible. Organisers may request development history.",
+        "<b>Ownership:</b> Teams keep full ownership of their game. AniFX may use footage and screenshots for promotion. Teams are responsible for the rights to every asset, plugin and library in their submission.",
+        "<b>Build:</b> A playable Windows build that runs without installing a game engine. Test it before you submit it.",
+        "<b>Scope:</b> A small, finished, polished game scores higher than a large unfinished one.",
+        "<b>Confidentiality:</b> Submitted source files are for judging only and won't be publicly distributed without permission. Remove any passwords, API keys or private credentials before submitting.",
+        "<b>Conduct:</b> Judging manipulation and unauthorised access to another team's project are grounds for removal from the competition, on top of the general conduct rules below.",
+        "<b>Tie-breaker:</b> Ties are resolved by the Final Game score, then Gameplay &amp; Game Feel, then Animation Quality, then Art Direction, then Originality.",
+        "<b>Screening:</b> The finished games are shown on campus, 24 October at 14:00 - this is a public screening, not where judging happens."
+      ]
     },
     {
       q:"Film & animation", track:"film",
       items:[
-        "<b>Entry.</b> Free for all entrants — students (DY Patil or any other college), animation hobbyists and professionals.",
-        "<b>Prize.</b> Prize pool ₹55,000+ across 11 award categories.",
-        "<b>Categories.</b> Animation — 2D, 3D, stop motion and VFX — and live action, judged separately.",
-        "<b>Jury.</b> Industry panels for each category.",
-        "<b>Screening.</b> Screening 1 is 24 October at 10:00, on campus.",
-        "<b>Ownership.</b> Filmmakers keep full ownership. AniFX may screen the work at the festival and use stills for promotion."
-      ],
-      warn:"Submission deadline, runtime limits and delivery format are announced shortly. Do not begin a submission until these are published."
+        "<b>Entry:</b> Free for all entrants - students (DY Patil or any other college), animation hobbyists and professionals.",
+        "<b>Prize:</b> Prize pool ₹55,000+ across 11 award categories.",
+        "<b>Submission:</b> Registration and submission are two separate steps. Register any time before the deadline, then use the Submit your film form on this page to send your finished film - both close 19 October 2026.",
+        "<b>Deliverables:</b> Along with the film: an official trailer or teaser, and two posters - vertical (4:5) and horizontal (16:9). All shared as one Google Drive folder link, set to \"Anyone with the link can view.\"",
+        "<b>Runtime:</b> Short films 5 to 20 minutes, animation films under 5 minutes, both inclusive of credits.",
+        "<b>Format:</b> MP4 or H.264, minimum resolution 1920 × 1080. Non-English films must be dubbed or subtitled in English.",
+        "<b>Multiple entries:</b> You may submit more than one film - each as its own separate, complete entry.",
+        "<b>Categories:</b> Animation - 2D, 3D, stop motion and VFX - and live action, judged separately.",
+        "<b>Jury:</b> Industry panels for each category.",
+        "<b>Content standards:</b> No explicit content, vulgar language, plagiarism, or content targeting caste, religion, gender or individual identity. Any of these results in immediate disqualification.",
+        "<b>AI:</b> Up to 50% of the final film may be AI-assisted. The majority must be human-made - submissions over that threshold are not accepted.",
+        "<b>Clearances:</b> Filmmakers are responsible for securing location permissions and music or soundtrack licenses before submitting.",
+        "<b>Screening:</b> 24 October at 10:00, on campus.",
+        "<b>Certificates and awards:</b> Every participating team receives an e-certificate. To claim an award, at least two team members must be present at the screening and award ceremony.",
+        "<b>Ownership:</b> Filmmakers keep full ownership. AniFX may screen the work at the festival and use stills, posters and excerpts for promotion.",
+        "<b>Selection:</b> The screening schedule and selection decisions are made by the organising committee and are final."
+      ]
     },
     {
       q:"Character design", track:"character",
       items:[
         "<b>Organised by</b> the School of Creative Studies, DY Patil Deemed to be University.",
-        "<b>Entry.</b> Free. Solo only — each participant registers and submits individually. One character design per participant.",
-        "<b>Eligibility.</b> Open to students from colleges and educational institutes. A valid college/institute ID is required for verification at the venue.",
-        "<b>Venue and time.</b> Media Lab, COE Building, DY Patil Deemed to be University, Nerul, Navi Mumbai — 23 October 2026, 10:00.",
-        "<b>Format.</b> The theme and competition brief are announced at the start of the competition. The character must be conceived and designed entirely during the competition period — no pre-made work.",
-        "<b>Originality.</b> The character must be the participant's own original creation. Copying, tracing or reproducing an existing character, artwork or franchise is strictly prohibited. General inspiration from culture, history, mythology or real-world references is fine — the final character must be an original interpretation.",
-        "<b>AI.</b> Not permitted. AI-generated artwork, character generators or generative tools may not be used to create or substantially generate the final design. Reference images may only be used for research and inspiration.",
-        "<b>Software and equipment.</b> Participants may use organiser-provided or approved software, or their own approved digital drawing equipment, subject to venue and technical restrictions.",
-        "<b>Submission.</b> Final character artwork plus the participant's name, institute/college name and registration details, in the format specified by organisers. Organisers may request the working/source file to verify originality.",
-        "<b>Judging.</b> Interpretation of theme 20% · Originality & creativity 25% · Character design & visual development 20% · Concept & personality 15% · Technical execution 10% · Presentation & overall impact 10%. The jury's decision is final.",
-        "<b>Disqualification.</b> Plagiarism, use of an existing character or AI-generated artwork, pre-competition work, using someone else's assets without permission, false registration information, or work submitted by someone other than the registered participant.",
-        "<b>Ownership.</b> Participants retain ownership of their original artwork. By entering, participants grant AniFX a non-exclusive right to display and use submitted artwork for festival promotion, exhibition, social media, website, publicity and archival purposes.",
-        "<b>Prize.</b> Winner receives an XP-Pen tablet and a winner certificate. Additional special jury mentions may be awarded at the jury's discretion.",
-        "<b>Prize distribution.</b> 24 October 2026."
+        "<b>Entry:</b> Free. Solo only - each participant registers and submits individually. One character design per participant.",
+        "<b>Eligibility:</b> Open to students from colleges and educational institutes. A valid college/institute ID is required for verification at the venue.",
+        "<b>Venue and time:</b> Media Lab, COE Building, DY Patil Deemed to be University, Nerul, Navi Mumbai - 23 October 2026, 10:00.",
+        "<b>Format:</b> The theme and competition brief are announced at the start of the competition. The character must be conceived and designed entirely during the competition period - no pre-made work.",
+        "<b>Originality:</b> The character must be the participant's own original creation. Copying, tracing or reproducing an existing character, artwork or franchise is strictly prohibited. General inspiration from culture, history, mythology or real-world references is fine - the final character must be an original interpretation.",
+        "<b>AI:</b> Not permitted. AI-generated artwork, character generators or generative tools may not be used to create or substantially generate the final design. Reference images may only be used for research and inspiration.",
+        "<b>Software and equipment:</b> Participants may use organiser-provided or approved software, or their own approved digital drawing equipment, subject to venue and technical restrictions.",
+        "<b>Submission:</b> Final character artwork plus the participant's name, institute/college name and registration details, in the format specified by organisers. Organisers may request the working/source file to verify originality.",
+        "<b>Judging:</b> Interpretation of theme 20% · Originality & creativity 25% · Character design & visual development 20% · Concept & personality 15% · Technical execution 10% · Presentation & overall impact 10%. The jury's decision is final.",
+        "<b>Disqualification:</b> Plagiarism, use of an existing character or AI-generated artwork, pre-competition work, using someone else's assets without permission, false registration information, or work submitted by someone other than the registered participant.",
+        "<b>Ownership:</b> Participants retain ownership of their original artwork. By entering, participants grant AniFX a non-exclusive right to display and use submitted artwork for festival promotion, exhibition, social media, website, publicity and archival purposes.",
+        "<b>Prize:</b> Winner receives an XP-Pen tablet and a winner certificate. Additional special jury mentions may be awarded at the jury's discretion.",
+        "<b>Prize distribution:</b> 24 October 2026."
       ],
       warn:"The organisers reserve the right to modify the competition format, schedule or rules if required due to unforeseen circumstances."
     },
     {
       q:"Payment, refunds and prize money",
       items:[
-        "<b>Payment.</b> Entry is confirmed only when payment is received and verified against our account. Keep your transaction reference.",
-        "<b>Verification.</b> Verified teams appear on this site. If you have paid and are not listed within 48 hours, email us with your reference number.",
-        "<b>Unverified entries.</b> Entries that cannot be verified 72 hours before the first match are removed from the bracket.",
-        "<b>Refunds.</b> No refunds at any cost.",
-        "<b>Prize money.</b> Paid to the registered Captain, Team Lead or solo entrant after the festival. Prize distribution for all categories is on 24 October 2026."
+        "<b>Payment:</b> Entry is confirmed only when payment is received and verified against our account. Keep your transaction reference.",
+        "<b>Verification:</b> Verified teams appear on this site. If you have paid and are not listed within 48 hours, email us with your reference number.",
+        "<b>Unverified entries:</b> Entries that cannot be verified 72 hours before the first match are removed from the bracket.",
+        "<b>Refunds:</b> No refunds at any cost. Once payment is made it is final, whether or not the team plays, withdraws, is disqualified or is removed from the bracket.",
+        "<b>Prize money:</b> Paid to the registered Captain, Team Lead or solo entrant after the festival. Prize distribution for all categories is on 24 October 2026. Winners submit PAN and bank details, and applicable tax deductions apply. Disbursal is within 45 days."
       ]
     },
     {
       q:"Conduct and disqualification",
       items:[
-        "<b>Conduct.</b> Harassment, hate speech, threats, discriminatory behaviour, impersonation and deliberate disruption are not tolerated, on campus or in official channels.",
-        "<b>Communication.</b> Participants must join the official WhatsApp group and Discord. Schedules are communicated there and by email. Missing a match because you did not join is not grounds for a reschedule.",
-        "<b>Cheating.</b> Any form of cheating, account sharing, ringers or unauthorised software results in immediate disqualification with no refund.",
-        "<b>Decisions.</b> Anything not covered by these rules is decided by the Tournament Director for that competition. That decision is final.",
-        "<b>Changes.</b> Any rule change is announced through official channels before it takes effect. No rule is introduced or changed during a match."
+        "<b>Conduct:</b> Harassment, hate speech, threats, discriminatory behaviour, impersonation, stream sniping and deliberate disruption are not tolerated, on campus or in official channels. Penalties run warning, then map forfeit, then disqualification.",
+        "<b>Communication:</b> Participants must join the official WhatsApp group and Discord. Schedules are communicated there and by email. Missing a match because you did not join is not grounds for a reschedule.",
+        "<b>Cheating:</b> Any form of cheating, account sharing, smurfing, ringers, third-party software or unauthorised automation results in immediate disqualification with no refund.",
+        "<b>Decisions:</b> Anything not covered by these rules is decided by the Tournament Director for that competition. That decision is final.",
+        "<b>Changes:</b> Any rule change is announced through official channels before it takes effect. No rule is introduced or changed during a match."
       ]
     }
   ]
@@ -587,14 +687,14 @@ function wireTrackMedia(){
   $$("[data-track-img]").forEach(img=>{
     const t=CONFIG.tracks.find(x=>x.id===img.dataset.trackImg);
     if(t && t.cardImage && !t.video){
-      img.src=t.cardImage; img.alt=t.name+" — event photo";
+      img.src=t.cardImage; img.alt=t.name+" - event photo";
       img.closest(".track-media, .event-card").classList.add("has-img");
     }
   });
   $$("[data-track-gallery]").forEach(box=>{
     const t=CONFIG.tracks.find(x=>x.id===box.dataset.trackGallery);
     if(t && t.cardGallery && t.cardGallery.length){
-      box.innerHTML = t.cardGallery.map(src=>'<img src="'+esc(src)+'" alt="'+esc(t.name)+' — student sketch by Shivam Prasad" title="Shivam Prasad" loading="lazy">').join("");
+      box.innerHTML = t.cardGallery.map(src=>'<img src="'+esc(src)+'" alt="'+esc(t.name)+' - student sketch by Shivam Prasad" title="Shivam Prasad" loading="lazy">').join("");
       box.closest(".track-media, .event-card").classList.add("has-gallery");
     }
   });
@@ -604,59 +704,6 @@ function wireTrackMedia(){
 if($("#mailLink") && CONFIG.contactEmail){
   const a=$("#mailLink"); a.textContent=CONFIG.contactEmail; a.href="mailto:"+CONFIG.contactEmail; a.classList.remove("todo");
 }
-if($("#phoneLink") && CONFIG.contactPhone){
-  const a=$("#phoneLink"); a.textContent=CONFIG.contactPhone; a.href="tel:"+CONFIG.contactPhone.replace(/\s/g,""); a.classList.remove("todo");
-}
-/* ---------- quick-contact rail (every page): floating email + WhatsApp,
-   right edge, vertically centered. Icon-only at rest, expands to show a
-   text label on hover; slides in from off-screen shortly after load.
-   Same placeholder pattern as the footer contact links — shows a .todo
-   dashed marker until CONFIG.contactEmail / whatsappLink are filled in,
-   then becomes a real mailto:/link. Pure JS injection, no HTML markup
-   needed on any of the 5 pages. ---------- */
-(function(){
-  const rail=document.createElement("div");
-  rail.className="quick-contact";
-  rail.setAttribute("aria-label","Quick contact");
-
-  function makeLink(svgPath,label,href,liveAttrs,todoTitle,filled){
-    const a=document.createElement("a");
-    const svgAttrs=filled
-      ? 'fill="currentColor"'
-      : 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
-    a.innerHTML='<svg viewBox="0 0 24 24" '+svgAttrs+'>'+svgPath+'</svg><span>'+label+'</span>';
-    if(href){
-      a.href=href;
-      Object.entries(liveAttrs||{}).forEach(([k,v])=>a.setAttribute(k,v));
-    }else{
-      a.href="#"; a.classList.add("todo"); a.title=todoTitle;
-      a.setAttribute("aria-label",label+" — "+todoTitle);
-    }
-    return a;
-  }
-
-  rail.appendChild(makeLink(
-    '<path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/>',
-    "Email",
-    CONFIG.contactEmail?"mailto:"+CONFIG.contactEmail:"",
-    {"aria-label":"Email "+CONFIG.contactEmail},
-    "Set contactEmail in CONFIG"
-  ));
-  rail.appendChild(makeLink(
-    '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/>',
-    "WhatsApp",
-    CONFIG.whatsappLink||"",
-    {target:"_blank",rel:"noopener","aria-label":"WhatsApp"},
-    "Set whatsappLink in CONFIG",
-    true
-  ));
-
-  document.body.appendChild(rail);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    rail.classList.add("in");
-  }));
-})();
-
 /* ---------- nav (every page) ---------- */
 if($("#burger")){
   const burger=$("#burger"), navLinks=$("#navLinks");
@@ -747,7 +794,7 @@ if($("#eventOverview") && PAGE_TRACK){
     $("#eventOverview").innerHTML =
       '<article class="track" data-track="'+t.id+'">'
       + '<div><p class="track-desc" style="max-width:60ch;font-size:16.5px">'+esc(t.blurb)+'</p>'
-      + '<p class="track-desc" style="margin-top:16px"><b style="color:var(--bone)">Eligibility.</b> '+esc(t.eligibility||"")+'</p>'
+      + '<p class="track-desc" style="margin-top:16px"><b style="color:var(--bone)">Eligibility:</b> '+esc(t.eligibility||"")+'</p>'
       + '</div>'
       + '<div class="track-media">'
       +   '<video class="track-video" data-track-video="'+t.id+'" muted loop playsinline aria-hidden="true"></video>'
@@ -783,9 +830,20 @@ if($("#eventSponsors") && PAGE_TRACK){
 }
 
 
-/* ---------- faq (index general FAQ + every event page's FAQ tab) ---------- */
+/* ---------- faq (index shows every entry; each event page's FAQ tab
+   shows only its own track's entries plus the generic ones — no
+   `track`/`tracks` field — same filtering pattern as rules, below.
+   `track` ties an entry to one track; `tracks` (an array) ties it to
+   a subset of several — used for entries relevant to some but not
+   all tracks, e.g. only the paid ones. ---------- */
 if($("#faqWrap")){
-  $("#faqWrap").innerHTML=(CONFIG.faq||[]).map(f=>
+  const faqItems = PAGE_TRACK
+    ? (CONFIG.faq||[]).filter(f=>{
+        if(f.tracks) return f.tracks.includes(PAGE_TRACK);
+        return !f.track || f.track===PAGE_TRACK;
+      })
+    : (CONFIG.faq||[]);
+  $("#faqWrap").innerHTML=faqItems.map(f=>
     '<div class="acc" data-acc>'
     + '<button class="acc-btn" aria-expanded="false"><span class="acc-q">'+esc(f.q)+'</span><span class="acc-sign">+</span></button>'
     + '<div class="acc-body"><p class="muted">'+esc(f.a)+'</p></div></div>'
@@ -826,7 +884,7 @@ if($("#sched")){
   }).filter(d=>d.items.length);
 
   if(nameMatch && !days.length){
-    $("#sched").innerHTML='<div class="empty-card">Schedule for this event is not published yet — check the On Campus page once the draw is out.</div>';
+    $("#sched").innerHTML='<div class="empty-card">Schedule for this event is not published yet - check the On Campus page once the draw is out.</div>';
   }else{
     $("#sched").innerHTML=days.map(day=>
       '<div class="sched-day"><h3>'+esc(day.day)+'</h3>'
@@ -842,14 +900,73 @@ if($("#sched")){
   if($("#schedNote")) $("#schedNote").textContent=CONFIG.scheduleNote||"";
 }
 
+/* ---------- game jam online timeline (game jam page only) ----------
+   Separate from #sched above on purpose — that one is the in-person
+   weekend and also feeds the homepage's On Campus section; this is
+   online-only and has no business showing up there. */
+if($("#gjTimeline")){
+  const items=CONFIG.gamejamTimeline||[];
+  $("#gjTimeline").innerHTML = items.length
+    ? '<div class="sched-day"><h3>14-20 October, online</h3>'
+      + items.map(it=>
+          '<div class="slot-row'+(it.feature?" feature":"")+'">'
+          + '<span class="sr-time">'+esc(it.time)+'</span>'
+          + '<span><span class="sr-title">'+esc(it.title)+'</span>'
+          + (it.where?'<span class="sr-where">'+esc(it.where)+'</span>':'')+'</span>'
+          + '</div>').join("")
+      + '</div>'
+    : "";
+}
+
+/* ---------- valorant online timeline (valorant page only) ----------
+   Same reasoning as #gjTimeline above. */
+if($("#vTimeline")){
+  const items=CONFIG.valorantTimeline||[];
+  $("#vTimeline").innerHTML = items.length
+    ? '<div class="sched-day"><h3>Group stage & semi-finals, online</h3>'
+      + items.map(it=>
+          '<div class="slot-row'+(it.feature?" feature":"")+'">'
+          + '<span class="sr-time">'+esc(it.time)+'</span>'
+          + '<span><span class="sr-title">'+esc(it.title)+'</span>'
+          + (it.where?'<span class="sr-where">'+esc(it.where)+'</span>':'')+'</span>'
+          + '</div>').join("")
+      + '</div>'
+    : "";
+  if($("#vTimelineNote")) $("#vTimelineNote").textContent=CONFIG.valorantTimelineNote||"";
+}
+
+/* ---------- valorant on-campus schedule (valorant page only) ----------
+   Replaces the generic #sched on this page — see CONFIG.valorantCampus
+   for why. */
+if($("#vCampus")){
+  const days=CONFIG.valorantCampus||[];
+  $("#vCampus").innerHTML=days.map(day=>
+    '<div class="sched-day"><h3>'+esc(day.day)+'</h3>'
+    + day.items.map(it=>
+        '<div class="slot-row'+(it.feature?" feature":"")+'">'
+        + '<span class="sr-time">'+esc(it.time)+'</span>'
+        + '<span><span class="sr-title">'+esc(it.title)+'</span>'
+        + (it.where?'<span class="sr-where">'+esc(it.where)+'</span>':'')+'</span>'
+        + '</div>').join("")
+    + '</div>'
+  ).join("");
+}
+
 /* ---------- payment success (every page with the modal) ---------- */
 if($("#successScreen")){
   const successScreen=$("#successScreen");
-  const showSuccess=function(trackId){
+  const showSuccess=function(trackId, paid, isTeam){
     const t=CONFIG.tracks.find(x=>x.id===trackId);
-    if(t) $("#successLine").textContent =
-      "Your "+t.name+" entry is in. We verify every payment against our account and confirm your "
-      + (t.isTeam?"team":"entry") + " by email within 48 hours.";
+    // isTeam reflects what the person actually picked this submission
+    // (only meaningful for soloTeamChoice tracks); falls back to the
+    // track's own fixed shape when not passed, e.g. the URL-triggered
+    // ?paid= path below, which has no form state to read from.
+    const teamish = isTeam===undefined ? (t&&t.isTeam) : isTeam;
+    $("#successTitle").textContent = paid===false ? "Registration received" : "Payment received";
+    if(t) $("#successLine").textContent = paid===false
+      ? "Your "+t.name+" entry is in and confirmed - no payment needed for this one."
+      : "Your "+t.name+" entry is in. We verify every payment against our account and confirm your "
+        + (teamish?"team":"entry") + " by email within 48 hours.";
     const wa=$("#joinWhatsapp"), dc=$("#joinDiscord");
     if(CONFIG.whatsappLink){ wa.href=CONFIG.whatsappLink; wa.style.display="block"; }
     else { wa.style.display="none"; }
@@ -1009,8 +1126,8 @@ if($("#regModal")){
     if(payQrBig && !payQrBig.dataset.built){
       payQrBig.dataset.built="1";
       payQrBig.innerHTML =
-        '<img src="payment-qr.png" alt="DY Patil University payment QR — scan with any UPI app to pay">' +
-        "<p>Scan to pay via UPI/BHIM, RuPay, Visa or Mastercard. Merchant: D Y Patil University Scho. Keep your reference — you'll need it below.</p>";
+        '<img src="payment-qr.png" alt="DY Patil University payment QR - scan with any UPI app to pay">' +
+        "<p>Scan to pay via UPI/BHIM, RuPay, Visa or Mastercard. Merchant: D Y Patil University Scho. Keep your reference - you'll need it below.</p>";
     }
 
     // Solo entry / team entry cards — only tracks that opt in (game jam,
@@ -1069,16 +1186,16 @@ if($("#regModal")){
     // A soloTeamChoice track's Solo entry has no lead role to name — just
     // "Full name" / "Email ID". A track that's solo-only by nature (no
     // choice, e.g. character design) keeps its original wording.
-    const soloCaptainLabel = t.soloTeamChoice ? "Full name" : "Student name — full name";
+    const soloCaptainLabel = t.soloTeamChoice ? "Full name" : "Full Name";
     const soloEmailLabel   = t.soloTeamChoice ? "Email ID" : "Email";
 
     // Lead-prefixed labels for a team entry — a soloTeamChoice track always
-    // reads "Team lead — …" (matches the register-form mockup); any other
+    // reads "Team lead …" (matches the register-form mockup); any other
     // team track keeps its own configured lead role (e.g. valorant's
-    // "Captain — full name").
-    const leadCaptainLabel = t.soloTeamChoice ? "Team lead — Full name" : (lead+" — full name");
-    const leadPhoneLabel   = t.soloTeamChoice ? "Team lead — WhatsApp number" : (lead+" WhatsApp number");
-    const leadEmailLabel   = t.soloTeamChoice ? "Team lead — Email ID" : (lead+" email");
+    // "Leader Full Name").
+    const leadCaptainLabel = t.soloTeamChoice ? "Team lead - Full name" : (lead+" Full Name");
+    const leadPhoneLabel   = t.soloTeamChoice ? "Team lead - WhatsApp number" : (lead+" Whatsapp Number");
+    const leadEmailLabel   = t.soloTeamChoice ? "Team lead - Email ID" : (lead+" Email");
 
     $("#fCaptain").required = true;
     document.querySelector("label[for='fCaptain']").textContent = isTeam ? leadCaptainLabel : soloCaptainLabel;
@@ -1236,7 +1353,7 @@ if($("#regModal")){
     if(phone.length===12 && phone.startsWith("91")) phone=phone.slice(2);
 
     if(!CONFIG.sheetEndpoint){
-      say("We can't take entries yet. Follow @"+CONFIG.instagram+" — registration opens shortly.","err");
+      say("We can't take entries yet. Follow @"+CONFIG.instagram+" - registration opens shortly.","err");
       return;
     }
     if(!st.open){
@@ -1270,7 +1387,7 @@ if($("#regModal")){
     const isTeam=isTeamEntry(t);
     const catVal=t.categories ? $("#fCategory").value : "";
     const payload={
-      track:t.name, trackId:t.id, fee:currentFee(t),
+      track:t.name, fee:currentFee(t),
       entryType: t.soloTeamChoice ? (isTeam?"team":"solo") : "",
       teamName:isTeam?$("#fTeam").value.trim():"",
       leadRole:isTeam?(t.leadLabel||""):"Solo entrant",
@@ -1309,14 +1426,14 @@ if($("#regModal")){
       // Give the person a moment to actually see the message first.
       form.reset();
       if(paid){
-        say("Payment reference received. Your slot is confirmed once we verify it — usually under 48 hours.","ok");
+        say("Payment reference received. Your slot is confirmed once we verify it - usually under 48 hours.","ok");
       }else{
-        say("Entry saved. Check your email — we've sent your entry ID.","ok");
+        say("Entry saved. Check your email - we've sent your entry ID.","ok");
       }
       setTimeout(()=>{
         closeModal();
         syncTrack();
-        if(window.__showSuccess) window.__showSuccess(t.id);
+        if(window.__showSuccess) window.__showSuccess(t.id, paid, isTeam);
       },1600);
     }catch(err){
       say("We couldn't save that. Check your connection and try again, or email us directly.","err");
@@ -1336,14 +1453,14 @@ const LEGAL = {
     body:`
       <p>These terms apply to anyone registering for or attending a AniFX 2026 competition, run by the School of Creative Studies, DY Patil Deemed to be University, Navi Mumbai, on 23–24 October 2026.</p>
       <ul>
-        <li><b>Eligibility.</b> You must be a currently enrolled college student, 18 years or older, to register for any competition. We may ask for valid college ID at the offline stages.</li>
-        <li><b>Registration.</b> A registration is only confirmed once payment (where applicable) is received and verified. Submitting the form alone does not hold your slot.</li>
-        <li><b>Accuracy of details.</b> You're responsible for the accuracy of every name, contact number, email and college listed at registration. Incorrect details that prevent us from reaching you or verifying eligibility can result in forfeit, at the Tournament Director's discretion.</li>
-        <li><b>Rules.</b> Each competition has its own rules, published on that competition's own page. Registering means you've read and accepted them, alongside these general terms.</li>
-        <li><b>Conduct.</b> Harassment, cheating, use of unauthorised software or hardware, or unsporting conduct toward organisers, staff or other participants can result in disqualification without refund, at any stage of the event.</li>
-        <li><b>Changes to the event.</b> Dates, venues, formats or schedules may change if circumstances require it. Registered participants will be notified at the contact details they provided.</li>
-        <li><b>Media.</b> Photos and video may be taken during the event (including the offline finals) for AniFX's own promotional use — on our social pages, website and future editions. If you'd rather not appear, let an organiser know on the day.</li>
-        <li><b>Final say.</b> Anything not explicitly covered here or in a competition's own rules is decided by the Tournament Director. That decision is final.</li>
+        <li><b>Eligibility:</b> You must be a currently enrolled college student, 18 years or older, to register for any competition. We may ask for valid college ID at the offline stages.</li>
+        <li><b>Registration:</b> A registration is only confirmed once payment (where applicable) is received and verified. Submitting the form alone does not hold your slot.</li>
+        <li><b>Accuracy of details:</b> You're responsible for the accuracy of every name, contact number, email and college listed at registration. Incorrect details that prevent us from reaching you or verifying eligibility can result in forfeit, at the Tournament Director's discretion.</li>
+        <li><b>Rules:</b> Each competition has its own rules, published on that competition's own page. Registering means you've read and accepted them, alongside these general terms.</li>
+        <li><b>Conduct:</b> Harassment, cheating, use of unauthorised software or hardware, or unsporting conduct toward organisers, staff or other participants can result in disqualification without refund, at any stage of the event.</li>
+        <li><b>Changes to the event:</b> Dates, venues, formats or schedules may change if circumstances require it. Registered participants will be notified at the contact details they provided.</li>
+        <li><b>Media:</b> Photos and video may be taken during the event (including the offline finals) for AniFX's own promotional use - on our social pages, website and future editions. If you'd rather not appear, let an organiser know on the day.</li>
+        <li><b>Final say:</b> Anything not explicitly covered here or in a competition's own rules is decided by the Tournament Director. That decision is final.</li>
       </ul>`
   },
   refund:{
@@ -1355,13 +1472,13 @@ const LEGAL = {
     body:`
       <p>This covers what happens to the information you give us when you register for AniFX 2026.</p>
       <ul>
-        <li><b>What we collect.</b> The registrant's full name, age, class/year, board, college or institution, address, WhatsApp number and email, and — where a competition needs it — team name and a roster of teammates with their own names and contact details.</li>
-        <li><b>What we don't collect.</b> We never see or store your card, UPI or bank details. Payment is handled entirely by our payment processor; we only receive confirmation that a payment succeeded.</li>
-        <li><b>Why we collect it.</b> To confirm your registration, verify eligibility, and contact you about match times, schedule changes or results.</li>
-        <li><b>Where it's shown.</b> Your details are not published on the site. Names/colleges are used internally to run the tournament (seeding, match scheduling, on-the-day check-in) — nothing registrant-identifying is shown publicly. Phone numbers and emails are never shown publicly.</li>
-        <li><b>Who it's shared with.</b> Your details are used internally by the AniFX organising team only, plus our payment processor for the transaction itself. We don't sell or hand this data to any other third party.</li>
-        <li><b>How long we keep it.</b> Registration data is kept for the running of the festival and a reasonable period after for records and disputes, then deleted.</li>
-        <li><b>Questions or removal requests.</b> Reach out through the contact details listed on this site and we'll sort it out.</li>
+        <li><b>What we collect:</b> The registrant's full name, age, class/year, board, college or institution, address, WhatsApp number and email, and, where a competition needs it, team name and a roster of teammates with their own names and contact details.</li>
+        <li><b>What we don't collect:</b> We never see or store your card, UPI or bank details. Payment is handled entirely by our payment processor; we only receive confirmation that a payment succeeded.</li>
+        <li><b>Why we collect it:</b> To confirm your registration, verify eligibility, and contact you about match times, schedule changes or results.</li>
+        <li><b>Where it's shown:</b> Your details are not published on the site. Names/colleges are used internally to run the tournament (seeding, match scheduling, on-the-day check-in) - nothing registrant-identifying is shown publicly. Phone numbers and emails are never shown publicly.</li>
+        <li><b>Who it's shared with:</b> Your details are used internally by the AniFX organising team only, plus our payment processor for the transaction itself. We don't sell or hand this data to any other third party.</li>
+        <li><b>How long we keep it:</b> Registration data is kept for the running of the festival and a reasonable period after for records and disputes, then deleted.</li>
+        <li><b>Questions or removal requests:</b> Reach out through the contact details listed on this site and we'll sort it out.</li>
       </ul>`
   }
 };
@@ -1386,6 +1503,135 @@ if($("#legalModal")){
   $("#legalClose").addEventListener("click",closeLegal);
   lmodal.addEventListener("click",e=>{ if(e.target===lmodal) closeLegal(); });
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&lmodal.classList.contains("open")) closeLegal(); });
+}
+
+/* ---------- film submission (film page only) ----------
+   Registration and submission are two deliberately separate steps for
+   Film & Animation — someone registers well before their film exists,
+   then comes back closer to the deadline to send the finished thing.
+   This is its own small modal with its own POST, not folded into the
+   registration modal's state machine (no track switching, no payment
+   step, none of that applies here). See apps-script/README.md, "Film
+   submissions," for how the backend keeps this on its own sheet and
+   matches it back to a registration by name + email. */
+if($("#filmSubmitModal")){
+  const fsModal=$("#filmSubmitModal"), fsForm=$("#filmSubmitForm"), fsMsg=$("#filmSubmitMsg"), fsBtn=$("#filmSubmitBtn");
+  const filmTrack=CONFIG.tracks.find(t=>t.id==="film");
+  const fsClosesAt=filmTrack&&filmTrack.closesAt ? new Date(filmTrack.closesAt).getTime() : NaN;
+
+  function fsSay(text,kind){ fsMsg.textContent=text; fsMsg.className="form-msg show "+kind; }
+  function fsClosed(){ return !isNaN(fsClosesAt) && Date.now()>fsClosesAt; }
+
+  function flagFsField(el){
+    if(!el) return;
+    $$(".field-invalid",fsForm).forEach(f=>f.classList.remove("field-invalid"));
+    const wrap=el.closest(".field")||el.closest(".checkline")||el;
+    wrap.classList.add("field-invalid");
+    el.scrollIntoView({block:"center", behavior:"smooth"});
+    el.focus({preventScroll:true});
+    const clear=()=>{ wrap.classList.remove("field-invalid"); el.removeEventListener("input",clear); el.removeEventListener("change",clear); };
+    el.addEventListener("input",clear);
+    el.addEventListener("change",clear);
+  }
+
+  function openFsModal(){
+    const closed=fsClosed();
+    fsForm.hidden=closed;
+    $("#filmSubmitClosedNote").hidden=!closed;
+    if(closed && filmTrack) $("#filmSubmitClosedNote").textContent="Submissions closed on "+(filmTrack.closes||"the deadline")+".";
+    fsModal.classList.add("open");
+    document.body.style.overflow="hidden";
+    if(!closed) setTimeout(()=>$("#fsName").focus(),60);
+  }
+  function closeFsModal(){
+    fsModal.classList.remove("open");
+    document.body.style.overflow="";
+  }
+  document.addEventListener("click",e=>{
+    const t=e.target.closest("[data-open-film-submit]");
+    if(t){ e.preventDefault(); openFsModal(); }
+  });
+  $("#filmSubmitClose").addEventListener("click",closeFsModal);
+  fsModal.addEventListener("click",e=>{ if(e.target===fsModal) closeFsModal(); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&fsModal.classList.contains("open")) closeFsModal(); });
+
+  function fsFieldProblem(){
+    if(!$("#fsName").checkValidity()) return {el:$("#fsName"), msg:"Enter the team or entrant name you registered with."};
+    if(!$("#fsEmail").checkValidity()) return {el:$("#fsEmail"), msg:"Enter the email address you registered with."};
+    if(!$("#fsFilmTitle").checkValidity()) return {el:$("#fsFilmTitle"), msg:"Enter your film's title."};
+    if(!$("#fsDriveLink").checkValidity()) return {el:$("#fsDriveLink"), msg:"Add your Google Drive folder link."};
+    if(!$("#fsAgree").checked) return {el:$("#fsAgree"), msg:"Please confirm this submission follows the festival's rules."};
+    return null;
+  }
+
+  // Is this email actually registered for Film & Animation? A GET (not
+  // the no-cors POST the actual submission uses below) so the page can
+  // read the real answer, not just fire-and-forget. Returns:
+  //   {checked:true,  found:true/false, name}  — got a real answer
+  //   {checked:false}                          — couldn't ask (network/
+  //     CORS/etc.) — treated as "don't block", see caller.
+  async function checkRegistered(email){
+    const url=CONFIG.sheetEndpoint
+      + (CONFIG.sheetEndpoint.includes("?") ? "&" : "?")
+      + "action=checkRegistration&email="+encodeURIComponent(email)
+      + "&track="+encodeURIComponent(filmTrack.name);
+    try{
+      const res=await fetch(url);
+      if(!res.ok) return {checked:false};
+      const data=await res.json();
+      return {checked:true, found:!!data.found, name:data.name||""};
+    }catch(err){
+      return {checked:false};
+    }
+  }
+
+  fsForm.addEventListener("submit", async e=>{
+    e.preventDefault();
+    if(fsClosed()){ fsSay("Submissions are closed.","err"); return; }
+    const problem=fsFieldProblem();
+    if(problem){ fsSay(problem.msg,"err"); flagFsField(problem.el); return; }
+    if(!CONFIG.sheetEndpoint){ fsSay("We can't take submissions yet - email us directly instead.","err"); return; }
+
+    const email=$("#fsEmail").value.trim();
+    fsBtn.disabled=true; fsBtn.textContent="Checking your registration…";
+    const check=await checkRegistered(email);
+    if(check.checked && !check.found){
+      fsSay("We couldn't find a Film & Animation registration under that email. Double-check it matches exactly what you used to register - or register first.","err");
+      flagFsField($("#fsEmail"));
+      fsBtn.disabled=false; fsBtn.textContent="Submit film";
+      return;
+    }
+    if(!check.checked){
+      // Couldn't verify — genuine network/CORS issue, not "not registered".
+      // Don't block a real participant over an infra hiccup; the backend
+      // re-checks on save anyway and flags the row either way (see
+      // apps-script/Code.gs, handleFilmSubmission).
+      fsSay("Couldn't verify your registration automatically, but we'll still record your submission - please double check the email above is correct.","err");
+    }
+
+    fsBtn.textContent="Sending…";
+    const payload={
+      kind:"filmSubmission",
+      entrantName:$("#fsName").value.trim(),
+      registrantEmail:email,
+      filmTitle:$("#fsFilmTitle").value.trim(),
+      driveLink:$("#fsDriveLink").value.trim(),
+      submittedAt:new Date().toISOString()
+    };
+    try{
+      await fetch(CONFIG.sheetEndpoint,{
+        method:"POST", mode:"no-cors",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify(payload)
+      });
+      fsForm.reset();
+      fsSay(check.found ? "Submission received for \""+(check.name||"your entry")+"\". Check your email for confirmation - thanks!" : "Submission received. Check your email for confirmation - thanks!","ok");
+      setTimeout(closeFsModal,1800);
+    }catch(err){
+      fsSay("We couldn't send that. Check your connection and try again, or email us directly.","err");
+    }
+    fsBtn.disabled=false; fsBtn.textContent="Submit film";
+  });
 }
 
 /* ---------- FC26 hero: ball genuinely random each loop ----------
