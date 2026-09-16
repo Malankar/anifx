@@ -133,6 +133,94 @@ const CONFIG = {
   /* --- competitions ---------------------------------------------- */
   tracks: [
     {
+      id:"film",
+      name:"Film & animation",
+      page:"/film-festival",
+      format:"Submission based · Solo/Team · 2D, 3D, stop motion, VFX, live action",
+      blurb:"Step Into the Viewing Room of absolute visual defiance, moving straight from the editing bay to our public viewing room. It is an open invitation for true cinephiles to watch new wave directors rewrite the rules of visual language.",
+      isTeam:true,
+      soloTeamChoice:true,
+      entrySoloNote:"All rounder",
+      entryTeamNote:"Team name, lead and crew.",
+      leadLabel:"Team Lead",
+      categories:["2D Animation","3D Animation","Stop Motion","Live Action","Others"],
+      facts:[
+        ["Entry fee","Free for all"],
+        ["Registration closes","19 October 2026"],
+        ["Prize","To be announced"],
+        ["Formats","2D, 3D, stop motion, VFX"],
+        ["Screening","24 October, 10:00, on campus"],
+        ["Jury","Industry panel"]
+      ],
+      eligibility:"Open to all - students, hobbyists and professionals alike - whether you're entering individually or as a team. Register any time before the deadline, then come back and submit your finished film separately once it's ready.",
+      // Prize amounts/categories are pending approval - hidden for now by
+      // renaming off the key the prizes-tab renderer reads (see the
+      // #prizesWrap block below). Data kept intact, not deleted, so this
+      // can be restored (rename back to prizeBreakdown) or edited once
+      // approvals land, without re-typing the whole table.
+      prizeBreakdownHidden:[
+        ["Big Screen Award","Best Short Film","₹10,000"],
+        ["Magic Frame Award","Best Animation Short Film","₹10,000"],
+        ["Storyteller Award","Best Screenplay Writer","₹5,000"],
+        ["Vision Award","Best Direction","₹8,000"],
+        ["Aperture Award","Best Cinematography","₹5,000"],
+        ["Cut To Award","Best Editing","₹5,000"],
+        ["Sound Design Award","Sound & Music","₹5,000"],
+        ["Spotlight Award","Best Performance","₹3,000"],
+        ["Character Award","Best Character Design","₹3,000"],
+        ["Rising Star Award","Emerging Filmmaker","Filmmaking Gear / Voucher (Worth ₹5,000)"],
+        ["Wild Card Award","Most Unexpected / Experimental Film","₹3,000"]
+      ],
+      fee:0,
+      feeNote:"Entry fee",
+      slots:0,
+      closes:"19 October 2026",
+      closesAt:"2026-10-19T23:59:59+05:30",
+      open:true,
+      payUrl:"",
+      video:"film-vfx-clip.mp4",  // restored — client wants it actually playing, not
+                                  // the static image. Paritosh Khairwal | RRS's reel,
+                                  // same credit caption as before.
+      rosterLabel:"Team - one member per line",
+      rosterHint:"Name, role, email. Solo submissions are welcome.",
+      rosterPlaceholder:"Name, role, email",
+      rosterRequired:false
+    },
+    {
+      id:"gamejam",
+      name:"Game jam",
+      page:"/game-jam",
+      format:"100 hours · Online · Solo/Team · Side-scroller action",
+      blurb:"Design, build and ship an original Side-Scroller Action game in 100 hours - 2D, 3D or a mix of both, with no mandatory theme. Teams of one to five move through five milestones, from concept to a finished, playable game.",
+      isTeam:true,
+      soloTeamChoice:true,
+      entrySoloNote:"All rounder",
+      entryTeamNote:"Up to 5 members, one lead.",
+      leadLabel:"Team Lead",
+      facts:[
+        ["Entry fee","₹1,000 per team"],
+        ["Registration closes","14 October 2026"],
+        ["Team size","1 to 5"],
+        ["Prize","Winner - ₹10,000"],
+        ["Genre","Side-scroller action"],
+        ["Duration","100 hours, online"],
+        ["Screening","24 October, 14:00, on campus"]
+      ],
+      eligibility:"Open to all currently enrolled college students. Teams of 1 to 5 - each person may register with only one team. Solo entries are welcome. This year's theme is Side-Scroller Action. Discord access and further details are sent once you register.",
+      fee:1000,
+      feeNote:"₹1,000 per team",
+      slots:0,
+      closes:"14 October 2026",
+      closesAt:"2026-10-14T23:59:59+05:30",
+      open:true,
+      payUrl:"",
+      video:"gamejam-clip.mp4",   // gameplay capture — blended full-bleed via has-video (same treatment index card + own page both use)
+      rosterLabel:"Team - one member per line",
+      rosterHint:"Name, role, email. Up to 5 members. Solo entries are welcome.",
+      rosterPlaceholder:"Name, role, email",
+      rosterRequired:true
+    },
+    {
       id:"valorant",
       name:"VALORANT",
       page:"/valorant",
@@ -205,89 +293,6 @@ const CONFIG = {
                                 // again just because a cardImage exists.
       rosterLabel:"",
       rosterHint:"",
-      rosterRequired:false
-    },
-    {
-      id:"gamejam",
-      name:"Game jam",
-      page:"/game-jam",
-      format:"100 hours · Online · Solo/Team · Side-scroller action",
-      blurb:"Design, build and ship an original Side-Scroller Action game in 100 hours - 2D, 3D or a mix of both, with no mandatory theme. Teams of one to five move through five milestones, from concept to a finished, playable game.",
-      isTeam:true,
-      soloTeamChoice:true,
-      entrySoloNote:"All rounder",
-      entryTeamNote:"Up to 5 members, one lead.",
-      leadLabel:"Team Lead",
-      facts:[
-        ["Entry fee","₹1,000 per team"],
-        ["Registration closes","14 October 2026"],
-        ["Team size","1 to 5"],
-        ["Prize","Winner - ₹10,000"],
-        ["Genre","Side-scroller action"],
-        ["Duration","100 hours, online"],
-        ["Screening","24 October, 14:00, on campus"]
-      ],
-      eligibility:"Open to all currently enrolled college students. Teams of 1 to 5 - each person may register with only one team. Solo entries are welcome. This year's theme is Side-Scroller Action. Discord access and further details are sent once you register.",
-      fee:1000,
-      feeNote:"₹1,000 per team",
-      slots:0,
-      closes:"14 October 2026",
-      closesAt:"2026-10-14T23:59:59+05:30",
-      open:true,
-      payUrl:"",
-      video:"gamejam-clip.mp4",   // gameplay capture — blended full-bleed via has-video (same treatment index card + own page both use)
-      rosterLabel:"Team - one member per line",
-      rosterHint:"Name, role, email. Up to 5 members. Solo entries are welcome.",
-      rosterPlaceholder:"Name, role, email",
-      rosterRequired:true
-    },
-    {
-      id:"film",
-      name:"Film & animation",
-      page:"/film-festival",
-      format:"Submission based · Solo/Team · 2D, 3D, stop motion, VFX, live action",
-      blurb:"Step Into the Viewing Room of absolute visual defiance, moving straight from the editing bay to our public viewing room. It is an open invitation for true cinephiles to watch new wave directors rewrite the rules of visual language.",
-      isTeam:true,
-      soloTeamChoice:true,
-      entrySoloNote:"All rounder",
-      entryTeamNote:"Team name, lead and crew.",
-      leadLabel:"Team Lead",
-      categories:["2D Animation","3D Animation","Stop Motion","Live Action","Others"],
-      facts:[
-        ["Entry fee","Free for all"],
-        ["Registration closes","19 October 2026"],
-        ["Prize","Prize pool ₹55,000+"],
-        ["Formats","2D, 3D, stop motion, VFX"],
-        ["Screening","24 October, 10:00, on campus"],
-        ["Jury","Industry panel"]
-      ],
-      eligibility:"Open to all - students, hobbyists and professionals alike - whether you're entering individually or as a team. Register any time before the deadline, then come back and submit your finished film separately once it's ready.",
-      prizeBreakdown:[
-        ["Big Screen Award","Best Short Film","₹10,000"],
-        ["Magic Frame Award","Best Animation Short Film","₹10,000"],
-        ["Storyteller Award","Best Screenplay Writer","₹5,000"],
-        ["Vision Award","Best Direction","₹8,000"],
-        ["Aperture Award","Best Cinematography","₹5,000"],
-        ["Cut To Award","Best Editing","₹5,000"],
-        ["Sound Design Award","Sound & Music","₹5,000"],
-        ["Spotlight Award","Best Performance","₹3,000"],
-        ["Character Award","Best Character Design","₹3,000"],
-        ["Rising Star Award","Emerging Filmmaker","Filmmaking Gear / Voucher (Worth ₹5,000)"],
-        ["Wild Card Award","Most Unexpected / Experimental Film","₹3,000"]
-      ],
-      fee:0,
-      feeNote:"Entry fee",
-      slots:0,
-      closes:"19 October 2026",
-      closesAt:"2026-10-19T23:59:59+05:30",
-      open:true,
-      payUrl:"",
-      video:"film-vfx-clip.mp4",  // restored — client wants it actually playing, not
-                                  // the static image. Paritosh Khairwal | RRS's reel,
-                                  // same credit caption as before.
-      rosterLabel:"Team - one member per line",
-      rosterHint:"Name, role, email. Solo submissions are welcome.",
-      rosterPlaceholder:"Name, role, email",
       rosterRequired:false
     },
     {
@@ -455,7 +460,7 @@ const CONFIG = {
       q:"Film & animation", track:"film",
       items:[
         "<b>Entry:</b> Free for all entrants - students (DY Patil or any other college), animation hobbyists and professionals.",
-        "<b>Prize:</b> Prize pool ₹55,000+ across 11 award categories.",
+        "<b>Prize:</b> To be announced.",
         "<b>Submission:</b> Registration and submission are two separate steps. Register any time before the deadline, then use the Submit your film form on this page to send your finished film - both close 19 October 2026.",
         "<b>Deliverables:</b> Along with the film: an official trailer or teaser, and two posters - vertical (4:5) and horizontal (16:9). All shared as one Google Drive folder link, set to \"Anyone with the link can view.\"",
         "<b>Runtime:</b> Short films 5 to 20 minutes, animation films under 5 minutes, both inclusive of credits.",
@@ -818,6 +823,8 @@ if($("#prizesWrap") && PAGE_TRACK){
     $("#prizesWrap").innerHTML =
       '<table class="prize-table"><thead><tr><th>Award</th><th>Category</th><th>Prize</th></tr></thead>'
       + '<tbody>'+prizeRows+'</tbody></table>';
+  }else if(t){
+    $("#prizesWrap").innerHTML = '<div class="empty-card">Prize breakdown to be announced.</div>';
   }
 }
 
