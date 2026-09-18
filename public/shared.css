@@ -57,6 +57,11 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
+/* Best-effort download deterrent, paired with the contextmenu block in
+   shared.js — stops drag-to-desktop saving and iOS's long-press "Save
+   Image" menu on every img/video sitewide. Not real protection (see
+   the comment in shared.js), just removes the easy paths. */
+img,video{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;user-select:none}
 /* scroll-behavior:smooth is deliberately NOT set globally: in Chrome/Firefox it
    also eases native wheel/trackpad scrolling, which delays the raw scrollY our
    scroll-driven effects read every frame and makes them feel out of sync with

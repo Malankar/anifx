@@ -2045,4 +2045,23 @@ if($(".fm-strip")){
   }
 }
 
+/* ---------- media download deterrent (every page) ----------
+   Best-effort only — a determined visitor can still find a media URL
+   via devtools' Network tab, since the browser has to fetch the file
+   to display it at all. This just removes the one-click paths: the
+   right-click "Save video/image as…" menu (delegated at the document
+   level, so it also covers video/img added later by the render calls
+   above — event cards, track hero media, sponsor logos, etc.), the
+   native video controls' download button (never actually shown on
+   this site — none of these videos use the `controls` attribute —
+   but set anyway in case that ever changes), and drag-to-desktop
+   saving (the accompanying CSS rule in shared.css). */
+document.addEventListener("contextmenu",e=>{
+  if(e.target.closest("video,img")) e.preventDefault();
+});
+$$("video").forEach(v=>{
+  v.setAttribute("controlsList","nodownload noremoteplayback");
+  v.setAttribute("disablePictureInPicture","");
+});
+
 })();
