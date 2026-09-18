@@ -245,12 +245,21 @@ function buildFilmSubmissionEmailHtml(data) {
 function sendConfirmationEmail(data) {
   if (!data.registrantEmail) return;
 
-  const subject = "AniFX 2026 - entry received for " + data.track;
+  // Free tracks (Film & Animation, Character Design) have no payment
+  // step, so there's nothing to verify - registration is confirmed the
+  // moment it's submitted, not "pending" for 72 hours like a paid entry.
+  const isFree = !data.fee || Number(data.fee) === 0;
+
+  const subject = isFree
+    ? "AniFX 2026 - registration confirmed for " + data.track
+    : "AniFX 2026 - entry received for " + data.track;
 
   const lines = [
     "Hi " + (data.registrantName || "") + ",",
     "",
-    "Your registration for " + data.track + " has been recorded. We will verify your payment against our account and confirm your slot by email within 72 hours.",
+    isFree
+      ? "Your registration for " + data.track + " is confirmed. No payment is required for this competition."
+      : "Your registration for " + data.track + " has been recorded. We will verify your payment against our account and confirm your slot by email within 72 hours.",
     "",
     "Details on file:",
     "Team / entrant: " + (data.teamName || data.registrantName || ""),
@@ -280,6 +289,7 @@ function buildConfirmationEmailHtml(data) {
   const name = escapeHtml(data.registrantName || "");
   const track = escapeHtml(data.track || "");
   const entrant = escapeHtml(data.teamName || data.registrantName || "");
+  const isFree = !data.fee || Number(data.fee) === 0;
   const txnRow = data.txnId
     ? '<tr><td style="padding:4px 0;color:#a89e8c;font-size:14px;">Transaction ID</td>' +
       '<td style="padding:4px 0;color:#f0e6d2;font-size:14px;text-align:right;">' + escapeHtml(data.txnId) + '</td></tr>'
@@ -298,11 +308,13 @@ function buildConfirmationEmailHtml(data) {
           '<div style="width:64px;height:64px;line-height:64px;border:2px solid #e8384f;border-radius:50%;margin:0 auto;color:#e8384f;font-size:28px;">&#10003;</div>' +
         '</td></tr>' +
         '<tr><td style="text-align:center;padding-bottom:16px;">' +
-          '<span style="color:#f0e6d2;font-size:28px;font-weight:bold;letter-spacing:1px;">ENTRY RECEIVED</span>' +
+          '<span style="color:#f0e6d2;font-size:28px;font-weight:bold;letter-spacing:1px;">' + (isFree ? 'REGISTRATION CONFIRMED' : 'ENTRY RECEIVED') + '</span>' +
         '</td></tr>' +
         '<tr><td style="text-align:center;color:#c9bfa8;font-size:15px;line-height:1.6;padding-bottom:28px;">' +
-          'Hi ' + name + ', your registration for <b style="color:#f0e6d2;">' + track + '</b> has been recorded. ' +
-          'We will verify your payment against our account and confirm your slot by email within 72 hours.' +
+          (isFree
+            ? 'Hi ' + name + ', your registration for <b style="color:#f0e6d2;">' + track + '</b> is confirmed. No payment is required for this competition.'
+            : 'Hi ' + name + ', your registration for <b style="color:#f0e6d2;">' + track + '</b> has been recorded. ' +
+              'We will verify your payment against our account and confirm your slot by email within 72 hours.') +
         '</td></tr>' +
         '<tr><td style="border-top:1px solid #2a2a2a;padding-top:20px;">' +
           '<table role="presentation" width="100%" style="border-collapse:collapse;">' +
