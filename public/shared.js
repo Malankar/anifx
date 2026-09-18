@@ -39,7 +39,7 @@ const CONFIG = {
      account, then paste the Web App URL here. Data lands in your
      own Google Sheet. Leave empty and the form will tell people
      registration is not open yet instead of failing silently.     */
-  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxJWqLlMC4CJW8W5Q929BrirW4Y0LOgEl4xOdvFYrc6E0V72NBjpmZCTlpeuocur8vgeA/exec",
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxlLZo2ypvkmP3aFuGiuPGD-Tg31bwqQSVdtIjl6JdhCUI-98U1_xK6AxvEhLeby1SNRw/exec",
 
   /* --- your details ---------------------------------------------- */
   contactEmail: "anifx.fest@gmail.com",
@@ -147,30 +147,12 @@ const CONFIG = {
       facts:[
         ["Entry fee","Free for all"],
         ["Registration closes","19 October 2026"],
-        ["Prize","To be announced"],
+        ["Prize","₹30,000+"],
         ["Formats","2D, 3D, stop motion, VFX"],
         ["Screening","24 October, 10:00, on campus"],
         ["Jury","Industry panel"]
       ],
       eligibility:"Open to all - students, hobbyists and professionals alike - whether you're entering individually or as a team. Register any time before the deadline, then come back and submit your finished film separately once it's ready.",
-      // Prize amounts/categories are pending approval - hidden for now by
-      // renaming off the key the prizes-tab renderer reads (see the
-      // #prizesWrap block below). Data kept intact, not deleted, so this
-      // can be restored (rename back to prizeBreakdown) or edited once
-      // approvals land, without re-typing the whole table.
-      prizeBreakdownHidden:[
-        ["Big Screen Award","Best Short Film","₹10,000"],
-        ["Magic Frame Award","Best Animation Short Film","₹10,000"],
-        ["Storyteller Award","Best Screenplay Writer","₹5,000"],
-        ["Vision Award","Best Direction","₹8,000"],
-        ["Aperture Award","Best Cinematography","₹5,000"],
-        ["Cut To Award","Best Editing","₹5,000"],
-        ["Sound Design Award","Sound & Music","₹5,000"],
-        ["Spotlight Award","Best Performance","₹3,000"],
-        ["Character Award","Best Character Design","₹3,000"],
-        ["Rising Star Award","Emerging Filmmaker","Filmmaking Gear / Voucher (Worth ₹5,000)"],
-        ["Wild Card Award","Most Unexpected / Experimental Film","₹3,000"]
-      ],
       fee:0,
       feeNote:"Entry fee",
       slots:0,
@@ -460,7 +442,7 @@ const CONFIG = {
       q:"Film & animation", track:"film",
       items:[
         "<b>Entry:</b> Free for all entrants - students (DY Patil or any other college), animation hobbyists and professionals.",
-        "<b>Prize:</b> To be announced.",
+        "<b>Prize:</b> ₹30,000+.",
         "<b>Submission:</b> Registration and submission are two separate steps. Register any time before the deadline, then use the Submit your film form on this page to send your finished film - both close 19 October 2026.",
         "<b>Deliverables:</b> Along with the film: an official trailer or teaser, and two posters - vertical (4:5) and horizontal (16:9). All shared as one Google Drive folder link, set to \"Anyone with the link can view.\"",
         "<b>Runtime:</b> Short films 5 to 20 minutes, animation films under 5 minutes, both inclusive of credits.",
@@ -811,20 +793,6 @@ if($("#eventOverview") && PAGE_TRACK){
     wireTrackVideos();
     wireTrackMedia();
     revealNodes($$(".track",$("#eventOverview")));
-  }
-}
-
-/* ---------- event page: prizes tab (only tracks with prizeBreakdown) ---------- */
-if($("#prizesWrap") && PAGE_TRACK){
-  const t=CONFIG.tracks.find(x=>x.id===PAGE_TRACK);
-  if(t && t.prizeBreakdown){
-    const prizeRows=t.prizeBreakdown.map(([award,cat,prize])=>
-      '<tr><td>'+esc(award)+'</td><td>'+esc(cat)+'</td><td>'+esc(prize)+'</td></tr>').join("");
-    $("#prizesWrap").innerHTML =
-      '<table class="prize-table"><thead><tr><th>Award</th><th>Category</th><th>Prize</th></tr></thead>'
-      + '<tbody>'+prizeRows+'</tbody></table>';
-  }else if(t){
-    $("#prizesWrap").innerHTML = '<div class="empty-card">Prize breakdown to be announced.</div>';
   }
 }
 
