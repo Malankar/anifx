@@ -17,7 +17,7 @@ Firebase is used only for Hosting.
 - Node.js 20+
 - pnpm (`corepack enable` or `npm i -g pnpm`)
 - Firebase CLI (`npm i -g firebase-tools`)
-- Access to the `anifx-2b1f0` Firebase project (or your own — see below)
+- Access to the `anifx-fest` Firebase project (or your own — see below)
 - Git
 
 ### Windows
@@ -38,7 +38,7 @@ firebase login
 Check `.firebaserc` points at the Firebase project you have access to:
 
 ```json
-{ "projects": { "default": "anifx-2b1f0" } }
+{ "projects": { "default": "anifx-fest" } }
 ```
 
 Using your own Firebase project instead: create one at
