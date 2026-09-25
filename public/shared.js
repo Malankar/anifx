@@ -51,7 +51,7 @@ const CONFIG = {
      loop, 10-15s, <4MB. Leave empty — the poster/tint placeholder
      holds the layout until real footage exists, nothing breaks.    */
   heroVideo:    "",              // festival/landing hero background loop
-  heroPoster:   "anifx-banner.jpg", // four-panel banner (Film/FC26/VALORANT/Game Jam)
+  heroPoster:   "anifx-banner.webp", // four-panel banner (Film/FC26/VALORANT/Game Jam)
 
   /* --- headline numbers ------------------------------------------ */
   festivalStart: "2026-10-23T09:00:00+05:30",
@@ -227,7 +227,7 @@ const CONFIG = {
       open:true,
       payUrl:"",                 // paste Razorpay payment link
       video:"",                  // card/hero background loop — see CONFIG.heroVideo note
-      cardImage:"valorant.jpg",  // fan art, made by a friend of the client's — free of
+      cardImage:"valorant.webp",  // fan art, made by a friend of the client's — free of
                                  // copyright per the client; used for both the index
                                  // card and (via the hero-wiring image fallback) this
                                  // track's own page hero, since there's no video yet.
@@ -261,7 +261,7 @@ const CONFIG = {
       open:true,
       payUrl:"",
       video:"",
-      cardImage:"fc26.jpg",     // official EA Sports FC26 key art — same category of
+      cardImage:"fc26.webp",     // official EA Sports FC26 key art — same category of
                                 // asset as the Riot VALORANT key art declined earlier
                                 // per hard rule #3, but the client was told directly
                                 // and explicitly said to use it anyway (their own
@@ -303,7 +303,7 @@ const CONFIG = {
       open:true,
       payUrl:"",
       video:"",
-      cardGallery:["char-rat.png","char-alien.png","char-monkey.png","char-centaur.png"], // student sketches, right-aligned grid
+      cardGallery:["char-rat.webp","char-alien.webp","char-monkey.webp","char-centaur.webp"], // student sketches, right-aligned grid
       rosterLabel:"",
       rosterHint:"",
       rosterRequired:false
