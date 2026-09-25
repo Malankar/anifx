@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="public/favicon.png">
-<title>VALORANT — AniFX 2026</title>
+<title>VALORANT - AniFX 2026</title>
 <meta name="description" content="VALORANT at AniFX 2026. ₹1,000 per team, online groups, offline grand final on campus at the School of Creative Studies, DY Patil Deemed to be University, 23 October, 10:00.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Space+Grotesk:wght@400;500;600;700&family=Alegreya+Sans:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css?v=76">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Space+Grotesk:wght@400;500;600;700&family=Alegreya+Sans:wght@400;700&family=Bree+Serif&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css?v=88">
 </head>
 <body>
 
@@ -22,10 +22,10 @@
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
     <nav class="nav-links" id="navLinks">
       <a href="/">Home</a>
+      <a href="/film-festival">Film Festival</a>
+      <a href="/game-jam">Game Jam</a>
       <a href="/valorant" class="current">VALORANT</a>
       <a href="/fc26">FC26</a>
-      <a href="/game-jam">Game Jam</a>
-      <a href="/film-festival">Film Festival</a>
       <a href="/character-design">Character Design</a>
       <a class="nav-cta" href="#" data-open-reg>Register</a>
     </nav>
@@ -45,12 +45,12 @@
     <div class="v-plate-frame"></div>
   </div>
   <div class="wrap hero-inner">
-    <div class="event-eyebrow">
-      <a href="/">AniFX 2026</a><span class="sep">—</span><span>VALORANT</span>
+    <div class="event-eyebrow" style="font-family:'Bree Serif',serif">
+      <a href="/">ANIFX 2026</a>
     </div>
 
     <h1 class="display h-xl hero-title">VALORANT</h1>
-    <p class="hero-sub">32 teams · Best of 3 · Online groups, offline grand final on campus</p>
+    <p class="hero-sub">Group stage & semis online · Grand final offline on campus</p>
 
     <div class="hero-actions">
       <a class="btn btn-primary" href="#" data-open-reg>Register your team</a>
@@ -86,7 +86,9 @@
     </div>
 
     <div class="tab-panel" id="panel-schedule">
-      <div class="sched" id="sched"></div>
+      <div class="sched" id="vTimeline"></div>
+      <p class="sched-note" id="vTimelineNote"></p>
+      <div class="sched" id="vCampus"></div>
       <p class="sched-note" id="schedNote"></p>
     </div>
 
@@ -112,32 +114,43 @@
       <div>
         <div class="foot-h">Contact</div>
         <a href="#" id="mailLink" class="todo" title="Set contactEmail in CONFIG">add contact email</a>
-        <a href="#" id="phoneLink" class="todo" title="Set contactPhone in CONFIG">add contact number</a>
-        <a href="https://instagram.com/dypu.socs" target="_blank" rel="noopener">@dypu.socs</a>
-      </div>
-      <div>
-        <div class="foot-h">Competitions</div>
-        <a href="/valorant">VALORANT</a>
-        <a href="/fc26">FC26</a>
-        <a href="/game-jam">Game jam</a>
-        <a href="/film-festival">Film and animation</a>
-        <a href="/character-design">Character design</a>
+        <a href="https://wa.me/917208328115" target="_blank" rel="noopener">General query / Character design - +91 72083 28115</a>
+        <a href="https://wa.me/918691959223" target="_blank" rel="noopener">VALORANT / FC26 - +91 86919 59223</a>
+        <a href="https://wa.me/917014775769" target="_blank" rel="noopener">Game jam - +91 70147 75769</a>
+        <a href="https://wa.me/919867913201" target="_blank" rel="noopener">Animated movies - +91 98679 13201</a>
+        <a href="https://wa.me/919967437937" target="_blank" rel="noopener">Films - +91 99674 37937</a>
+        <a href="https://wa.me/917710876791" target="_blank" rel="noopener">Films (alt) - +91 77108 76791</a>
+        <p style="font-size:12px">WhatsApp only, 10 am - 6 pm.</p>
       </div>
       <div>
         <div class="foot-h">Legal</div>
         <a href="#" data-open-legal="terms">Terms and conditions</a>
         <a href="#" data-open-legal="refund">Refund and cancellation</a>
         <a href="#" data-open-legal="privacy">Privacy policy</a>
-        <a href="#" class="todo" title="Required before payment onboarding">Contact us</a>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>AniFX 2026 — School of Creative Studies, DY Patil Deemed to be University</span>
+      <span>AniFX 2026 - School of Creative Studies, DY Patil Deemed to be University</span>
       <span>Anything not covered by these rules is decided by the Tournament Director</span>
     </div>
     <p class="foot-disclaimer">This website and event are not associated with Riot Games or any other company. VALORANT is a trademark of Riot Games, Inc.</p>
+    <p class="foot-disclaimer">This website and event are not associated with Electronic Arts or any other company. EA SPORTS FC is a trademark of Electronic Arts Inc.</p>
   </div>
 </footer>
+
+<!-- ============ PAYMENT SUCCESS ============ -->
+<div class="success-bg" id="successScreen" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+  <div class="success">
+    <div class="tick" aria-hidden="true">✓</div>
+    <h2 id="successTitle">Payment received</h2>
+    <p id="successLine">Your entry is in. We verify every payment against our account and confirm it by email within 48 hours.</p>
+    <p class="fine">Please check your email for your registration record - we've sent a confirmation with your entry details.</p>
+    <a class="join" id="joinWhatsapp" href="#" target="_blank" rel="noopener">Join the WhatsApp group</a>
+    <a class="join secondary" id="joinDiscord" href="#" target="_blank" rel="noopener">Join the Discord</a>
+    <p class="fine">Match schedules go out in the group first. Missing a match because you did not join is not grounds for a reschedule. Keep your payment reference - if you have not received confirmation in 48 hours, email us with it.</p>
+    <a class="dismiss" href="#" id="successDismiss">Back to the site</a>
+  </div>
+</div>
 
 <!-- ============ REGISTRATION MODAL ============ -->
 <div class="modal-bg" id="regModal" role="dialog" aria-modal="true" aria-labelledby="regTitle">
@@ -163,7 +176,7 @@
 
         <div class="fee-line">
           <span id="feeLabel">Entry fee</span>
-          <b id="feeAmount">—</b>
+          <b id="feeAmount">-</b>
         </div>
 
         <div class="field">
@@ -172,8 +185,8 @@
         </div>
 
         <div class="field">
-          <label for="fCaptain">Student name — full name</label>
-          <input id="fCaptain" name="registrantName" required maxlength="60" pattern="[A-Za-z .'-]+" title="Letters only" autocomplete="name">
+          <label for="fCaptain">Full Name</label>
+          <input id="fCaptain" name="registrantName" required maxlength="60" pattern="[A-Za-z .'\-]+" title="Letters only" autocomplete="name">
         </div>
 
         <div class="field">
@@ -197,7 +210,7 @@
         </div>
 
         <div class="field">
-          <label for="fBoard">Board (e.g. CBSE) — if applicable</label>
+          <label for="fBoard">Board (e.g. CBSE) - if applicable</label>
           <input id="fBoard" name="board" maxlength="40" autocomplete="off">
         </div>
 
@@ -212,12 +225,11 @@
         </div>
 
         <div class="field" id="rosterField">
-          <label for="fRoster" id="fRosterLabel">Squad — one player per line</label>
+          <label for="fRoster" id="fRosterLabel">Squad - one player per line</label>
           <textarea id="fRoster" name="roster"></textarea>
           <p class="hint" id="rosterHint"></p>
           <p class="hint" id="rosterCount"></p>
         </div>
-
         <label class="checkline">
           <input type="checkbox" id="fAgree" required>
           <span>I have read the rules for this competition. All listed players are enrolled students and their details are correct. Incorrect details may result in forfeit.</span>
@@ -263,6 +275,6 @@
 </div>
 
 <script>window.PAGE_TRACK = "valorant";</script>
-<script src="shared.js?v=64"></script>
+<script src="shared.js?v=100"></script>
 </body>
 </html>

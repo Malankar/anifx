@@ -57,6 +57,11 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
+/* Best-effort download deterrent, paired with the contextmenu block in
+   shared.js — stops drag-to-desktop saving and iOS's long-press "Save
+   Image" menu on every img/video sitewide. Not real protection (see
+   the comment in shared.js), just removes the easy paths. */
+img,video{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;user-select:none}
 /* scroll-behavior:smooth is deliberately NOT set globally: in Chrome/Firefox it
    also eases native wheel/trackpad scrolling, which delays the raw scrollY our
    scroll-driven effects read every frame and makes them feel out of sync with
@@ -127,38 +132,6 @@ section{position:relative}
 }
 @media(prefers-reduced-motion:reduce){.scroll-progress{display:none}}
 
-/* ---------- quick-contact rail (floating, every page) ---------- */
-.quick-contact{
-  position:fixed;right:16px;top:50%;z-index:50;
-  display:flex;flex-direction:column;gap:10px;
-  opacity:0;transform:translateY(-50%) translateX(70px);
-  transition:opacity .7s cubic-bezier(.19,.68,.24,.99),transform .7s cubic-bezier(.19,.68,.24,.99);
-}
-.quick-contact.in{opacity:1;transform:translateY(-50%) translateX(0)}
-.quick-contact a{
-  display:inline-flex;align-items:center;height:44px;padding:0 12px;
-  border-radius:22px;background:var(--surface);border:1px solid var(--line);
-  color:var(--muted);box-shadow:0 4px 14px -6px rgb(0 0 0 / .18);
-  transition:color .2s,border-color .2s,background .2s,box-shadow .2s;
-}
-.quick-contact a svg{width:20px;height:20px;flex-shrink:0}
-.quick-contact a span{
-  font-family:var(--f-data);font-size:11px;letter-spacing:.05em;white-space:nowrap;
-  max-width:0;opacity:0;overflow:hidden;margin-left:0;
-  transition:max-width .35s cubic-bezier(.16,.8,.3,1),opacity .25s,margin-left .35s cubic-bezier(.16,.8,.3,1);
-}
-.quick-contact a:hover,.quick-contact a:focus-visible{
-  color:var(--bone);border-color:var(--accent);background:var(--ink);
-  box-shadow:0 10px 26px -8px rgb(0 0 0 / .28);
-}
-.quick-contact a:hover span,.quick-contact a:focus-visible span{max-width:130px;opacity:1;margin-left:10px}
-.quick-contact a.todo:hover,.quick-contact a.todo:focus-visible{border-color:var(--todo)}
-@media(prefers-reduced-motion:reduce){.quick-contact{transition:none;opacity:1;transform:translateY(-50%)}}
-@media(max-width:640px){
-  .quick-contact{right:10px;gap:8px}
-  .quick-contact a{height:40px;padding:0 10px}
-  .quick-contact a svg{width:18px;height:18px}
-}
 
 /* ---------- nav ---------- */
 header{
@@ -370,7 +343,7 @@ header.scrolled .nav{height:52px}
 .hero-meta{
   display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
   color:var(--muted);margin-bottom:18px;
-  font-family:var(--f-body);font-size:15px;
+  font-family:'Lexend',sans-serif;font-size:13px;letter-spacing:.04em;
 }
 .hero-meta strong{color:var(--bone);font-weight:600}
 .hero-title{margin:0 0 6px}
@@ -402,6 +375,13 @@ header.scrolled .nav{height:52px}
 .btn-ghost{border:1px solid var(--line);color:var(--bone);transition:border-color .2s,color .2s,transform .2s,box-shadow .2s}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);box-shadow:0 0 16px 2px rgb(from var(--accent) r g b / .25)}
 .btn-ghost:active{transform:translateY(0)}
+/* Deadline-flavoured CTA (--accent-2 is already this site's "urgent,
+   time-sensitive" tone elsewhere — closing dates, live badges) — used
+   for actions that need to stand apart from both the brand-red primary
+   CTA and the plain outline buttons, e.g. film submission. */
+.btn-accent2{background:var(--accent-2);color:#1A1207;transition:filter .2s,transform .2s,box-shadow .2s}
+.btn-accent2:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 8px 20px rgb(from var(--accent-2) r g b / .35),0 0 26px 6px rgb(from var(--accent-2) r g b / .45)}
+.btn-accent2:active{transform:translateY(0);box-shadow:none;filter:brightness(1)}
 .btn:disabled{opacity:.45;cursor:not-allowed;filter:none;transform:none!important;box-shadow:none!important}
 
 /* event-hero variant: shorter title scale (page is about the event, not
@@ -928,7 +908,7 @@ header.scrolled .nav{height:52px}
 }
 .track-media.has-video .track-video{opacity:1}
 .track-img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:78% center;opacity:0;
   filter:blur(1.5px) saturate(1.08);transform:scale(1.04);
 }
 .track-media.has-img .track-img{opacity:.85}
@@ -1132,9 +1112,10 @@ header.scrolled .nav{height:52px}
   text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:4px;
 }
 .slot-row{
-  display:grid;grid-template-columns:64px 1fr;gap:16px;
+  display:grid;grid-template-columns:96px 1fr;gap:16px;
   padding:14px 0;border-bottom:1px solid var(--line-soft);align-items:baseline;
 }
+.sr-time{line-height:1.4}
 .slot-row.feature .sr-title{color:var(--accent)}
 .sr-time{font-family:var(--f-data);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .sr-title{font-weight:600;font-size:15px;line-height:1.35}
@@ -1207,7 +1188,7 @@ header.scrolled .nav{height:52px}
 .modal-x:hover{color:var(--bone)}
 .modal-body{padding:22px}
 .field{margin-bottom:16px}
-.field label{display:block;font-family:var(--f-data);font-size:10.5px;letter-spacing:.11em;color:var(--muted);margin-bottom:7px}
+.field label{display:block;font-family:var(--f-body);font-size:13.5px;font-weight:600;letter-spacing:.02em;color:var(--bone);margin-bottom:7px}
 .field input,.field select,.field textarea{
   width:100%;background:var(--surface);border:1px solid var(--line);
   padding:11px 13px;color:var(--bone);font-family:var(--f-body);font-size:14.5px;border-radius:var(--radius-sm);
