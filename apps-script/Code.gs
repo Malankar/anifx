@@ -258,7 +258,7 @@ function sendConfirmationEmail(data) {
     "Hi " + (data.registrantName || "") + ",",
     "",
     isFree
-      ? "Your registration for " + data.track + " is confirmed. No payment is required for this competition."
+      ? "Your registration for " + data.track + " is confirmed. Group links will be sent to you by email soon."
       : "Your registration for " + data.track + " has been recorded. We will verify your payment against our account and confirm your slot by email within 72 hours.",
     "",
     "Details on file:",
@@ -312,7 +312,7 @@ function buildConfirmationEmailHtml(data) {
         '</td></tr>' +
         '<tr><td style="text-align:center;color:#c9bfa8;font-size:15px;line-height:1.6;padding-bottom:28px;">' +
           (isFree
-            ? 'Hi ' + name + ', your registration for <b style="color:#f0e6d2;">' + track + '</b> is confirmed. No payment is required for this competition.'
+            ? 'Hi ' + name + ', your registration for <b style="color:#f0e6d2;">' + track + '</b> is confirmed. Group links will be sent to you by email soon.'
             : 'Hi ' + name + ', your registration for <b style="color:#f0e6d2;">' + track + '</b> has been recorded. ' +
               'We will verify your payment against our account and confirm your slot by email within 72 hours.') +
         '</td></tr>' +
