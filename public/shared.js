@@ -962,7 +962,7 @@ if($("#successScreen")){
     const teamish = isTeam===undefined ? (t&&t.isTeam) : isTeam;
     $("#successTitle").textContent = paid===false ? "Registration received" : "Payment received";
     if(t) $("#successLine").textContent = paid===false
-      ? "Your "+t.name+" entry is in and confirmed - no payment needed for this one."
+      ? "Your "+t.name+" entry is in and confirmed."
       : "Your "+t.name+" entry is in. We verify every payment against our account and confirm your "
         + (teamish?"team":"entry") + " by email within 48 hours.";
     const wa=$("#joinWhatsapp"), dc=$("#joinDiscord");
@@ -971,7 +971,7 @@ if($("#successScreen")){
     if(CONFIG.discordLink){ dc.href=CONFIG.discordLink; dc.style.display="block"; }
     else { dc.style.display="none"; }
     if(!CONFIG.whatsappLink && !CONFIG.discordLink){
-      $("#successLine").textContent += " Group links are sent to you by email.";
+      $("#successLine").textContent += " Group links will be sent to you by email soon.";
     }
     successScreen.classList.add("open");
     document.body.style.overflow="hidden";
