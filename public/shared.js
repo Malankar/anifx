@@ -39,7 +39,11 @@ const CONFIG = {
      account, then paste the Web App URL here. Data lands in your
      own Google Sheet. Leave empty and the form will tell people
      registration is not open yet instead of failing silently.     */
-  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxlLZo2ypvkmP3aFuGiuPGD-Tg31bwqQSVdtIjl6JdhCUI-98U1_xK6AxvEhLeby1SNRw/exec",
+  // Hardened Apps Script deployment on the dypatil.edu Workspace account
+  // - mail-queue rate limiter, BCC'd full-submission-summary emails, no
+  // inline MailApp calls. Replaces the earlier personal-account and
+  // temporary-backup deployments (see git history for those URLs).
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxBGUoWXf3hXfTPfM6QsRXuBZzKCCMJ7siW4Zz2c_cYfEKZmzRfk0RUEyhNla-FBCVWww/exec",
 
   /* --- your details ---------------------------------------------- */
   contactEmail: "anifx.fest@gmail.com",
