@@ -429,7 +429,7 @@ header.scrolled .nav{height:52px}
 
 /* ---------- FC26: a visible stadium pitch behind the hero, ball chased across ---------- */
 .fc-pitch{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-/* Client doesn't want this showing now that fc26.jpg is the real hero image —
+/* Client doesn't want this showing now that fc26.webp is the real hero image —
    same DOM-order issue as Film's projector placeholder: this sits after the
    hero-video-overlay, so it was painting on top of the real photo. */
 .hero.has-video .fc-pitch{display:none}
