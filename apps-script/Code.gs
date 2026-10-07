@@ -20,6 +20,14 @@ const FOLDER_NAME = "AniFX Payment Screenshots";
 // a time rather than as a periodic export.
 const BACKUP_BCC_EMAIL = "tanayjoshi08@gmail.com";
 
+// Every outgoing email is sent "as" this address instead of whichever
+// account actually runs the script. Requires a ONE-TIME manual step
+// that can't be done from code: in this script's own Gmail account,
+// Settings -> Accounts and Import -> "Send mail as" -> add this
+// address -> click the verification link Google emails to it. Without
+// that verification, MailApp silently rejects the `from` option.
+const SENDER_FROM_EMAIL = "anifx.fest@gmail.com";
+
 // Grouped for a person scanning the sheet, not for how the code builds
 // the row: who/entry-shape first, then contact, then academic, then
 // payment proof. A few columns don't apply to every track (e.g. Entry
@@ -199,9 +207,11 @@ function handleFilmSubmission(data) {
 // --------------------------------------------------------------------
 // Mail queue: queueEmail() just appends a row and returns immediately -
 // the actual MailApp.sendEmail() calls only ever happen inside
-// processMailQueue(), which a time-driven trigger calls once a minute.
-// That trigger installs itself automatically (see ensureMailQueueTrigger
-// below) - no manual setup step needed after deploying.
+// processMailQueue(), which a time-driven trigger calls every 15
+// minutes (a flat, simple interval - not trying to be clever about
+// pacing). That trigger installs itself automatically (see
+// ensureMailQueueTrigger below) - no manual setup step needed after
+// deploying.
 // --------------------------------------------------------------------
 
 function queueEmail(type, data) {
@@ -286,7 +296,7 @@ function ensureMailQueueTrigger() {
   const exists = ScriptApp.getProjectTriggers()
     .some(t => t.getHandlerFunction() === "processMailQueue");
   if (!exists) {
-    ScriptApp.newTrigger("processMailQueue").timeBased().everyMinutes(1).create();
+    ScriptApp.newTrigger("processMailQueue").timeBased().everyMinutes(15).create();
   }
   props.setProperty("MAIL_QUEUE_TRIGGER_INSTALLED", "true");
 }
@@ -314,6 +324,7 @@ function sendSubmissionConfirmationEmail(data) {
     MailApp.sendEmail({
       to: data.registrantEmail,
       bcc: BACKUP_BCC_EMAIL,
+      from: SENDER_FROM_EMAIL,
       subject: subject,
       body: lines.join("\n"),
       htmlBody: buildFilmSubmissionEmailHtml(data),
@@ -444,6 +455,7 @@ function sendConfirmationEmail(data) {
     MailApp.sendEmail({
       to: data.registrantEmail,
       bcc: BACKUP_BCC_EMAIL,
+      from: SENDER_FROM_EMAIL,
       subject: subject,
       body: lines.join("\n"),
       htmlBody: buildConfirmationEmailHtml(data),

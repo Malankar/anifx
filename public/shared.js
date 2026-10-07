@@ -55,7 +55,7 @@ const CONFIG = {
      loop, 10-15s, <4MB. Leave empty — the poster/tint placeholder
      holds the layout until real footage exists, nothing breaks.    */
   heroVideo:    "",              // festival/landing hero background loop
-  heroPoster:   "anifx-banner.jpg", // four-panel banner (Film/FC26/VALORANT/Game Jam)
+  heroPoster:   "anifx-banner.webp", // four-panel banner (Film/FC26/VALORANT/Game Jam)
 
   /* --- headline numbers ------------------------------------------ */
   festivalStart: "2026-10-23T09:00:00+05:30",
@@ -113,10 +113,10 @@ const CONFIG = {
      Rendered only on the VALORANT page's own Schedule tab, via
      #vTimeline. */
   valorantTimeline:[
-    {time:"10-16 Oct, 17:00", title:"Group stage matches (evenings)", where:"Online"},
+    {time:"15-17 Oct, 17:00", title:"Group stage matches (evenings) - tentative", where:"Online"},
     {time:"18 Oct, 12:00", title:"Semi-finals", where:"Online", feature:true}
   ],
-  valorantTimelineNote:"Exact timing and dates for online matches will be communicated through the Discord server.",
+  valorantTimelineNote:"Group stage dates are tentative. Final fixtures and timings will be shared via WhatsApp and Discord.",
 
   /* --- valorant on-campus schedule -----------------------------------
      Formatted specifically for this page: heading is the event itself
@@ -211,27 +211,27 @@ const CONFIG = {
       name:"VALORANT",
       page:"/valorant",
       format:"Group stage & semis online · Grand final offline on campus",
-      blurb:"Group stage runs online through October, evenings, best of three. It starts 10 October, with Discord access and match fixtures going out on 9 October. Semi-finals are online, best of five. The grand final is played offline on campus.",
+      blurb:"Group stage runs online, evenings, best of three, tentatively 15-17 October - final fixtures and timings are shared via WhatsApp and Discord. Semi-finals are online, best of five, 18 October. The grand final is played offline on campus.",
       isTeam:true,
       leadLabel:"Leader",
       facts:[
         ["Entry fee","Free"],
-        ["Registration closes","9 October 2026"],
+        ["Registration closes","15 October 2026"],
         ["Team size","5 players"],
         ["Prize","Goodies"],
-        ["Group stage","October, evenings, online"],
+        ["Group stage","15-17 October, evenings, online (tentative)"],
         ["Grand final","23 October, 10:00, on campus"]
       ],
       eligibility:"Open to all currently enrolled college students carrying a valid college ID. One roster per player - you may not appear on two VALORANT teams. There is no cap on the number of teams that may register.",
       fee:0,
       feeNote:"Entry fee",
       slots:0,
-      closes:"9 October 2026",
-      closesAt:"2026-10-09T23:59:59+05:30",
+      closes:"15 October 2026",
+      closesAt:"2026-10-15T23:59:59+05:30",
       open:true,
       payUrl:"",                 // paste Razorpay payment link
       video:"",                  // card/hero background loop — see CONFIG.heroVideo note
-      cardImage:"valorant.jpg",  // fan art, made by a friend of the client's — free of
+      cardImage:"valorant.webp",  // fan art, made by a friend of the client's — free of
                                  // copyright per the client; used for both the index
                                  // card and (via the hero-wiring image fallback) this
                                  // track's own page hero, since there's no video yet.
@@ -265,7 +265,7 @@ const CONFIG = {
       open:true,
       payUrl:"",
       video:"",
-      cardImage:"fc26.jpg",     // official EA Sports FC26 key art — same category of
+      cardImage:"fc26.webp",     // official EA Sports FC26 key art — same category of
                                 // asset as the Riot VALORANT key art declined earlier
                                 // per hard rule #3, but the client was told directly
                                 // and explicitly said to use it anyway (their own
@@ -307,7 +307,7 @@ const CONFIG = {
       open:true,
       payUrl:"",
       video:"",
-      cardGallery:["char-rat.png","char-alien.png","char-monkey.png","char-centaur.png"], // student sketches, right-aligned grid
+      cardGallery:["char-rat.webp","char-alien.webp","char-monkey.webp","char-centaur.webp"], // student sketches, right-aligned grid
       rosterLabel:"",
       rosterHint:"",
       rosterRequired:false
@@ -390,7 +390,7 @@ const CONFIG = {
       q:"General Rules", track:"valorant",
       items:[
         "<b>Communication:</b> All online matches are hosted and coordinated through the official AniFX Discord. The invite link goes to the Captain once registration is confirmed. Every rostered player must be in the server. A team with players missing from Discord at match time is treated as not reporting.",
-        "<b>Entry:</b> Free. Registration closes 9 October 2026. There is no cap on the number of teams.",
+        "<b>Entry:</b> Free. Registration closes 15 October 2026. There is no cap on the number of teams.",
         "<b>Prize:</b> Goodies for the winning team. No cash prize.",
         "<b>Roster:</b> Five players, locked at registration. No substitutes and no additions after the deadline. Every player's Riot ID with tagline is required, and that is the account the player uses in match.",
         "<b>Eligibility:</b> All players must be enrolled students carrying a valid college ID, checked at the offline final. Players under 18 must submit a guardian consent form before the group stage. One player, one team.",
