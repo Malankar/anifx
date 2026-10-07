@@ -39,7 +39,11 @@ const CONFIG = {
      account, then paste the Web App URL here. Data lands in your
      own Google Sheet. Leave empty and the form will tell people
      registration is not open yet instead of failing silently.     */
-  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxlLZo2ypvkmP3aFuGiuPGD-Tg31bwqQSVdtIjl6JdhCUI-98U1_xK6AxvEhLeby1SNRw/exec",
+  // Hardened Apps Script deployment on the dypatil.edu Workspace account
+  // - mail-queue rate limiter, BCC'd full-submission-summary emails, no
+  // inline MailApp calls. Replaces the earlier personal-account and
+  // temporary-backup deployments (see git history for those URLs).
+  sheetEndpoint: "https://script.google.com/macros/s/AKfycbxBGUoWXf3hXfTPfM6QsRXuBZzKCCMJ7siW4Zz2c_cYfEKZmzRfk0RUEyhNla-FBCVWww/exec",
 
   /* --- your details ---------------------------------------------- */
   contactEmail: "anifx.fest@gmail.com",
@@ -109,10 +113,10 @@ const CONFIG = {
      Rendered only on the VALORANT page's own Schedule tab, via
      #vTimeline. */
   valorantTimeline:[
-    {time:"10-16 Oct, 17:00", title:"Group stage matches (evenings)", where:"Online"},
+    {time:"15-17 Oct, 17:00", title:"Group stage matches (evenings) - tentative", where:"Online"},
     {time:"18 Oct, 12:00", title:"Semi-finals", where:"Online", feature:true}
   ],
-  valorantTimelineNote:"Exact timing and dates for online matches will be communicated through the Discord server.",
+  valorantTimelineNote:"Group stage dates are tentative. Final fixtures and timings will be shared via WhatsApp and Discord.",
 
   /* --- valorant on-campus schedule -----------------------------------
      Formatted specifically for this page: heading is the event itself
@@ -180,17 +184,17 @@ const CONFIG = {
       entryTeamNote:"Up to 5 members, one lead.",
       leadLabel:"Team Lead",
       facts:[
-        ["Entry fee","₹1,000 per team"],
+        ["Entry fee","Free"],
         ["Registration closes","14 October 2026"],
         ["Team size","1 to 5"],
-        ["Prize","Winner - ₹10,000"],
+        ["Prize","Prizes worth up to ₹1,00,000"],
         ["Genre","Side-scroller action"],
         ["Duration","100 hours, online"],
         ["Screening","24 October, 14:00, on campus"]
       ],
       eligibility:"Open to all currently enrolled college students. Teams of 1 to 5 - each person may register with only one team. Solo entries are welcome. This year's theme is Side-Scroller Action. Discord access and further details are sent once you register.",
-      fee:1000,
-      feeNote:"₹1,000 per team",
+      fee:0,
+      feeNote:"Entry fee",
       slots:0,
       closes:"14 October 2026",
       closesAt:"2026-10-14T23:59:59+05:30",
@@ -207,23 +211,23 @@ const CONFIG = {
       name:"VALORANT",
       page:"/valorant",
       format:"Group stage & semis online · Grand final offline on campus",
-      blurb:"Group stage runs online through October, evenings, best of three. It starts 10 October, with Discord access and match fixtures going out on 9 October. Semi-finals are online, best of five. The grand final is played offline on campus.",
+      blurb:"Group stage runs online, evenings, best of three, tentatively 15-17 October - final fixtures and timings are shared via WhatsApp and Discord. Semi-finals are online, best of five, 18 October. The grand final is played offline on campus.",
       isTeam:true,
       leadLabel:"Leader",
       facts:[
-        ["Entry fee","₹1,000 per team"],
-        ["Registration closes","9 October 2026"],
+        ["Entry fee","Free"],
+        ["Registration closes","15 October 2026"],
         ["Team size","5 players"],
-        ["Prize","Prize pool ₹17,500"],
-        ["Group stage","October, evenings, online"],
+        ["Prize","Goodies"],
+        ["Group stage","15-17 October, evenings, online (tentative)"],
         ["Grand final","23 October, 10:00, on campus"]
       ],
       eligibility:"Open to all currently enrolled college students carrying a valid college ID. One roster per player - you may not appear on two VALORANT teams. There is no cap on the number of teams that may register.",
-      fee:1000,
-      feeNote:"₹1,000 per team",
+      fee:0,
+      feeNote:"Entry fee",
       slots:0,
-      closes:"9 October 2026",
-      closesAt:"2026-10-09T23:59:59+05:30",
+      closes:"15 October 2026",
+      closesAt:"2026-10-15T23:59:59+05:30",
       open:true,
       payUrl:"",                 // paste Razorpay payment link
       video:"",                  // card/hero background loop — see CONFIG.heroVideo note
@@ -310,9 +314,15 @@ const CONFIG = {
     }
   ],
 
-  /* --- sponsors ---------------------------------------------------- */
+  /* --- sponsors / partners -----------------------------------------
+     `track` scopes an entry to one event page's Sponsors/Partners tab
+     (see the #eventSponsors filter below) - same single-track pattern
+     as CONFIG.rules, not the multi-track array FAQ supports, since no
+     partner here backs more than one competition. */
   sponsors: [
-    { name:"XP-Pen - Character Design", logoUrl:"", url:"" }
+    { name:"XP-Pen", role:"Character Design Sponsor", track:"character", logoUrl:"", url:"" },
+    { name:"Meshy.ai", role:"Technology Partner", track:"gamejam", logoUrl:"", url:"https://www.meshy.ai" },
+    { name:"Game Developer Association of India (GDAI)", role:"Ecosystem Partner", track:"gamejam", logoUrl:"", url:"" }
   ],
 
   /* --- faq (general — shown on the landing page and on every event
@@ -324,17 +334,17 @@ const CONFIG = {
       a:"That slot is not reassigned." },
     { q:"Is there an age requirement?",
       a:"Yes, all participants must be 18 or older, except for VALORANT, where players under 18 may compete with a signed guardian consent form submitted before the group stage." },
-    { q:"What's the refund policy?", tracks:["valorant","fc26","gamejam"],
+    { q:"What's the refund policy?", tracks:["fc26"],
       a:"No refunds at any cost." },
     { q:"What do I need to bring for the offline final?", tracks:["valorant","fc26"],
       a:"For VALORANT: your own keyboard, mouse, mousepad, and headphones/earphones. Not applicable for FC26." },
     { q:"How do I know my registration went through?",
-      a:"You'll get a confirmation email after payment." },
+      a:"You'll get a confirmation email right after you register. FC26 is the only paid competition - for that one, your slot is confirmed once we verify your payment." },
 
     { q:"Can I add a substitute to my VALORANT roster?", track:"valorant",
       a:"No. Rosters are locked at five players at registration - there are no substitutes and no additions after the deadline." },
     { q:"Do I need to join the AniFX Discord?", track:"valorant",
-      a:"Yes. All online matches are run through the official AniFX Discord - the invite goes to the Captain after payment is verified, and every rostered player must be in the server for their match." },
+      a:"Yes. All online matches are run through the official AniFX Discord - the invite goes to the Captain once registration is confirmed, and every rostered player must be in the server for their match." },
     { q:"Is there a limit on how many VALORANT teams can register?", track:"valorant",
       a:"No, there's no cap on the number of teams." },
     { q:"What happens if my team only has four players for a match?", track:"valorant",
@@ -379,8 +389,9 @@ const CONFIG = {
     {
       q:"General Rules", track:"valorant",
       items:[
-        "<b>Communication:</b> All online matches are hosted and coordinated through the official AniFX Discord. The invite link goes to the Captain after payment is verified. Every rostered player must be in the server. A team with players missing from Discord at match time is treated as not reporting.",
-        "<b>Entry:</b> ₹1,000 per team, paid in one transaction by the Captain. Registration closes 9 October 2026. There is no cap on the number of teams.",
+        "<b>Communication:</b> All online matches are hosted and coordinated through the official AniFX Discord. The invite link goes to the Captain once registration is confirmed. Every rostered player must be in the server. A team with players missing from Discord at match time is treated as not reporting.",
+        "<b>Entry:</b> Free. Registration closes 15 October 2026. There is no cap on the number of teams.",
+        "<b>Prize:</b> Goodies for the winning team. No cash prize.",
         "<b>Roster:</b> Five players, locked at registration. No substitutes and no additions after the deadline. Every player's Riot ID with tagline is required, and that is the account the player uses in match.",
         "<b>Eligibility:</b> All players must be enrolled students carrying a valid college ID, checked at the offline final. Players under 18 must submit a guardian consent form before the group stage. One player, one team.",
         "<b>Format:</b> Group stage best of three, online. Knockout rounds best of three, online. Semi-finals best of five, online, 18 October 2026. Grand final best of five, played offline on campus, 23 October 2026.",
@@ -418,8 +429,8 @@ const CONFIG = {
     {
       q:"Game jam", track:"gamejam",
       items:[
-        "<b>Entry:</b> ₹1,000 per team, paid in one transaction by the Team Lead. Teams of one to five, solo developers welcome. Each person may register with only one team.",
-        "<b>Prize:</b> Winner takes ₹10,000.",
+        "<b>Entry:</b> Free. Teams of one to five, solo developers welcome. Each person may register with only one team.",
+        "<b>Prize:</b> Prizes worth up to ₹1,00,000 - including a 1-year Meshy Premium subscription (1 seat), 1-year Meshy Pro subscriptions (1 to 4 seats), and free tickets to IGDC 2026 (India Game Developer Conference). In partnership with Meshy.ai (Technology Partner) and the Game Developer Association of India (Ecosystem Partner).",
         "<b>Theme:</b> None. Teams choose their own story, setting, characters and mechanics - only the side-scroller action genre requirement applies.",
         "<b>Genre:</b> Side-scrolling, action-oriented gameplay - platformers, beat-'em-ups, side-scrolling shooters, action RPGs, Metroidvania and similar are all eligible. 2D, 3D or 2.5D, with no advantage given to any format.",
         "<b>Duration:</b> 100 hours, continuous, fully online. The clock starts at the announced time and ends exactly 100 hours later.",
@@ -480,13 +491,18 @@ const CONFIG = {
       warn:"The organisers reserve the right to modify the competition format, schedule or rules if required due to unforeseen circumstances."
     },
     {
-      q:"Payment, refunds and prize money",
+      q:"Payment and refunds", tracks:["fc26"],
       items:[
         "<b>Payment:</b> Entry is confirmed only when payment is received and verified against our account. Keep your transaction reference.",
-        "<b>Verification:</b> Verified teams appear on this site. If you have paid and are not listed within 48 hours, email us with your reference number.",
+        "<b>Verification:</b> Verified entrants appear on this site. If you have paid and are not listed within 48 hours, email us with your reference number.",
         "<b>Unverified entries:</b> Entries that cannot be verified 72 hours before the first match are removed from the bracket.",
-        "<b>Refunds:</b> No refunds at any cost. Once payment is made it is final, whether or not the team plays, withdraws, is disqualified or is removed from the bracket.",
-        "<b>Prize money:</b> Paid to the registered Captain, Team Lead or solo entrant after the festival. Prize distribution for all categories is on 24 October 2026. Winners submit PAN and bank details, and applicable tax deductions apply. Disbursal is within 45 days."
+        "<b>Refunds:</b> No refunds at any cost. Once payment is made it is final, whether or not the entrant plays, withdraws, is disqualified or is removed from the bracket."
+      ]
+    },
+    {
+      q:"Prize money", tracks:["fc26","film"],
+      items:[
+        "<b>Prize money:</b> Paid to the registered Team Lead or solo entrant after the festival. Prize distribution for all categories is on 24 October 2026. Winners submit PAN and bank details, and applicable tax deductions apply. Disbursal is within 45 days."
       ]
     },
     {
@@ -796,11 +812,16 @@ if($("#eventOverview") && PAGE_TRACK){
   }
 }
 
-/* ---------- event page: sponsors tab ---------- */
+/* ---------- event page: sponsors/partners tab ---------- */
 if($("#eventSponsors") && PAGE_TRACK){
-  const sponsors=CONFIG.sponsors||[];
+  const sponsors=(CONFIG.sponsors||[]).filter(s=>!s.track || s.track===PAGE_TRACK);
   $("#eventSponsors").innerHTML = sponsors.length
-    ? sponsors.map(s=>'<a href="'+esc(s.url||"#")+'" target="_blank" rel="noopener">'+esc(s.name)+'</a>').join("")
+    ? sponsors.map(s=>
+        '<a class="sponsor-card" href="'+esc(s.url||"#")+'" target="_blank" rel="noopener">'
+        + '<span class="sponsor-name">'+esc(s.name)+'</span>'
+        + (s.role ? '<span class="sponsor-role">'+esc(s.role)+'</span>' : '')
+        + '</a>'
+      ).join("")
     : '<div class="empty-card">No sponsors confirmed yet for this edition. Check back closer to the event.</div>';
 }
 
@@ -827,11 +848,17 @@ if($("#faqWrap")){
 
 /* ---------- rules ----------
    Index (or any page without PAGE_TRACK) shows every block.
-   An event page shows only its own track's block plus the two
-   general ones (payment/refunds, conduct) — no `track` field. ---------- */
+   An event page shows only its own track's block plus whichever
+   general ones apply - no `track`/`tracks` field means every page,
+   `track` ties a block to one event, `tracks` (an array) to a subset
+   of several - same pattern as CONFIG.faq, used for the payment/
+   refunds block now that not every competition takes payment. ---------- */
 if($("#rulesWrap")){
   const blocks = PAGE_TRACK
-    ? CONFIG.rules.filter(r=>!r.track || r.track===PAGE_TRACK)
+    ? CONFIG.rules.filter(r=>{
+        if(r.tracks) return r.tracks.includes(PAGE_TRACK);
+        return !r.track || r.track===PAGE_TRACK;
+      })
     : CONFIG.rules;
   $("#rulesWrap").innerHTML=blocks.map(r=>
     '<div class="acc" data-acc>'
@@ -939,7 +966,7 @@ if($("#successScreen")){
     const teamish = isTeam===undefined ? (t&&t.isTeam) : isTeam;
     $("#successTitle").textContent = paid===false ? "Registration received" : "Payment received";
     if(t) $("#successLine").textContent = paid===false
-      ? "Your "+t.name+" entry is in and confirmed - no payment needed for this one."
+      ? "Your "+t.name+" entry is in and confirmed."
       : "Your "+t.name+" entry is in. We verify every payment against our account and confirm your "
         + (teamish?"team":"entry") + " by email within 48 hours.";
     const wa=$("#joinWhatsapp"), dc=$("#joinDiscord");
@@ -948,7 +975,7 @@ if($("#successScreen")){
     if(CONFIG.discordLink){ dc.href=CONFIG.discordLink; dc.style.display="block"; }
     else { dc.style.display="none"; }
     if(!CONFIG.whatsappLink && !CONFIG.discordLink){
-      $("#successLine").textContent += " Group links are sent to you by email.";
+      $("#successLine").textContent += " Group links will be sent to you by email soon.";
     }
     successScreen.classList.add("open");
     document.body.style.overflow="hidden";

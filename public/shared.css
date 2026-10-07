@@ -880,6 +880,17 @@ header.scrolled .nav{height:52px}
   color:var(--muted);font-size:14.5px;
 }
 
+/* ---------- sponsors / partners tab ---------- */
+#eventSponsors{display:flex;flex-wrap:wrap;gap:14px}
+.sponsor-card{
+  display:flex;flex-direction:column;gap:5px;min-width:200px;
+  padding:18px 22px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-sm);transition:border-color .15s;
+}
+.sponsor-card:hover{border-color:var(--accent-dim)}
+.sponsor-name{font-family:var(--f-body);font-size:15.5px;font-weight:600;color:var(--bone)}
+.sponsor-role{font-family:var(--f-data);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
 /* ---------- tracks (still used: event page's own overview facts table) ---------- */
 .tracks{display:flex;flex-direction:column;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .track{
