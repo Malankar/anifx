@@ -113,7 +113,7 @@ const CONFIG = {
      Rendered only on the VALORANT page's own Schedule tab, via
      #vTimeline. */
   valorantTimeline:[
-    {time:"15-17 Oct, 17:00", title:"Group stage matches (evenings) - tentative", where:"Online"},
+    {time:"16-17 Oct, 17:00", title:"Group stage matches (evenings) - tentative", where:"Online"},
     {time:"18 Oct, 12:00", title:"Semi-finals", where:"Online", feature:true}
   ],
   valorantTimelineNote:"Group stage dates are tentative. Final fixtures and timings will be shared via WhatsApp and Discord.",
@@ -211,7 +211,7 @@ const CONFIG = {
       name:"VALORANT",
       page:"/valorant",
       format:"Group stage & semis online · Grand final offline on campus",
-      blurb:"Group stage runs online, evenings, best of three, tentatively 15-17 October - final fixtures and timings are shared via WhatsApp and Discord. Semi-finals are online, best of five, 18 October. The grand final is played offline on campus.",
+      blurb:"Group stage runs online, evenings, best of three, tentatively 16-17 October - final fixtures and timings are shared via WhatsApp and Discord. Semi-finals are online, best of five, 18 October. The grand final is played offline on campus.",
       isTeam:true,
       leadLabel:"Leader",
       facts:[
@@ -219,7 +219,7 @@ const CONFIG = {
         ["Registration closes","15 October 2026"],
         ["Team size","5 players"],
         ["Prize","Goodies"],
-        ["Group stage","15-17 October, evenings, online (tentative)"],
+        ["Group stage","16-17 October, evenings, online (tentative)"],
         ["Grand final","23 October, 10:00, on campus"]
       ],
       eligibility:"Open to all currently enrolled college students carrying a valid college ID. One roster per player - you may not appear on two VALORANT teams. There is no cap on the number of teams that may register.",
