@@ -216,7 +216,7 @@ const CONFIG = {
       leadLabel:"Leader",
       facts:[
         ["Entry fee","Free"],
-        ["Registration closes","15 October 2026"],
+        ["Registration closes","14 October 2026"],
         ["Team size","5 players"],
         ["Prize","Goodies"],
         ["Group stage","16-17 October, evenings, online"],
@@ -226,8 +226,8 @@ const CONFIG = {
       fee:0,
       feeNote:"Entry fee",
       slots:0,
-      closes:"15 October 2026",
-      closesAt:"2026-10-15T23:59:59+05:30",
+      closes:"14 October 2026",
+      closesAt:"2026-10-14T23:59:59+05:30",
       open:true,
       payUrl:"",                 // paste Razorpay payment link
       video:"",                  // card/hero background loop — see CONFIG.heroVideo note
@@ -250,7 +250,7 @@ const CONFIG = {
       leadLabel:"",
       facts:[
         ["Entry fee","₹100 per player"],
-        ["Registration closes","20 October 2026"],
+        ["Registration closes","21 October 2026"],
         ["Format","Solo"],
         ["Prize pool","₹8,000"],
         ["Played","23 October, on campus"],
@@ -260,8 +260,8 @@ const CONFIG = {
       fee:100,
       feeNote:"₹100 per player",
       slots:0,
-      closes:"20 October 2026",
-      closesAt:"2026-10-20T23:59:59+05:30",
+      closes:"21 October 2026",
+      closesAt:"2026-10-21T23:59:59+05:30",
       open:true,
       payUrl:"",
       video:"",
@@ -390,7 +390,7 @@ const CONFIG = {
       q:"General Rules", track:"valorant",
       items:[
         "<b>Communication:</b> All online matches are hosted and coordinated through the official AniFX Discord. The invite link goes to the Captain once registration is confirmed. Every rostered player must be in the server. A team with players missing from Discord at match time is treated as not reporting.",
-        "<b>Entry:</b> Free. Registration closes 15 October 2026. There is no cap on the number of teams.",
+        "<b>Entry:</b> Free. Registration closes 14 October 2026. There is no cap on the number of teams.",
         "<b>Prize:</b> Goodies for the winning team. No cash prize.",
         "<b>Roster:</b> Five players, locked at registration. No substitutes and no additions after the deadline. Every player's Riot ID with tagline is required, and that is the account the player uses in match.",
         "<b>Eligibility:</b> All players must be enrolled students carrying a valid college ID, checked at the offline final. Players under 18 must submit a guardian consent form before the group stage. One player, one team.",
@@ -417,7 +417,7 @@ const CONFIG = {
     {
       q:"FC26", track:"fc26",
       items:[
-        "<b>Entry:</b> ₹100 per player. Solo knockout - there is no team registration for FC26. Registration closes 20 October 2026.",
+        "<b>Entry:</b> ₹100 per player. Solo knockout - there is no team registration for FC26. Registration closes 21 October 2026.",
         "<b>Played:</b> 23 October, on campus, on organiser-provided PlayStation consoles.",
         "<b>Match length:</b> Six-minute halves, twelve minutes per game, through the bracket.",
         "<b>Final:</b> Eight-minute halves, single game.",
