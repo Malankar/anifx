@@ -1004,6 +1004,34 @@ function trackState(t){
   return {open:true, why:"open", label:"Register"};
 }
 
+/* ---------- deadline-aware CTA labels (event pages only) ----------
+   The hero/nav Register (and, on the film page, Submit) buttons the
+   visitor sees before ever opening a form. Previously these always said
+   "Register" and only revealed a closed track once the modal itself was
+   opened — on an event's own page (PAGE_TRACK set) we know the one track
+   that applies, so relabel and disable the button right here instead of
+   waiting for that click. The click-blocking listener lives on the
+   button itself, not on document, so it runs before the bubbling
+   [data-open-reg] listener below ever sees the event. */
+if(PAGE_TRACK){
+  const pageT=CONFIG.tracks.find(x=>x.id===PAGE_TRACK);
+  if(pageT && trackState(pageT).why==="passed"){
+    const block=e=>{ e.preventDefault(); e.stopPropagation(); };
+    $$("[data-open-reg]").forEach(btn=>{
+      btn.textContent="Registration closed";
+      btn.classList.add("is-closed");
+      btn.setAttribute("aria-disabled","true");
+      btn.addEventListener("click",block);
+    });
+    $$("[data-open-film-submit]").forEach(btn=>{
+      btn.textContent="Submissions closed";
+      btn.classList.add("is-closed");
+      btn.setAttribute("aria-disabled","true");
+      btn.addEventListener("click",block);
+    });
+  }
+}
+
 /* ---------- registration modal (every page that includes it) ---------- */
 if($("#regModal")){
   const modal=$("#regModal"), form=$("#regForm"), sel=$("#fTrack"), msg=$("#formMsg"), trackLocked=$("#trackLocked");
