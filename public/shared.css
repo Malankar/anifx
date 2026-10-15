@@ -384,6 +384,11 @@ header.scrolled .nav{height:52px}
 .btn-accent2:active{transform:translateY(0);box-shadow:none;filter:brightness(1)}
 .btn:disabled{opacity:.45;cursor:not-allowed;filter:none;transform:none!important;box-shadow:none!important}
 
+/* applied by shared.js to the hero/nav Register and Submit links once a
+   track's deadline has passed — these are <a> tags, so :disabled has no
+   effect on them and this class carries the same dimmed, inert look. */
+.is-closed{opacity:.45;cursor:not-allowed!important;pointer-events:none;filter:none;transform:none!important;box-shadow:none!important}
+
 /* event-hero variant: shorter title scale (page is about the event, not
    competing with the festival wordmark), plus a scoped accent so the whole
    page picks up that event's color the moment [data-track] is set on <html> */
